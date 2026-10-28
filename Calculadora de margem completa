@@ -1,0 +1,157 @@
+<html style="margin:0;padding:0;">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+(function(){
+  var s=document.createElement('style');
+  s.textContent=':root{--bg:#1c1f2e;--card:#262a3a;--text:#e8ecf4;--muted:#8b9ab8;--accent:#c9923c;--accent-soft:rgba(201,146,60,.16);--accent2:#4d8b7a;--accent2-soft:rgba(77,139,122,.16);--border:rgba(139,154,184,.18)}'
+  +'.t{color:var(--text)}.muted{color:var(--muted)}.acc{color:var(--accent)}.acc2{color:var(--accent2)}.hfont{font-family:"Cormorant Garamond",serif}.bfont{font-family:"Source Sans 3",sans-serif}'
+  +'.card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.25)}'
+  +'.pill{display:inline-block;padding:2px 10px;border-radius:20px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--text);font-size:11px;font-weight:600;letter-spacing:.04em}'
+  +'.num{font-variant-numeric:tabular-nums}'
+  +'input[type=number],select{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);width:100%;font-family:"Source Sans 3",sans-serif;font-size:15px}input[type=number]:focus,select:focus{outline:none;border-color:var(--accent)}'
+  +'label.fld{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;font-weight:600;letter-spacing:.02em}'
+  +'.outbox{padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px}'
+  +'.tbl-row{transition:background .15s ease}.tbl-row:hover{background:rgba(201,146,60,.06)}';
+  document.head.appendChild(s);
+})();
+</script>
+<div style="background-color:transparent;box-sizing:border-box;">
+<div class="bfont" style="color:var(--text);background:radial-gradient(900px 450px at 80% -10%, rgba(201,146,60,.10), transparent 60%), var(--bg);">
+<div class="max-w-5xl mx-auto px-5 py-12">
+
+  <div style="margin-bottom:22px;">
+    <p style="font-family:monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0;">Ferramenta de precificação · versão corrigida</p>
+    <h1 class="hfont" style="font-size:40px;font-weight:700;line-height:1.1;margin:4px 0 8px 0;">Calculadora de Margem <span style="color:var(--accent);">Completa</span></h1>
+    <p class="muted" style="max-width:660px;font-size:15px;line-height:1.6;margin:0;">Altere qualquer campo — o resultado recalcula na hora. Inclui impostos, taxa de pagamento, plataforma, frete/rota (combustível + desgaste do veículo por km), preço de equilíbrio e preço para a margem-alvo.</p>
+  </div>
+
+  <div class="flex flex-wrap gap-5" style="align-items:flex-start;">
+
+    <div class="card p-6" style="flex:1 1 340px;min-width:300px;">
+      <strong style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);">Produto</strong>
+      <div class="flex flex-wrap gap-3 mt-3 mb-5">
+        <div style="flex:1 1 140px;"><label class="fld">Custo no fornecedor (R$)</label><input type="number" id="inCusto" value="4500" step="50" oninput="calc()"></div>
+        <div style="flex:1 1 140px;"><label class="fld">Preço de venda ao cliente (R$)</label><input type="number" id="inPreco" value="5040" step="50" oninput="calc()"></div>
+      </div>
+
+      <strong style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);">Impostos e taxas (%)</strong>
+      <div class="flex flex-wrap gap-3 mt-3 mb-4">
+        <div style="flex:1 1 140px;"><label class="fld">Impostos sobre a venda (%)</label><input type="number" id="inImp" value="5" step="0.5" oninput="calc()"></div>
+        <div style="flex:1 1 140px;"><label class="fld">Taxa plataforma / marketplace (%)</label><input type="number" id="inPlat" value="0" step="0.5" oninput="calc()"></div>
+      </div>
+      <label class="fld">Forma de pagamento</label>
+      <select id="inPag" onchange="calc()">
+        <option value="0">PIX à vista — 0,0%</option>
+        <option value="2.5">Cartão de débito — 2,5%</option>
+        <option value="3.99">Cartão crédito à vista — 3,99%</option>
+        <option value="5.99">Cartão crédito parcelado — 5,99%</option>
+      </select>
+      <div class="muted" style="font-size:11px;margin:8px 0 16px 0;">Use a alíquota efetiva real — confirme com seu contador. Taxas de cartão são exemplos; use as da sua maquininha/gateway.</div>
+
+      <strong style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);">Logística da rota</strong>
+      <div class="flex flex-wrap gap-3 mt-3 mb-3">
+        <div style="flex:1 1 140px;"><label class="fld">Distância ida e volta (km)</label><input type="number" id="inKm" value="60" step="10" oninput="calc()"></div>
+        <div style="flex:1 1 140px;"><label class="fld">Combustível (R$ / km)</label><input type="number" id="inFuel" value="0.25" step="0.05" oninput="calc()"></div>
+      </div>
+      <div class="flex flex-wrap gap-3 mb-3">
+        <div style="flex:1 1 140px;"><label class="fld">Desgaste do veículo (R$ / km)</label><input type="number" id="inDesg" value="0.15" step="0.05" oninput="calc()"></div>
+        <div style="flex:1 1 140px;"><label class="fld">Pedágio / outros (R$)</label><input type="number" id="inPed" value="0" step="5" oninput="calc()"></div>
+      </div>
+      <div class="muted" style="font-size:11px;margin:0 0 16px 0;">Desgaste = manutenção + pneus + depreciação + seguro, divididos pelos km do ano. Scooter: ~R$ 0,10–0,20/km; carro hatch: ~R$ 0,25–0,40/km.</div>
+
+      <strong style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);">Custos extras e meta</strong>
+      <div class="flex flex-wrap gap-3 mt-3">
+        <div style="flex:1 1 140px;"><label class="fld">Embalagem / seguro produto (R$)</label><input type="number" id="inOutros" value="10" step="5" oninput="calc()"></div>
+        <div style="flex:1 1 140px;"><label class="fld">Margem líquida alvo (%)</label><input type="number" id="inAlvo" value="12" step="1" oninput="calc()"></div>
+      </div>
+    </div>
+
+    <div style="flex:1 1 340px;min-width:300px;display:flex;flex-direction:column;gap:14px;">
+      <div class="outbox"><div class="muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;">Custo total do pedido</div><div id="oCustoTotal" class="num" style="font-size:24px;font-weight:700;margin-top:3px;">—</div></div>
+      <div class="outbox" style="border-color:var(--accent);"><div class="muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;">Lucro líquido por pedido</div><div id="oLucro" class="num" style="font-size:30px;font-weight:700;margin-top:3px;">—</div><div id="oMargem" class="muted num" style="font-size:13px;margin-top:2px;">—</div></div>
+      <div class="outbox" style="border-left:3px solid #d97757;"><div class="muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;">Preço de equilíbrio (margem 0)</div><div id="oEq" class="num" style="font-size:22px;font-weight:700;margin-top:3px;color:#d97757;">—</div><div class="muted" style="font-size:11px;margin-top:2px;">Abaixo deste preço, o pedido dá prejuízo. Este é o seu piso competitivo.</div></div>
+      <div class="outbox" style="border-left:3px solid var(--accent2);"><div class="muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;">Preço para a margem-alvo</div><div id="oAlvo" class="num acc2" style="font-size:22px;font-weight:700;margin-top:3px;">—</div><div id="oAlvoTxt" class="muted" style="font-size:11px;margin-top:2px;">—</div></div>
+
+      <div class="card p-5">
+        <strong style="font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);">Composição do custo</strong>
+        <table class="w-full text-sm mt-3 num" style="border-collapse:collapse;">
+          <tbody style="color:var(--text);font-size:13px;">
+            <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2 muted">Custo do produto</td><td class="py-2 text-right" id="dProd">—</td></tr>
+            <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2 muted">Impostos</td><td class="py-2 text-right" id="dImp">—</td></tr>
+            <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2 muted">Taxa de pagamento</td><td class="py-2 text-right" id="dPag">—</td></tr>
+            <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2 muted">Taxa plataforma</td><td class="py-2 text-right" id="dPlat">—</td></tr>
+            <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2 muted">Rota (combustível + desgaste)</td><td class="py-2 text-right" id="dRota">—</td></tr>
+            <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2 muted">Embalagem/seguro + pedágio</td><td class="py-2 text-right" id="dOutros">—</td></tr>
+            <tr><td class="py-2 font-semibold">Custo total</td><td class="py-2 text-right font-semibold" id="dTotal">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-6 mt-5">
+    <strong style="font-size:15px;">Comparativo por forma de pagamento — mesmo preço de venda (<span id="cmpPreco" class="num acc">—</span>)</strong>
+    <p class="muted" style="font-size:12px;margin:4px 0 14px 0;">Mostra por que o PIX antecipado é o mais lucrativo e por que cartão parcelado pode inviabilizar o pedido.</p>
+    <table class="w-full text-sm num" style="border-collapse:collapse;">
+      <thead><tr style="color:var(--muted);border-bottom:1px solid var(--border);" class="text-xs uppercase tracking-wide"><th class="text-left pb-2 font-medium">Forma</th><th class="text-right pb-2 font-medium">Taxa</th><th class="text-right pb-2 font-medium">Lucro líquido</th><th class="text-right pb-2 font-medium">Margem</th></tr></thead>
+      <tbody style="color:var(--text);font-size:13px;">
+        <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2.5 font-medium"><span class="pill">Recomendado</span> PIX à vista</td><td class="py-2.5 text-right muted">0,0%</td><td class="py-2.5 text-right" id="c1L">—</td><td class="py-2.5 text-right acc2" id="c1M">—</td></tr>
+        <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2.5 font-medium">Cartão de débito</td><td class="py-2.5 text-right muted">2,5%</td><td class="py-2.5 text-right" id="c2L">—</td><td class="py-2.5 text-right" id="c2M">—</td></tr>
+        <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td class="py-2.5 font-medium">Cartão crédito à vista</td><td class="py-2.5 text-right muted">3,99%</td><td class="py-2.5 text-right" id="c3L">—</td><td class="py-2.5 text-right" id="c3M">—</td></tr>
+        <tr><td class="py-2.5 font-medium">Cartão crédito parcelado</td><td class="py-2.5 text-right muted">5,99%</td><td class="py-2.5 text-right" id="c4L">—</td><td class="py-2.5 text-right" id="c4M">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="muted" style="font-size:11.5px;line-height:1.6;margin:16px 0 0 0;">Valores de exemplo. Confirme a alíquota de impostos com seu contador (depende do regime tributário e do estado) e as taxas reais da sua maquininha/gateway. O desgaste por km deve ser calculado a partir dos seus custos reais de manutenção, pneus, depreciação e seguro do veículo.</p>
+
+</div>
+</div>
+</div>
+
+<script>
+window.calc = function(){
+  try{
+    function fmt(v){ if(!isFinite(v)) return '—'; return (v<0?'−':'')+'R$ '+Math.abs(Math.round(v)).toLocaleString('pt-BR'); }
+    function pct(v){ if(!isFinite(v)) return '—'; return (v<0?'−':'')+Math.abs(v).toFixed(1).replace('.',',')+'%'; }
+    function num(id){ var e=document.getElementById(id); return e?(parseFloat(e.value)||0):0; }
+    function set(id,val){ var e=document.getElementById(id); if(e) e.textContent=val; }
+    function setColor(id,color){ var e=document.getElementById(id); if(e) e.style.color=color; }
+    var custo=num('inCusto'), preco=num('inPreco'), imp=num('inImp'), plat=num('inPlat');
+    var pagSel=document.getElementById('inPag'); var pag= pagSel?(parseFloat(pagSel.value)||0):0;
+    var km=num('inKm'), fuel=num('inFuel'), desg=num('inDesg'), ped=num('inPed'), outros=num('inOutros'), alvo=num('inAlvo');
+    var vImp=preco*imp/100, vPag=preco*pag/100, vPlat=preco*plat/100;
+    var vRota=km*(fuel+desg)+ped;
+    var total=custo+vImp+vPag+vPlat+vRota+outros;
+    var lucro=preco-total;
+    var margem=preco>0?lucro/preco*100:0;
+    var markup=custo>0?(preco/custo-1)*100:0;
+    var taxaSoma=imp+pag+plat;
+    var eq=(1-taxaSoma/100)>0?(custo+vRota+outros)/(1-taxaSoma/100):Infinity;
+    var denom=1-(taxaSoma+alvo)/100;
+    var pAlvo=denom>0?(custo+vRota+outros)/denom:Infinity;
+    set('oCustoTotal',fmt(total));
+    set('oLucro',fmt(lucro)); setColor('oLucro',lucro>=0?'var(--accent2)':'#d97757');
+    set('oMargem','Margem: '+pct(margem)+' sobre a venda · Markup: '+pct(markup)+' sobre o custo');
+    set('oEq',fmt(eq));
+    set('oAlvo',fmt(pAlvo));
+    set('oAlvoTxt','Para atingir '+alvo.toFixed(1).replace('.',',')+'% de margem líquida com esta forma de pagamento.');
+    set('dProd',fmt(custo)); set('dImp',fmt(vImp)); set('dPag',fmt(vPag)); set('dPlat',fmt(vPlat));
+    set('dRota',fmt(km*(fuel+desg))+(ped>0?' + '+fmt(ped):''));
+    set('dOutros',fmt(outros+ped>0?outros:outros));
+    set('dTotal',fmt(total));
+    set('cmpPreco',fmt(preco));
+    var taxas=[0,2.5,3.99,5.99];
+    for(var i=0;i<4;i++){
+      var t=taxas[i], vt=preco*t/100;
+      var l=preco-(custo+vImp+vt+vPlat+vRota+outros);
+      var m=preco>0?l/preco*100:0;
+      set('c'+(i+1)+'L',fmt(l)); setColor('c'+(i+1)+'L',l>=0?'var(--text)':'#d97757');
+      set('c'+(i+1)+'M',pct(m)); setColor('c'+(i+1)+'M',m>=0?(i===0?'var(--accent2)':'var(--text)'):'#d97757');
+    }
+  }catch(e){ if(window.console) console.error(e); }
+};
+try{ window.calc(); }catch(e){}
+</script>
+</html>
