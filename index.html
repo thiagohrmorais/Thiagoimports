@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Margem e Precificação</title>
+
+  <!-- Typography & Styling Libraries -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg: #131622;
+      --card: #1d2132;
+      --card-border: rgba(139, 154, 184, 0.15);
+      --text: #f0f3f9;
+      --muted: #8c9cb8;
+      --accent: #dca34b;
+      --accent-soft: rgba(220, 163, 75, 0.12);
+      --accent2: #52a38f;
+      --accent2-soft: rgba(82, 163, 143, 0.15);
+      --danger: #e06c65;
+      --border: rgba(139, 154, 184, 0.18);
+      --input-bg: #171a28;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: "Source Sans 3", sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hfont {
+      font-family: "Cormorant Garamond", serif;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type=number], select {
+      background-color: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text);
+      width: 100%;
+      font-family: "Source Sans 3", sans-serif;
+      font-size: 15px;
+      transition: all 0.2s ease;
+    }
+
+    input[type=number]:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    label.fld {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .outbox {
+      padding: 14px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s ease;
+    }
+
+    .tbl-row {
+      transition: background-color 0.15s ease;
+    }
+
+    .tbl-row:hover {
+      background-color: rgba(220, 163, 75, 0.05);
+    }
+  </style>
+</head>
+
+<body class="bg-[var(--bg)] text-[var(--text)]">
+  <div class="min-h-screen bg-[radial-gradient(1000px_500px_at_80%_-10%,rgba(220,163,75,0.08),transparent_60%)] py-8 md:py-12 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+
+      <!-- Header Section -->
+      <header class="mb-8">
+        <p class="font-mono text-xs tracking-widest uppercase text-[var(--accent)] mb-1">Ferramenta de precificação · Profissional</p>
+        <h1 class="hfont text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+          Calculadora de Margem <span class="text-[var(--accent)]">Completa</span>
+        </h1>
+        <p class="text-[var(--muted)] max-w-2xl text-sm sm:text-base mt-2 leading-relaxed">
+          Altere qualquer campo — o resultado recalcula na hora. Inclui impostos, taxa de pagamento, plataforma, frete/rota (combustível + desgaste do veículo por km), preço de equilíbrio e preço para a margem-alvo.
+        </p>
+      </header>
+
+      <!-- Main Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Form Inputs Column (Left Side) -->
+        <div class="lg:col-span-7 card p-5 sm:p-7 space-y-6">
+
+          <!-- Section 1: Product -->
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">1. Dados do Produto</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="fld" for="inCusto">Custo no fornecedor (R$)</label>
+                <input type="number" id="inCusto" value="4500" step="50" min="0" oninput="calc()">
+              </div>
+              <div>
+                <label class="fld" for="inPreco">Preço de venda ao cliente (R$)</label>
+                <input type="number" id="inPreco" value="5040" step="50" min="0" oninput="calc()">
+              </div>
+            </div>
+          </div>
+
+          <hr class="border-[var(--border)]">
+
+          <!-- Section 2: Taxes & Fees -->
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">2. Impostos e Taxas (%)</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+              <div>
+                <label class="fld" for="inImp">Impostos sobre a venda (%)</label>
+                <input type="number" id="inImp" value="5" step="0.5" min="0" max="100" oninput="calc()">
+              </div>
+              <div>
+                <label class="fld" for="inPlat">Taxa plataforma / marketplace (%)</label>
+                <input type="number" id="inPlat" value="0" step="0.5" min="0" max="100" oninput="calc()">
+              </div>
+            </div>
+            
+            <div class="mb-2">
+              <label class="fld" for="inPag">Forma de pagamento</label>
+              <select id="inPag" onchange="calc()">
+                <option value="0">PIX à vista — 0,0%</option>
+                <option value="2.5">Cartão de débito — 2,5%</option>
+                <option value="3.99">Cartão crédito à vista — 3,99%</option>
+                <option value="5.99">Cartão crédito parcelado — 5,99%</option>
+              </select>
+            </div>
+            <p class="text-[var(--muted)] text-xs">Use a alíquota efetiva real do seu imposto. As taxas de cartão são personalizáveis no seu painel financeiro.</p>
+          </div>
+
+          <hr class="border-[var(--border)]">
+
+          <!-- Section 3: Logistics -->
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">3. Logística da Rota</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+              <div>
+                <label class="fld" for="inKm">Distância ida e volta (km)</label>
+                <input type="number" id="inKm" value="60" step="10" min="0" oninput="calc()">
+              </div>
+              <div>
+                <label class="fld" for="inFuel">Combustível (R$ / km)</label>
+                <input type="number" id="inFuel" value="0.25" step="0.05" min="0" oninput="calc()">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-2">
+              <div>
+                <label class="fld" for="inDesg">Desgaste do veículo (R$ / km)</label>
+                <input type="number" id="inDesg" value="0.15" step="0.05" min="0" oninput="calc()">
+              </div>
+              <div>
+                <label class="fld" for="inPed">Pedágio / outros (R$)</label>
+                <input type="number" id="inPed" value="0" step="5" min="0" oninput="calc()">
+              </div>
+            </div>
+            <p class="text-[var(--muted)] text-xs">Desgaste = manutenção + pneus + depreciação + seguro por km. Scooter: ~R$ 0,10–0,20/km; carro hatch: ~R$ 0,25–0,40/km.</p>
+          </div>
+
+          <hr class="border-[var(--border)]">
+
+          <!-- Section 4: Extras & Target -->
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">4. Custos Extras e Meta</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="fld" for="inOutros">Embalagem / seguro produto (R$)</label>
+                <input type="number" id="inOutros" value="10" step="5" min="0" oninput="calc()">
+              </div>
+              <div>
+                <label class="fld" for="inAlvo">Margem líquida alvo (%)</label>
+                <input type="number" id="inAlvo" value="12" step="1" min="0" max="99" oninput="calc()">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Output Results Column (Right Side) -->
+        <div class="lg:col-span-5 space-y-4">
+
+          <!-- KPI 1: Custo Total -->
+          <div class="outbox">
+            <div class="text-[var(--muted)] text-xs uppercase tracking-wider font-semibold">Custo Total do Pedido</div>
+            <div id="oCustoTotal" class="num text-2xl font-bold mt-1 text-[var(--text)]">—</div>
+          </div>
+
+          <!-- KPI 2: Lucro Líquido -->
+          <div class="outbox border-[var(--accent)]">
+            <div class="text-[var(--muted)] text-xs uppercase tracking-wider font-semibold">Lucro Líquido por Pedido</div>
+            <div id="oLucro" class="num text-3xl font-bold mt-1">—</div>
+            <div id="oMargem" class="text-[var(--muted)] num text-xs mt-1">—</div>
+          </div>
+
+          <!-- KPI 3: Preço de Equilíbrio -->
+          <div class="outbox border-l-4 border-l-[var(--danger)]">
+            <div class="text-[var(--muted)] text-xs uppercase tracking-wider font-semibold">Preço de Equilíbrio (Margem 0%)</div>
+            <div id="oEq" class="num text-2xl font-bold mt-1 text-[var(--danger)]">—</div>
+            <div class="text-[var(--muted)] text-xs mt-1">Abaixo deste valor o pedido dá prejuízo. É o seu piso de preço.</div>
+          </div>
+
+          <!-- KPI 4: Preço para Margem-Alvo -->
+          <div class="outbox border-l-4 border-l-[var(--accent2)]">
+            <div class="text-[var(--muted)] text-xs uppercase tracking-wider font-semibold">Preço para a Margem-Alvo</div>
+            <div id="oAlvo" class="num text-2xl font-bold mt-1 text-[var(--accent2)]">—</div>
+            <div id="oAlvoTxt" class="text-[var(--muted)] text-xs mt-1">—</div>
+          </div>
+
+          <!-- Cost Breakdown Table -->
+          <div class="card p-5">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-3">Composição do Custo</h3>
+            <table class="w-full text-xs sm:text-sm num border-collapse">
+              <tbody class="divide-y divide-[var(--border)] text-[var(--text)]">
+                <tr class="tbl-row"><td class="py-2 text-[var(--muted)]">Custo do produto</td><td class="py-2 text-right font-medium" id="dProd">—</td></tr>
+                <tr class="tbl-row"><td class="py-2 text-[var(--muted)]">Impostos</td><td class="py-2 text-right font-medium" id="dImp">—</td></tr>
+                <tr class="tbl-row"><td class="py-2 text-[var(--muted)]">Taxa de pagamento</td><td class="py-2 text-right font-medium" id="dPag">—</td></tr>
+                <tr class="tbl-row"><td class="py-2 text-[var(--muted)]">Taxa plataforma</td><td class="py-2 text-right font-medium" id="dPlat">—</td></tr>
+                <tr class="tbl-row"><td class="py-2 text-[var(--muted)]">Rota (combustível + desgaste)</td><td class="py-2 text-right font-medium" id="dRota">—</td></tr>
+                <tr class="tbl-row"><td class="py-2 text-[var(--muted)]">Embalagem/seguro + pedágio</td><td class="py-2 text-right font-medium" id="dOutros">—</td></tr>
+                <tr class="font-semibold text-base"><td class="py-2 pt-3">Custo Total</td><td class="py-2 pt-3 text-right" id="dTotal">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Payment Method Comparison Table -->
+      <div class="card p-5 sm:p-7 mt-6">
+        <h3 class="text-base font-semibold">
+          Comparativo por Forma de Pagamento — mesmo preço de venda (<span id="cmpPreco" class="num text-[var(--accent)]">—</span>)
+        </h3>
+        <p class="text-[var(--muted)] text-xs mt-1 mb-4">
+          Veja o impacto direto das taxas financeiras no lucro líquido final do mesmo produto.
+        </p>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs sm:text-sm num border-collapse min-w-[500px]">
+            <thead>
+              <tr class="text-[var(--muted)] border-b border-[var(--border)] text-xs uppercase tracking-wider">
+                <th class="text-left pb-3 font-semibold">Forma de Pagamento</th>
+                <th class="text-right pb-3 font-semibold">Taxa (%)</th>
+                <th class="text-right pb-3 font-semibold">Lucro Líquido</th>
+                <th class="text-right pb-3 font-semibold">Margem</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--border)] text-[var(--text)]">
+              <tr class="tbl-row">
+                <td class="py-3 font-medium flex items-center gap-2">
+                  <span class="pill">Recomendado</span> PIX à vista
+                </td>
+                <td class="py-3 text-right text-[var(--muted)]">0,0%</td>
+                <td class="py-3 text-right font-medium" id="c1L">—</td>
+                <td class="py-3 text-right font-bold text-[var(--accent2)]" id="c1M">—</td>
+              </tr>
+              <tr class="tbl-row">
+                <td class="py-3 font-medium">Cartão de débito</td>
+                <td class="py-3 text-right text-[var(--muted)]">2,5%</td>
+                <td class="py-3 text-right font-medium" id="c2L">—</td>
+                <td class="py-3 text-right font-semibold" id="c2M">—</td>
+              </tr>
+              <tr class="tbl-row">
+                <td class="py-3 font-medium">Cartão crédito à vista</td>
+                <td class="py-3 text-right text-[var(--muted)]">3,99%</td>
+                <td class="py-3 text-right font-medium" id="c3L">—</td>
+                <td class="py-3 text-right font-semibold" id="c3M">—</td>
+              </tr>
+              <tr class="tbl-row">
+                <td class="py-3 font-medium">Cartão crédito parcelado</td>
+                <td class="py-3 text-right text-[var(--muted)]">5,99%</td>
+                <td class="py-3 text-right font-medium" id="c4L">—</td>
+                <td class="py-3 text-right font-semibold" id="c4M">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer Disclaimer -->
+      <p class="text-[var(--muted)] text-xs leading-relaxed mt-6">
+        * Os valores exibidos são baseados nas simulações informadas. Lembre-se de confirmar com sua contabilidade o enquadramento tributário (Simples Nacional, Lucro Presumido, etc.) e verificar as taxas operacionais exatas praticadas no seu contrato de maquininha ou gateway de pagamento.
+      </p>
+
+    </div>
+  </div>
+
+  <!-- Calculator Logic Script -->
+  <script>
+    function fmt(v) {
+      if (!isFinite(v) || isNaN(v)) return '—';
+      const sign = v < 0 ? '− ' : '';
+      return sign + 'R$ ' + Math.abs(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function pct(v) {
+      if (!isFinite(v) || isNaN(v)) return '—';
+      const sign = v < 0 ? '− ' : '';
+      return sign + Math.abs(v).toFixed(1).replace('.', ',') + '%';
+    }
+
+    function num(id) {
+      const e = document.getElementById(id);
+      return e ? (parseFloat(e.value) || 0) : 0;
+    }
+
+    function set(id, val) {
+      const e = document.getElementById(id);
+      if (e) e.textContent = val;
+    }
+
+    function setColor(id, color) {
+      const e = document.getElementById(id);
+      if (e) e.style.color = color;
+    }
+
+    function calc() {
+      try {
+        // Read Inputs
+        const custo = num('inCusto');
+        const preco = num('inPreco');
+        const imp = num('inImp');
+        const plat = num('inPlat');
+
+        const pagSel = document.getElementById('inPag');
+        const pag = pagSel ? (parseFloat(pagSel.value) || 0) : 0;
+
+        const km = num('inKm');
+        const fuel = num('inFuel');
+        const desg = num('inDesg');
+        const ped = num('inPed');
+        const outros = num('inOutros');
+        const alvo = num('inAlvo');
+
+        // Logic Calculations
+        const vImp = preco * (imp / 100);
+        const vPag = preco * (pag / 100);
+        const vPlat = preco * (plat / 100);
+        const vRotaCombustivelEDesgaste = km * (fuel + desg);
+        const vRotaTotal = vRotaCombustivelEDesgaste + ped;
+        const totalOutros = outros + ped;
+
+        const total = custo + vImp + vPag + vPlat + vRotaTotal + outros;
+        const lucro = preco - total;
+        const margem = preco > 0 ? (lucro / preco) * 100 : 0;
+        const markup = custo > 0 ? ((preco - custo) / custo) * 100 : 0;
+
+        const taxaSoma = imp + pag + plat;
+        
+        // Break-even (Equilibrio) Price: (Costs without variable fees) / (1 - variable fees %)
+        const custosFixosEProduto = custo + vRotaTotal + outros;
+        const denomEq = 1 - (taxaSoma / 100);
+        const eq = denomEq > 0 ? custosFixosEProduto / denomEq : Infinity;
+
+        // Target Price: Custos / (1 - (taxaSoma % + alvo %))
+        const denomAlvo = 1 - ((taxaSoma + alvo) / 100);
+        const pAlvo = denomAlvo > 0 ? custosFixosEProduto / denomAlvo : Infinity;
+
+        // Update KPIs
+        set('oCustoTotal', fmt(total));
+        set('oLucro', fmt(lucro));
+        setColor('oLucro', lucro >= 0 ? 'var(--accent2)' : 'var(--danger)');
+        
+        set('oMargem', `Margem: ${pct(margem)} sobre a venda · Markup: ${pct(markup)} sobre o custo`);
+        set('oEq', fmt(eq));
+        
+        if (pAlvo !== Infinity && pAlvo > 0) {
+          set('oAlvo', fmt(pAlvo));
+          set('oAlvoTxt', `Para atingir ${alvo.toFixed(1).replace('.', ',')}% de margem líquida com esta forma de pagamento.`);
+        } else {
+          set('oAlvo', 'Inviável');
+          set('oAlvoTxt', 'A soma dos impostos, taxas e margem alvo é igual ou superior a 100%.');
+        }
+
+        // Cost Breakdown Table
+        set('dProd', fmt(custo));
+        set('dImp', fmt(vImp));
+        set('dPag', fmt(vPag));
+        set('dPlat', fmt(vPlat));
+        set('dRota', fmt(vRotaCombustivelEDesgaste));
+        set('dOutros', fmt(totalOutros));
+        set('dTotal', fmt(total));
+
+        // Comparison Table
+        set('cmpPreco', fmt(preco));
+        const taxas = [0, 2.5, 3.99, 5.99];
+
+        for (let i = 0; i < 4; i++) {
+          const t = taxas[i];
+          const vt = preco * (t / 100);
+          const l = preco - (custo + vImp + vt + vPlat + vRotaTotal + outros);
+          const m = preco > 0 ? (l / preco) * 100 : 0;
+
+          const rowIdLucro = `c${i + 1}L`;
+          const rowIdMargem = `c${i + 1}M`;
+
+          set(rowIdLucro, fmt(l));
+          setColor(rowIdLucro, l >= 0 ? 'var(--text)' : 'var(--danger)');
+
+          set(rowIdMargem, pct(m));
+          setColor(rowIdMargem, m >= 0 ? (i === 0 ? 'var(--accent2)' : 'var(--text)') : 'var(--danger)');
+        }
+
+      } catch (err) {
+        console.error('Erro nos cálculos:', err);
+      }
+    }
+
+    // Run initial calculation when DOM is loaded
+    document.addEventListener('DOMContentLoaded', calc);
+    // Fallback run
+    calc();
+  </script>
+</body>
+</html>
