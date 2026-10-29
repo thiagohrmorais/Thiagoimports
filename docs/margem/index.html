@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Margem — Central de Ferramentas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #131622; --card: #1d2132; --card-border: rgba(139,154,184,0.15);
+    --text: #f0f3f9; --muted: #8c9cb8; --accent: #e5007d;
+    --accent-soft: rgba(229,0,125,0.12); --accent2: #52a38f; --danger: #e06c65;
+    --border: rgba(139,154,184,0.18); --input-bg: #171a28;
+  }
+  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; }
+  .hfont { font-family:"Cormorant Garamond",serif; }
+  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,.25); }
+  .pill { display:inline-block; padding:2px 8px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent); font-size:11px; font-weight:600; letter-spacing:.03em; }
+  .num { font-variant-numeric:tabular-nums; }
+  input[type=number], select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; transition:all .2s ease; }
+  input[type=number]:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
+  .outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
+  .tbl-row { transition:background-color .15s ease; }
+  .tbl-row:hover { background-color:rgba(229,0,125,.05); }
+  .navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
+  .navlink:hover { color:var(--text); background:rgba(255,255,255,.04); }
+  .navlink.active { color:#fff; background:var(--accent); }
+</style>
+</head>
+<body>
+<div style="position:sticky;top:0;z-index:50;background:rgba(19,22,34,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);">
+  <div style="max-width:1100px;margin:0 auto;display:flex;gap:6px;padding:10px 16px;flex-wrap:wrap;align-items:center;">
+    <span class="hfont" style="font-size:18px;font-weight:700;color:var(--accent);margin-right:auto;">Ferramentas<span style="color:var(--text);">HQ</span></span>
+    <a class="navlink" href="../">← Início</a>
+    <a class="navlink active" href="../margem/">💰 Margem</a>
+    <a class="navlink" href="../compra-iphone/">📱 iPhone</a>
+    <a class="navlink" href="../scripts/">✍️ Scripts</a>
+  </div>
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:32px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(229,0,125,.10),transparent 60%);">
+
+  <header style="margin-bottom:28px;">
+    <p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Ferramenta 01 · Precificação de venda</p>
+    <h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Calculadora de Margem <span style="color:var(--accent);">Completa</span></h1>
+    <p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Altere qualquer campo — o resultado recalcula na hora. Inclui impostos, taxa de pagamento, plataforma, frete/rota, preço de equilíbrio e preço para a margem-alvo.</p>
+  </header>
+
+  <div style="display:grid;grid-template-columns:1fr;gap:24px;" class="lg-grid">
+    <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:24px;">
+
+      <div>
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">1. Dados do Produto</h2>
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="sm-grid-2">
+          <div><label class="fld" for="inCusto">Custo no fornecedor (R$)</label><input type="number" id="inCusto" value="4500" step="50" min="0" oninput="calcMargem()"></div>
+          <div><label class="fld" for="inPreco">Preço de venda ao cliente (R$)</label><input type="number" id="inPreco" value="5040" step="50" min="0" oninput="calcMargem()"></div>
+        </div>
+      </div>
+
+      <hr style="border-color:var(--border);">
+
+      <div>
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">2. Impostos e Taxas (%)</h2>
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:12px;" class="sm-grid-2">
+          <div><label class="fld" for="inImp">Impostos sobre a venda (%)</label><input type="number" id="inImp" value="5" step="0.5" min="0" max="100" oninput="calcMargem()"></div>
+          <div><label class="fld" for="inPlat">Taxa plataforma / marketplace (%)</label><input type="number" id="inPlat" value="0" step="0.5" min="0" max="100" oninput="calcMargem()"></div>
+        </div>
+        <div style="margin-bottom:8px;"><label class="fld" for="inPag">Forma de pagamento</label>
+          <select id="inPag" onchange="calcMargem()">
+            <option value="0">PIX à vista — 0,0%</option>
+            <option value="2.5">Cartão de débito — 2,5%</option>
+            <option value="3.99">Cartão crédito à vista — 3,99%</option>
+            <option value="5.99">Cartão crédito parcelado — 5,99%</option>
+          </select>
+        </div>
+        <p style="color:var(--muted);font-size:12px;margin:0;">Use a alíquota efetiva real. Taxas de cartão personalizáveis no seu painel financeiro.</p>
+      </div>
+
+      <hr style="border-color:var(--border);">
+
+      <div>
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">3. Logística da Rota</h2>
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:12px;" class="sm-grid-2">
+          <div><label class="fld" for="inKm">Distância ida e volta (km)</label><input type="number" id="inKm" value="60" step="10" min="0" oninput="calcMargem()"></div>
+          <div><label class="fld" for="inFuel">Combustível (R$ / km)</label><input type="number" id="inFuel" value="0.25" step="0.05" min="0" oninput="calcMargem()"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:8px;" class="sm-grid-2">
+          <div><label class="fld" for="inDesg">Desgaste do veículo (R$ / km)</label><input type="number" id="inDesg" value="0.15" step="0.05" min="0" oninput="calcMargem()"></div>
+          <div><label class="fld" for="inPed">Pedágio / outros (R$)</label><input type="number" id="inPed" value="0" step="5" min="0" oninput="calcMargem()"></div>
+        </div>
+        <p style="color:var(--muted);font-size:12px;margin:0;">Desgaste = manutenção + pneus + depreciação + seguro por km. Scooter ~R$0,10–0,20/km; carro hatch ~R$0,25–0,40/km.</p>
+      </div>
+
+      <hr style="border-color:var(--border);">
+
+      <div>
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">4. Custos Extras e Meta</h2>
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="sm-grid-2">
+          <div><label class="fld" for="inOutros">Embalagem / seguro produto (R$)</label><input type="number" id="inOutros" value="10" step="5" min="0" oninput="calcMargem()"></div>
+          <div><label class="fld" for="inAlvo">Margem líquida alvo (%)</label><input type="number" id="inAlvo" value="12" step="1" min="0" max="99" oninput="calcMargem()"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="outbox"><div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Custo Total do Pedido</div><div id="oCustoTotal" class="num" style="font-size:24px;font-weight:700;margin-top:4px;">—</div></div>
+      <div class="outbox" style="border-color:var(--accent);"><div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Lucro Líquido por Pedido</div><div id="oLucro" class="num" style="font-size:30px;font-weight:700;margin-top:4px;">—</div><div id="oMargem" class="num" style="color:var(--muted);font-size:11px;margin-top:4px;">—</div></div>
+      <div class="outbox" style="border-left:4px solid var(--danger);"><div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Preço de Equilíbrio (Margem 0%)</div><div id="oEq" class="num" style="font-size:24px;font-weight:700;margin-top:4px;color:var(--danger);">—</div><div style="color:var(--muted);font-size:11px;margin-top:4px;">Abaixo deste valor o pedido dá prejuízo. É o seu piso de preço.</div></div>
+      <div class="outbox" style="border-left:4px solid var(--accent2);"><div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Preço para a Margem-Alvo</div><div id="oAlvo" class="num" style="font-size:24px;font-weight:700;margin-top:4px;color:var(--accent2);">—</div><div id="oAlvoTxt" style="color:var(--muted);font-size:11px;margin-top:4px;">—</div></div>
+      <div class="card" style="padding:20px;">
+        <h3 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px;">Composição do Custo</h3>
+        <table style="width:100%;font-size:13px;" class="num">
+          <tbody style="color:var(--text);">
+            <tr class="tbl-row"><td style="padding:8px 0;color:var(--muted);border-bottom:1px solid var(--border);">Custo do produto</td><td style="padding:8px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="dProd">—</td></tr>
+            <tr class="tbl-row"><td style="padding:8px 0;color:var(--muted);border-bottom:1px solid var(--border);">Impostos</td><td style="padding:8px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="dImp">—</td></tr>
+            <tr class="tbl-row"><td style="padding:8px 0;color:var(--muted);border-bottom:1px solid var(--border);">Taxa de pagamento</td><td style="padding:8px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="dPag">—</td></tr>
+            <tr class="tbl-row"><td style="padding:8px 0;color:var(--muted);border-bottom:1px solid var(--border);">Taxa plataforma</td><td style="padding:8px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="dPlat">—</td></tr>
+            <tr class="tbl-row"><td style="padding:8px 0;color:var(--muted);border-bottom:1px solid var(--border);">Rota (combustível + desgaste)</td><td style="padding:8px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="dRota">—</td></tr>
+            <tr class="tbl-row"><td style="padding:8px 0;color:var(--muted);border-bottom:1px solid var(--border);">Embalagem/seguro + pedágio</td><td style="padding:8px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="dOutros">—</td></tr>
+            <tr style="font-weight:700;font-size:15px;"><td style="padding:12px 0 0;">Custo Total</td><td style="padding:12px 0 0;text-align:right;" id="dTotal">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparativo -->
+  <div class="card" style="padding:24px;margin-top:24px;">
+    <h3 style="font-size:16px;font-weight:600;margin:0 0 4px;">Comparativo por Forma de Pagamento — mesmo preço de venda (<span id="cmpPreco" class="num" style="color:var(--accent);">—</span>)</h3>
+    <p style="color:var(--muted);font-size:12px;margin:0 0 16px;">Veja o impacto direto das taxas no lucro líquido final do mesmo produto.</p>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;min-width:500px;font-size:13px;" class="num">
+        <thead><tr style="color:var(--muted);border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">
+          <th style="text-align:left;padding-bottom:10px;font-weight:600;">Forma de Pagamento</th><th style="text-align:right;padding-bottom:10px;font-weight:600;">Taxa (%)</th><th style="text-align:right;padding-bottom:10px;font-weight:600;">Lucro Líquido</th><th style="text-align:right;padding-bottom:10px;font-weight:600;">Margem</th>
+        </tr></thead>
+        <tbody style="color:var(--text);">
+          <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td style="padding:12px 0;font-weight:600;"><span class="pill" style="margin-right:6px;">Recomendado</span>PIX à vista</td><td style="padding:12px 0;text-align:right;color:var(--muted);">0,0%</td><td class="num" style="padding:12px 0;text-align:right;font-weight:500;" id="c1L">—</td><td class="num" style="padding:12px 0;text-align:right;font-weight:700;color:var(--accent2);" id="c1M">—</td></tr>
+          <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td style="padding:12px 0;font-weight:500;">Cartão de débito</td><td style="padding:12px 0;text-align:right;color:var(--muted);">2,5%</td><td class="num" style="padding:12px 0;text-align:right;font-weight:500;" id="c2L">—</td><td class="num" style="padding:12px 0;text-align:right;font-weight:600;" id="c2M">—</td></tr>
+          <tr class="tbl-row" style="border-bottom:1px solid var(--border);"><td style="padding:12px 0;font-weight:500;">Cartão crédito à vista</td><td style="padding:12px 0;text-align:right;color:var(--muted);">3,99%</td><td class="num" style="padding:12px 0;text-align:right;font-weight:500;" id="c3L">—</td><td class="num" style="padding:12px 0;text-align:right;font-weight:600;" id="c3M">—</td></tr>
+          <tr class="tbl-row"><td style="padding:12px 0;font-weight:500;">Cartão crédito parcelado</td><td style="padding:12px 0;text-align:right;color:var(--muted);">5,99%</td><td class="num" style="padding:12px 0;text-align:right;font-weight:500;" id="c4L">—</td><td class="num" style="padding:12px 0;text-align:right;font-weight:600;" id="c4M">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);font-size:11px;line-height:1.7;margin-top:24px;">* Os valores exibidos são baseados nas simulações informadas. Confirme com sua contabilidade o enquadramento tributário e as taxas operacionais exatas do seu contrato de maquininha/gateway.</p>
+</div>
+
+<style>
+  @media (min-width:1024px){ .lg-grid { grid-template-columns:7fr 5fr !important; align-items:start; } }
+  @media (min-width:640px){ .sm-grid-2 { grid-template-columns:1fr 1fr !important; } }
+</style>
+
+<script>
+function fmt(v){ if(!isFinite(v)||isNaN(v)) return '—'; const s=v<0?'− ':''; return s+'R$ '+Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function pct(v){ if(!isFinite(v)||isNaN(v)) return '—'; const s=v<0?'− ':''; return s+Math.abs(v).toFixed(1).replace('.',',')+'%'; }
+function num(id){ const e=document.getElementById(id); return e?(parseFloat(e.value)||0):0; }
+function set(id,val){ const e=document.getElementById(id); if(e) e.textContent=val; }
+function calcMargem(){
+  try{
+    const custo=num('inCusto'), preco=num('inPreco'), imp=num('inImp'), plat=num('inPlat');
+    const pagSel=document.getElementById('inPag'); const pag=pagSel?(parseFloat(pagSel.value)||0):0;
+    const km=num('inKm'), fuel=num('inFuel'), desg=num('inDesg'), ped=num('inPed'), outros=num('inOutros'), alvo=num('inAlvo');
+    const vImp=preco*(imp/100), vPag=preco*(pag/100), vPlat=preco*(plat/100);
+    const vRota=km*(fuel+desg), vRotaTotal=vRota+ped, totalOutros=outros+ped;
+    const total=custo+vImp+vPag+vPlat+vRotaTotal+outros;
+    const lucro=preco-total;
+    const margem=preco>0?(lucro/preco)*100:0;
+    const markup=custo>0?((preco-custo)/custo)*100:0;
+    const taxaSoma=imp+pag+plat;
+    const custosFixos=custo+vRotaTotal+outros;
+    const denomEq=1-(taxaSoma/100); const eq=denomEq>0?custosFixos/denomEq:Infinity;
+    const denomAlvo=1-((taxaSoma+alvo)/100); const pAlvo=denomAlvo>0?custosFixos/denomAlvo:Infinity;
+    set('oCustoTotal',fmt(total)); set('oLucro',fmt(lucro));
+    const el=document.getElementById('oLucro'); if(el) el.style.color=lucro>=0?'var(--accent2)':'var(--danger)';
+    set('oMargem','Margem: '+pct(margem)+' sobre a venda · Markup: '+pct(markup)+' sobre o custo');
+    set('oEq',fmt(eq));
+    if(pAlvo!==Infinity&&pAlvo>0){ set('oAlvo',fmt(pAlvo)); set('oAlvoTxt','Para atingir '+alvo.toFixed(1).replace('.',',')+'% de margem líquida com esta forma de pagamento.'); }
+    else { set('oAlvo','Inviável'); set('oAlvoTxt','A soma dos impostos, taxas e margem alvo é igual ou superior a 100%.'); }
+    set('dProd',fmt(custo)); set('dImp',fmt(vImp)); set('dPag',fmt(vPag)); set('dPlat',fmt(vPlat)); set('dRota',fmt(vRota)); set('dOutros',fmt(totalOutros)); set('dTotal',fmt(total));
+    set('cmpPreco',fmt(preco));
+    const taxas=[0,2.5,3.99,5.99];
+    for(let i=0;i<4;i++){ const t=taxas[i]; const vt=preco*(t/100); const l=preco-(custo+vImp+vt+vPlat+vRotaTotal+outros); const m=preco>0?(l/preco)*100:0;
+      set('c'+(i+1)+'L',fmt(l)); const elL=document.getElementById('c'+(i+1)+'L'); if(elL) elL.style.color=l>=0?'var(--text)':'var(--danger)';
+      set('c'+(i+1)+'M',pct(m)); const elM=document.getElementById('c'+(i+1)+'M'); if(elM) elM.style.color=m>=0?(i===0?'var(--accent2)':'var(--text)'):'var(--danger)'; }
+  }catch(err){ console.error('Erro:',err); }
+}
+calcMargem();
+</script>
+</body>
+</html>
