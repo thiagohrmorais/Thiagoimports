@@ -15,7 +15,7 @@
     --accent-soft: rgba(229,0,125,0.12); --accent2: #52a38f; --danger: #e06c65;
     --border: rgba(139,154,184,0.18); --input-bg: #171a28;
   }
-  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; }
+  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
   .hfont { font-family:"Cormorant Garamond",serif; }
   .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,.25); transition:transform .2s ease, border-color .2s ease; }
   .card:hover { transform:translateY(-4px); border-color:var(--accent); }
@@ -28,17 +28,28 @@
 </style>
 </head>
 <body>
-<div style="position:sticky;top:0;z-index:50;background:rgba(19,22,34,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);">
-  <div style="max-width:1100px;margin:0 auto;display:flex;gap:6px;padding:10px 16px;flex-wrap:wrap;align-items:center;">
-    <span class="hfont" style="font-size:18px;font-weight:700;color:var(--accent);margin-right:auto;">Ferramentas<span style="color:var(--text);">HQ</span></span>
-    <a class="navlink active" href="./index.html">Início</a>
-    <a class="navlink" href="./margem/">💰 Margem</a>
-    <a class="navlink" href="./compra-iphone/">📱 iPhone</a>
-    <a class="navlink" href="./scripts/">✍️ Scripts</a>
+
+<!-- TOPO MODERNIZADO COM LOGO THIAGO M -->
+<div style="position:sticky;top:0;z-index:50;background:rgba(19,22,34,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
+  <div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <!-- Logo Thiago M em SVG minimalista de alta resolução -->
+      <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:8px;background:#fff;padding:2px;">
+        <path d="M15 30H35V40H27V70H15V30Z" fill="#131622"/>
+        <path d="M42 30H53L63 50L73 30H85V70H73V47L64 65H62L53 47V70H42V30Z" fill="#e5007d"/>
+      </svg>
+      <span class="hfont" style="font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--text);">Thiago <span style="color:var(--accent);">M</span></span>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+      <a class="navlink active" href="./index.html">Início</a>
+      <a class="navlink" href="./margem/">💰 Margem</a>
+      <a class="navlink" href="./compra-iphone/">📱 iPhone</a>
+      <a class="navlink" href="./scripts/">✍️ Scripts</a>
+    </div>
   </div>
 </div>
 
-<div style="max-width:1100px;margin:0 auto;padding:48px 20px 80px;background:radial-gradient(800px 400px at 80% -10%,rgba(229,0,125,.10),transparent 60%);">
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:48px 20px 80px;background:radial-gradient(800px 400px at 80% -10%,rgba(229,0,125,.10),transparent 60%);width:100%;box-sizing:border-box;">
 
   <header style="text-align:center;max-width:700px;margin:0 auto 48px;">
     <p class="pill" style="margin-bottom:14px;">USO INTERNO DA EQUIPE · NÃO COMPARTILHE COM CLIENTES</p>
@@ -115,5 +126,20 @@
     * Ferramentas de estimativa. Confirme preços do mercado local, consulte IMEI em site oficial e teste o aparelho por completo antes de comprar.
   </p>
 </div>
+
+<!-- RODAPÉ MODERNIZADO COM SELO MOBILE-FIRST (IPHONE) -->
+<footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);">
+      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:20px;border:1px solid var(--border);">
+        📱 <strong style="color:var(--text);">Mobile-First:</strong> Desenvolvido e otimizado nativamente para uso direto no <span style="color:var(--accent);font-weight:600;">iPhone</span>.
+      </span>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin:0;">
+      © 2026 Thiago M. Todos os direitos reservados. Operações de alta performance.
+    </p>
+  </div>
+</footer>
+
 </body>
 </html>
