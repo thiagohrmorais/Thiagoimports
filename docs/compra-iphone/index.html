@@ -9,216 +9,224 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  :root {
-    --bg: #131622; --card: #1d2132; --card-border: rgba(139,154,184,0.15);
-    --text: #f0f3f9; --muted: #8c9cb8; --accent: #e5007d;
-    --accent-soft: rgba(229,0,125,0.12); --accent2: #52a38f; --danger: #e06c65; --warn: #e0a94b;
-    --border: rgba(139,154,184,0.18); --input-bg: #171a28;
-  }
-  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; }
-  .hfont { font-family:"Cormorant Garamond",serif; }
-  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,.25); }
-  .num { font-variant-numeric:tabular-nums; }
-  input[type=number], select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; transition:all .2s ease; }
-  input[type=number]:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-  label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
-  .outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
-  .regra-box { background:var(--accent-soft); border-left:4px solid var(--accent); padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:16px; }
-  .veredito { margin-top:12px; padding:12px; border-radius:10px; font-weight:700; font-size:15px; text-align:center; }
-  .v-compre { background:rgba(82,163,143,.15); color:#6fd4b8; border:1px solid var(--accent2); }
-  .v-negocie { background:rgba(224,169,75,.12); color:var(--warn); border:1px solid var(--warn); }
-  .v-fuja { background:rgba(224,108,101,.12); color:var(--danger); border:1px solid var(--danger); }
-  .checks { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
-  .checks label { font-weight:400; font-size:13px; display:flex; align-items:center; gap:6px; margin:2px 0; }
-  .checks input { width:auto; }
-  .navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
-  .navlink:hover { color:var(--text); background:rgba(255,255,255,.04); }
-  .navlink.active { color:#fff; background:var(--accent); }
-  @media (min-width:1024px){ .lg-grid { grid-template-columns:7fr 5fr !important; align-items:start; } }
-  @media (min-width:640px){ .sm-grid-2 { grid-template-columns:1fr 1fr !important; } .sm-grid-3 { grid-template-columns:1fr 1fr 1fr !important; } }
+:root {
+--bg: #131622; --card: #1d2132; --card-border: rgba(139,154,184,0.15);
+--text: #f0f3f9; --muted: #8c9cb8; --accent: #e5007d;
+--accent-soft: rgba(229,0,125,0.12); --accent2: #52a38f; --danger: #e06c65; --warn: #e0a94b;
+--border: rgba(139,154,184,0.18); --input-bg: #171a28;
+}
+body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
+.hfont { font-family:"Cormorant Garamond",serif; }
+.card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,.25); }
+.num { font-variant-numeric:tabular-nums; }
+input[type=number], select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; transition:all .2s ease; }
+input[type=number]:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
+.outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
+.regra-box { background:var(--accent-soft); border-left:4px solid var(--accent); padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:16px; }
+.veredito { margin-top:12px; padding:12px; border-radius:10px; font-weight:700; font-size:15px; text-align:center; }
+.v-compre { background:rgba(82,163,143,.15); color:#6fd4b8; border:1px solid var(--accent2); }
+.v-negocie { background:rgba(224,169,75,.12); color:var(--warn); border:1px solid var(--warn); }
+.v-fuja { background:rgba(224,108,101,.12); color:var(--danger); border:1px solid var(--danger); }
+.checks { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
+.checks label { font-weight:400; font-size:13px; display:flex; align-items:center; gap:6px; margin:2px 0; }
+.checks input { width:auto; }
+.navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
+.navlink:hover { color:var(--text); background:rgba(255,255,255,.04); }
+.navlink.active { color:#fff; background:var(--accent); }
+@media (min-width:1024px){ .lg-grid { grid-template-columns:7fr 5fr !important; align-items:start; } }
+@media (min-width:640px){ .sm-grid-2 { grid-template-columns:1fr 1fr !important; } .sm-grid-3 { grid-template-columns:1fr 1fr 1fr !important; } }
 </style>
 </head>
 <body>
-<div style="position:sticky;top:0;z-index:50;background:rgba(19,22,34,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);">
-  <div style="max-width:1100px;margin:0 auto;display:flex;gap:6px;padding:10px 16px;flex-wrap:wrap;align-items:center;">
-    <span class="hfont" style="font-size:18px;font-weight:700;color:var(--accent);margin-right:auto;">Ferramentas<span style="color:var(--text);">HQ</span></span>
-    <a class="navlink" href="../">← Início</a>
-    <a class="navlink" href="../margem/">💰 Margem</a>
-    <a class="navlink active" href="../compra-iphone/">📱 iPhone</a>
-    <a class="navlink" href="../scripts/">✍️ Scripts</a>
-  </div>
+<!-- TOPO APENAS COM A LOGO THIAGO IMPORTS (SEM LETRAS) -->
+<div style="position:sticky;top:0;z-index:50;background:rgba(19,22,34,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
+<div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+<div style="display:flex;align-items:center;">
+<a href="../" style="display:flex;align-items:center;">
+<img src="../../logo-imports.svg" alt="Logo" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+</a>
 </div>
-
-<div style="max-width:1100px;margin:0 auto;padding:32px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(229,0,125,.10),transparent 60%);">
-
-  <header style="margin-bottom:20px;">
-    <p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Ferramenta 02 · Avaliação de compra</p>
-    <h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Avaliação & Compra de <span style="color:var(--accent);">iPhone</span></h1>
-    <p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Na hora da compra, marque cada item conforme testa o aparelho. A ferramenta diz o preço máximo que você pode pagar e o veredito: compre, negocie ou fuja.</p>
-  </header>
-
-  <div class="regra-box"><strong>REGRA DE OURO:</strong> o iPhone começa <strong>20% ABAIXO</strong> do valor de mercado (sua margem de revendedor). Só <strong>depois</strong> cada problema desconta mais.</div>
-
-  <div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
-
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div class="card" style="padding:20px;">
-        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">1. Modelo e armazenamento</h2>
-        <div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:16px;">
-          <div><label class="fld" for="ip_modelo">Modelo (base 128GB)</label>
-            <select id="ip_modelo" onchange="calcIP()">
-              <option value="1100">iPhone 11</option><option value="1500">iPhone 12</option><option value="1900" selected>iPhone 13</option><option value="2400">iPhone 13 Pro</option><option value="2300">iPhone 14</option><option value="3200">iPhone 14 Pro</option><option value="3600">iPhone 14 Pro Max</option><option value="2900">iPhone 15</option><option value="3900">iPhone 15 Pro</option><option value="4600">iPhone 15 Pro Max</option><option value="4200">iPhone 16</option><option value="5500">iPhone 16 Pro</option><option value="6200">iPhone 16 Pro Max</option><option value="6800">iPhone 17</option><option value="8800">iPhone 17 Pro</option><option value="10500">iPhone 17 Pro Max</option>
-            </select></div>
-          <div><label class="fld" for="ip_armaz">Armazenamento</label>
-            <select id="ip_armaz" onchange="calcIP()">
-              <option value="0.90">64 GB</option><option value="1.00" selected>128 GB</option><option value="1.08">256 GB</option><option value="1.18">512 GB</option><option value="1.28">1 TB</option>
-            </select></div>
-        </div>
-      </div>
-
-      <div class="card" style="padding:20px;">
-        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">2. Estado estético (desvaloriza)</h2>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div><label class="fld" for="ip_tela">Estado da Tela (frontal)</label><select id="ip_tela" onchange="calcIP()"><option value="1.00">Perfeita, sem marcas</option><option value="0.97">Micro riscos (só vê desligado)</option><option value="0.90">Riscos visíveis com a tela ligada</option><option value="0.68">Trincada / quebrada</option></select></div>
-          <div><label class="fld" for="ip_vidro">Vidro Traseiro</label><select id="ip_vidro" onchange="calcIP()"><option value="1.00">Perfeito, sem marcas</option><option value="0.95">Riscado</option><option value="0.75">Trincado / quebrado</option></select></div>
-          <div><label class="fld" for="ip_marcas">Marcas de uso nas laterais / estrutura</label><select id="ip_marcas" onchange="calcIP()"><option value="1.00">Nenhuma marca (estado de novo)</option><option value="0.95">Leves marcas de uso normais</option><option value="0.85">Amassados / riscos profundos</option><option value="0.60">Estrutura torta ou partida</option></select></div>
-        </div>
-      </div>
-
-      <div class="card" style="padding:20px;">
-        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">3. Estado funcional (desvaloriza mais)</h2>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div><label class="fld" for="ip_bateria">Saúde da Bateria</label><select id="ip_bateria" onchange="calcIP()"><option value="1.00">90% ou mais</option><option value="0.95">85% a 89%</option><option value="0.88">80% a 84%</option><option value="0.72">Menos de 80% / aviso "Serviço"</option></select></div>
-          <div><label class="fld" for="ip_pecas">Avisos de troca de peças (Ajustes &gt; Geral &gt; Sobre)</label><select id="ip_pecas" onchange="calcIP()"><option value="1.00">Nenhum aviso — peças originais</option><option value="0.82">Aviso de peça não original (1 item)</option><option value="0.75">Tela trocada (não original)</option><option value="0.62">Várias peças trocadas</option></select></div>
-          <div><label class="fld" for="ip_faceid">Face ID / Touch ID</label><select id="ip_faceid" onchange="calcIP()"><option value="1.00">Funcionando perfeitamente</option><option value="0.68">Não funciona (sinal de placa / água)</option></select></div>
-          <div><label class="fld" for="ip_camera">Câmeras</label><select id="ip_camera" onchange="calcIP()"><option value="1.00">Todas funcionando, sem aviso</option><option value="0.85">Aviso de câmera não original</option><option value="0.78">Câmera frontal com defeito</option><option value="0.70">Câmera traseira com defeito</option></select></div>
-          <div><label class="fld" for="ip_audio">Áudio / microfone / vibração</label><select id="ip_audio" onchange="calcIP()"><option value="1.00">Tudo 100%</option><option value="0.90">Alto-falante fraco ou chiado</option><option value="0.88">Microfone com problema</option><option value="0.70">Áudio não funciona</option></select></div>
-          <div><label class="fld" for="ip_agua">Sinal de água (LCI vermelho na bandeja)</label><select id="ip_agua" onchange="calcIP()"><option value="1.00">Sem sinal de umidade (LCI branco)</option><option value="0.55">Indicador acionado (vermelho) — REPARO CARO</option></select></div>
-          <div class="sm-grid-3" style="display:grid;grid-template-columns:1fr;gap:12px;">
-            <div><label class="fld" for="ip_oper">Operadora</label><select id="ip_oper" onchange="calcIP()"><option value="1.00">Desbloqueado</option><option value="0.85">Preso à operadora</option></select></div>
-            <div><label class="fld" for="ip_caixa">Caixa / acessórios</label><select id="ip_caixa" onchange="calcIP()"><option value="1.02">Caixa + cabo original</option><option value="1.00">Só o celular</option><option value="0.97">Sem nada</option></select></div>
-            <div><label class="fld" for="ip_garant">Garantia de fábrica</label><select id="ip_garant" onchange="calcIP()"><option value="1.05">Ainda na garantia Apple</option><option value="1.00">Sem garantia</option></select></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" style="padding:20px;">
-        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">4. Custos e negociação</h2>
-        <div class="sm-grid-3" style="display:grid;grid-template-columns:1fr;gap:16px;">
-          <div><label class="fld" for="ip_reparo">Reparo previsto (R$)</label><input type="number" id="ip_reparo" value="0" min="0" step="50" oninput="calcIP()"></div>
-          <div><label class="fld" for="ip_custos">Custos extras (R$)</label><input type="number" id="ip_custos" value="60" min="0" step="10" oninput="calcIP()"></div>
-          <div><label class="fld" for="ip_pedido">Preço pedido pelo vendedor (R$)</label><input type="number" id="ip_pedido" placeholder="opcional" min="0" step="10" oninput="calcIP()"></div>
-        </div>
-      </div>
-
-      <div class="card" style="padding:20px;">
-        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 8px;">5. Teste rápido na hora (marque o que testou)</h2>
-        <div class="checks">
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Touch funciona</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Face ID liga</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Câmera traseira</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Câmera frontal</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Alto-falante</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Microfone (grava)</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Vibração</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Wi-Fi e Bluetooth</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Carrega (cabo/wireless)</label>
-          <label><input type="checkbox" class="ip_teste" onchange="calcIP()"> IMEI consultado</label>
-        </div>
-        <div id="ip_avisoTeste" style="display:none;color:var(--warn);font-size:12px;margin-top:10px;"></div>
-      </div>
-    </div>
-
-    <!-- Resultados -->
-    <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:70px;">
-      <div class="outbox text-center" style="text-align:center;border-color:var(--accent);">
-        <div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Pontuação do Estado</div>
-        <div id="ip_scoreNum" class="num" style="font-size:40px;font-weight:800;margin-top:4px;color:var(--accent);">—</div>
-        <div id="ip_scoreLabel" style="font-size:12px;margin-top:4px;font-weight:600;">—</div>
-      </div>
-      <div class="outbox">
-        <div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Valor de mercado (ref. bom estado)</div>
-        <div id="ip_mMercado" class="num" style="font-size:20px;font-weight:700;margin-top:4px;">—</div>
-        <div style="color:var(--muted);font-size:12px;margin-top:6px;">− 20% base → <span id="ip_mBase" class="num" style="font-weight:600;color:var(--text);">—</span></div>
-        <div style="color:var(--muted);font-size:12px;">× fator de problemas → <span id="ip_mDesc" class="num" style="font-weight:600;color:var(--text);">—</span></div>
-      </div>
-      <div class="outbox" style="border-color:var(--accent);border-width:2px;">
-        <div style="color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">PREÇO MÁXIMO PARA PAGAR</div>
-        <div id="ip_mMax" class="num" style="font-size:30px;font-weight:800;margin-top:4px;color:var(--accent);">—</div>
-        <div style="color:var(--muted);font-size:12px;margin-top:4px;">Não passe desse valor. Sem exceção.</div>
-      </div>
-      <div class="outbox">
-        <div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Se comprar no preço máximo</div>
-        <table style="width:100%;font-size:13px;margin-top:8px;" class="num">
-          <tbody style="color:var(--text);">
-            <tr><td style="padding:7px 0;color:var(--muted);border-bottom:1px solid var(--border);">+ Reparo + custos</td><td style="padding:7px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="ip_mCusto">—</td></tr>
-            <tr><td style="padding:7px 0;color:var(--muted);border-bottom:1px solid var(--border);">Custo total p/ você</td><td style="padding:7px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="ip_mTotal">—</td></tr>
-            <tr><td style="padding:7px 0;color:var(--muted);border-bottom:1px solid var(--border);">Revenda sugerida</td><td style="padding:7px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="ip_mVenda">—</td></tr>
-            <tr style="font-weight:700;"><td style="padding:10px 0 0;">Lucro bruto estimado</td><td style="padding:10px 0 0;text-align:right;" id="ip_mLucro" style="color:var(--accent2);">—</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="veredito" id="ip_veredito">Preencha os campos ao lado</div>
-      <div class="card" style="padding:16px;">
-        <h3 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px;">Descontos aplicados (além dos 20%)</h3>
-        <div id="ip_resumo" class="num" style="color:var(--muted);font-size:12px;line-height:1.7;white-space:pre-line;">—</div>
-      </div>
-    </div>
-  </div>
-
-  <p style="color:var(--muted);font-size:11px;line-height:1.7;margin-top:24px;">* Estimativa. Ajuste os preços-base dos modelos para o mercado de Pernambuco editando os valores no código. Consulte sempre o IMEI em site oficial e teste o aparelho por completo antes de comprar.</p>
+<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+<a class="navlink" href="../">← Início</a>
+<a class="navlink" href="../margem/">💰 Margem</a>
+<a class="navlink active" href="../compra-iphone/">📱 iPhone</a>
+<a class="navlink" href="../scripts/">✍️ Scripts</a>
 </div>
-
+</div>
+</div>
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:32px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(229,0,125,.10),transparent 60%);width:100%;box-sizing:border-box;">
+<header style="margin-bottom:20px;">
+<p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Ferramenta 02 · Avaliação de compra</p>
+<h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Avaliação & Compra de <span style="color:var(--accent);">iPhone</span></h1>
+<p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Na hora da compra, marque cada item conforme testa o aparelho. A ferramenta diz o preço máximo que você pode pagar e o veredito: compre, negocie ou fuja.</p>
+</header>
+<div class="regra-box"><strong>REGRA DE OURO:</strong> o iPhone começa <strong>20% ABAIXO</strong> do valor de mercado (sua margem de revendedor). Só <strong>depois</strong> cada problema desconta mais.</div>
+<div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
+<div style="display:flex;flex-direction:column;gap:16px;">
+<div class="card" style="padding:20px;">
+<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">1. Modelo e armazenamento</h2>
+<div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:16px;">
+<div><label class="fld" for="ip_modelo">Modelo (base 128GB)</label>
+<select id="ip_modelo" onchange="calcIP()">
+<option value="1100">iPhone 11</option><option value="1500">iPhone 12</option><option value="1900" selected>iPhone 13</option><option value="2400">iPhone 13 Pro</option><option value="2300">iPhone 14</option><option value="3200">iPhone 14 Pro</option><option value="3600">iPhone 14 Pro Max</option><option value="2900">iPhone 15</option><option value="3900">iPhone 15 Pro</option><option value="4600">iPhone 15 Pro Max</option><option value="4200">iPhone 16</option><option value="5500">iPhone 16 Pro</option><option value="6200">iPhone 16 Pro Max</option><option value="6800">iPhone 17</option><option value="8800">iPhone 17 Pro</option><option value="10500">iPhone 17 Pro Max</option>
+</select></div>
+<div><label class="fld" for="ip_armaz">Armazenamento</label>
+<select id="ip_armaz" onchange="calcIP()">
+<option value="0.90">64 GB</option><option value="1.00" selected>128 GB</option><option value="1.08">256 GB</option><option value="1.18">512 GB</option><option value="1.28">1 TB</option>
+</select></div>
+</div>
+</div>
+<div class="card" style="padding:20px;">
+<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">2. Estado estético (desvaloriza)</h2>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div><label class="fld" for="ip_tela">Estado da Tela (frontal)</label><select id="ip_tela" onchange="calcIP()"><option value="1.00">Perfeita, sem marcas</option><option value="0.97">Micro riscos (só vê desligado)</option><option value="0.90">Riscos visíveis com a tela ligada</option><option value="0.68">Trincada / quebrada</option></select></div>
+<div><label class="fld" for="ip_vidro">Vidro Traseiro</label><select id="ip_vidro" onchange="calcIP()"><option value="1.00">Perfeito, sem marcas</option><option value="0.95">Riscado</option><option value="0.75">Trincado / quebrado</option></select></div>
+<div><label class="fld" for="ip_marcas">Marcas de uso nas laterais / estrutura</label><select id="ip_marcas" onchange="calcIP()"><option value="1.00">Nenhuma marca (estado de novo)</option><option value="0.95">Leves marcas de uso normais</option><option value="0.85">Amassados / riscos profundos</option><option value="0.60">Estrutura torta ou partida</option></select></div>
+</div>
+</div>
+<div class="card" style="padding:20px;">
+<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">3. Estado funcional (desvaloriza mais)</h2>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div><label class="fld" for="ip_bateria">Saúde da Bateria</label><select id="ip_bateria" onchange="calcIP()"><option value="1.00">90% ou mais</option><option value="0.95">85% a 89%</option><option value="0.88">80% a 84%</option><option value="0.72">Menos de 80% / aviso "Serviço"</option></select></div>
+<div><label class="fld" for="ip_pecas">Avisos de troca de peças (Ajustes > Geral > Sobre)</label><select id="ip_pecas" onchange="calcIP()"><option value="1.00">Nenhum aviso — peças originais</option><option value="0.82">Aviso de peça não original (1 item)</option><option value="0.75">Tela trocada (não original)</option><option value="0.62">Várias peças trocadas</option></select></div>
+<div><label class="fld" for="ip_faceid">Face ID / Touch ID</label><select id="ip_faceid" onchange="calcIP()"><option value="1.00">Funcionando perfeitamente</option><option value="0.68">Não funciona (sinal de placa / água)</option></select></div>
+<div><label class="fld" for="ip_camera">Câmeras</label><select id="ip_camera" onchange="calcIP()"><option value="1.00">Todas funcionando, sem aviso</option><option value="0.85">Aviso de câmera não original</option><option value="0.78">Câmera frontal com defeito</option><option value="0.70">Câmera traseira com defeito</option></select></div>
+<div><label class="fld" for="ip_audio">Áudio / microfone / vibração</label><select id="ip_audio" onchange="calcIP()"><option value="1.00">Tudo 100%</option><option value="0.90">Alto-falante fraco ou chiado</option><option value="0.88">Microfone com problema</option><option value="0.70">Áudio não funciona</option></select></div>
+<div><label class="fld" for="ip_agua">Sinal de água (LCI vermelho na bandeja)</label><select id="ip_agua" onchange="calcIP()"><option value="1.00">Sem sinal de umidade (LCI branco)</option><option value="0.55">Indicador acionado (vermelho) — REPARO CARO</option></select></div>
+<div class="sm-grid-3" style="display:grid;grid-template-columns:1fr;gap:12px;">
+<div><label class="fld" for="ip_oper">Operadora</label><select id="ip_oper" onchange="calcIP()"><option value="1.00">Desbloqueado</option><option value="0.85">Preso à operadora</option></select></div>
+<div><label class="fld" for="ip_caixa">Caixa / acessórios</label><select id="ip_caixa" onchange="calcIP()"><option value="1.02">Caixa + cabo original</option><option value="1.00">Só o celular</option><option value="0.97">Sem nada</option></select></div>
+<div><label class="fld" for="ip_garant">Garantia de fábrica</label><select id="ip_garant" onchange="calcIP()"><option value="1.05">Ainda na garantia Apple</option><option value="1.00">Sem garantia</option></select></div>
+</div>
+</div>
+</div>
+<div class="card" style="padding:20px;">
+<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">4. Custos e negociação</h2>
+<div class="sm-grid-3" style="display:grid;grid-template-columns:1fr;gap:16px;">
+<div><label class="fld" for="ip_reparo">Reparo previsto (R$)</label><input type="number" id="ip_reparo" value="0" min="0" step="50" oninput="calcIP()"></div>
+<div><label class="fld" for="ip_custos">Custos extras (R$)</label><input type="number" id="ip_custos" value="60" min="0" step="10" oninput="calcIP()"></div>
+<div><label class="fld" for="ip_pedido">Preço pedido pelo vendedor (R$)</label><input type="number" id="ip_pedido" placeholder="opcional" min="0" step="10" oninput="calcIP()"></div>
+</div>
+</div>
+<div class="card" style="padding:20px;">
+<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 8px;">5. Teste rápido na hora (marque o que testou)</h2>
+<div class="checks">
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Touch funciona</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Face ID liga</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Câmera traseira</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Câmera frontal</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Alto-falante</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Microfone (grava)</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Vibração</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Wi-Fi e Bluetooth</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> Carrega (cabo/wireless)</label>
+<label><input type="checkbox" class="ip_teste" onchange="calcIP()"> IMEI consultado</label>
+</div>
+<div id="ip_avisoTeste" style="display:none;color:var(--warn);font-size:12px;margin-top:10px;"></div>
+</div>
+</div>
+<!-- Resultados -->
+<div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:70px;">
+<div class="outbox text-center" style="text-align:center;border-color:var(--accent);">
+<div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Pontuação do Estado</div>
+<div id="ip_scoreNum" class="num" style="font-size:40px;font-weight:800;margin-top:4px;color:var(--accent);">—</div>
+<div id="ip_scoreLabel" style="font-size:12px;margin-top:4px;font-weight:600;">—</div>
+</div>
+<div class="outbox">
+<div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Valor de mercado (ref. bom estado)</div>
+<div id="ip_mMercado" class="num" style="font-size:20px;font-weight:700;margin-top:4px;">—</div>
+<div style="color:var(--muted);font-size:12px;margin-top:6px;">− 20% base → <span id="ip_mBase" class="num" style="font-weight:600;color:var(--text);">—</span></div>
+<div style="color:var(--muted);font-size:12px;">× fator de problemas → <span id="ip_mDesc" class="num" style="font-weight:600;color:var(--text);">—</span></div>
+</div>
+<div class="outbox" style="border-color:var(--accent);border-width:2px;">
+<div style="color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">PREÇO MÁXIMO PARA PAGAR</div>
+<div id="ip_mMax" class="num" style="font-size:30px;font-weight:800;margin-top:4px;color:var(--accent);">—</div>
+<div style="color:var(--muted);font-size:12px;margin-top:4px;">Não passe desse valor. Sem exceção.</div>
+</div>
+<div class="outbox">
+<div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Se comprar no preço máximo</div>
+<table style="width:100%;font-size:13px;margin-top:8px;" class="num">
+<tbody style="color:var(--text);">
+<tr><td style="padding:7px 0;color:var(--muted);border-bottom:1px solid var(--border);">+ Reparo + custos</td><td style="padding:7px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="ip_mCusto">—</td></tr>
+<tr><td style="padding:7px 0;color:var(--muted);border-bottom:1px solid var(--border);">Custo total p/ você</td><td style="padding:7px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="ip_mTotal">—</td></tr>
+<tr><td style="padding:7px 0;color:var(--muted);border-bottom:1px solid var(--border);">Revenda sugerida</td><td style="padding:7px 0;text-align:right;font-weight:500;border-bottom:1px solid var(--border);" id="ip_mVenda">—</td></tr>
+<tr style="font-weight:700;"><td style="padding:10px 0 0;">Lucro bruto estimado</td><td style="padding:10px 0 0;text-align:right;" id="ip_mLucro" style="color:var(--accent2);">—</td></tr>
+</tbody>
+</table>
+</div>
+<div class="veredito" id="ip_veredito">Preencha os campos ao lado</div>
+<div class="card" style="padding:16px;">
+<h3 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px;">Descontos aplicados (além dos 20%)</h3>
+<div id="ip_resumo" class="num" style="color:var(--muted);font-size:12px;line-height:1.7;white-space:pre-line;">—</div>
+</div>
+</div>
+</div>
+<p style="color:var(--muted);font-size:11px;line-height:1.7;margin-top:24px;">* Estimativa. Ajuste os preços-base dos modelos para o mercado de Pernambuco editando os valores no código. Consulte sempre o IMEI em site oficial e teste o aparelho por completo antes de comprar.</p>
+</div>
+<!-- RODAPÉ EXPLICITANDO O DESENVOLVIMENTO VIA IPHONE SEM COMPUTADOR -->
+<footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
+<div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
+<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(229,0,125,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
+📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
+</span>
+</div>
+<p style="color:var(--muted);font-size:12px;margin:0;">
+© 2026 thiagoimports. Todos os direitos reservados.
+</p>
+</div>
+</footer>
 <script>
 function fmt(v){ if(!isFinite(v)||isNaN(v)) return '—'; const s=v<0?'− ':''; return s+'R$ '+Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function num(id){ const e=document.getElementById(id); return e?(parseFloat(e.value)||0):0; }
 function set(id,val){ const e=document.getElementById(id); if(e) e.textContent=val; }
 function f(id){ const e=document.getElementById(id); return e?(parseFloat(e.value)||1):1; }
 function calcIP(){
-  try{
-    const base=num('ip_modelo');
-    const armaz=f('ip_armaz'), tela=f('ip_tela'), vidro=f('ip_vidro'), marcas=f('ip_marcas'),
-          bateria=f('ip_bateria'), pecas=f('ip_pecas'), faceid=f('ip_faceid'), camera=f('ip_camera'),
-          audio=f('ip_audio'), agua=f('ip_agua'), oper=f('ip_oper'), caixa=f('ip_caixa'), garant=f('ip_garant');
-    const reparo=num('ip_reparo'), custos=num('ip_custos');
-    const pedidoEl=document.getElementById('ip_pedido');
-    const pedido=pedidoEl&&pedidoEl.value?(parseFloat(pedidoEl.value)||0):NaN;
-    const mercado=base*armaz;
-    const apos20=mercado*0.80;
-    const fat=tela*vidro*marcas*bateria*pecas*faceid*camera*audio*agua*oper*caixa*garant;
-    const precoMax=apos20*fat;
-    const custoTotal=precoMax+reparo+custos;
-    const precoVenda=mercado*0.95;
-    const lucro=precoVenda-custoTotal;
-    const score=Math.min(100,Math.round(fat*100));
-    let scoreLabel="";
-    if(score>=85) scoreLabel="Excelente estado";
-    else if(score>=70) scoreLabel="Bom estado";
-    else if(score>=50) scoreLabel="Regular — só se o preço compensar";
-    else scoreLabel="Ruim — provável reparo caro, evite";
-    const v=document.getElementById('ip_veredito');
-    if(!isNaN(pedido)&&pedido>0){
-      if(pedido<=precoMax){ v.className="veredito v-compre"; v.innerText="✅ COMPRE — está ABAIXO do seu preço máximo"; }
-      else if(pedido<=precoMax*1.12){ v.className="veredito v-negocie"; v.innerText="⚠️ NEGOCIE — tente baixar até "+fmt(precoMax); }
-      else { v.className="veredito v-fuja"; v.innerText="❌ NÃO VALE — muito acima do teto de "+fmt(precoMax); }
-    } else {
-      if(score>=70&&lucro>200){ v.className="veredito v-compre"; v.innerText="✅ BOA OPORTUNIDADE — pague até "+fmt(precoMax); }
-      else if(score>=50){ v.className="veredito v-negocie"; v.innerText="⚠️ SÓ COMPRE SE NEGOCIAR — teto "+fmt(precoMax); }
-      else { v.className="veredito v-fuja"; v.innerText="❌ EVITE — estado ruim, risco de prejuízo"; }
-    }
-    const testes=document.querySelectorAll('.ip_teste'); let faltam=0;
-    testes.forEach(t=>{ if(!t.checked) faltam++; });
-    const aviso=document.getElementById('ip_avisoTeste');
-    if(faltam>0){ aviso.style.display="block"; aviso.innerText="⚠️ Faltam marcar "+faltam+" teste(s). Não compre sem testar TUDO na hora, principalmente IMEI e Face ID."; }
-    else aviso.style.display="none";
-    set('ip_scoreNum',score); set('ip_scoreLabel',scoreLabel);
-    set('ip_mMercado',fmt(mercado)); set('ip_mBase',fmt(apos20)); set('ip_mDesc',"× "+fat.toFixed(2));
-    set('ip_mMax',fmt(precoMax)); set('ip_mCusto',"+ "+fmt(reparo+custos)); set('ip_mTotal',fmt(custoTotal));
-    set('ip_mVenda',fmt(precoVenda)); set('ip_mLucro',fmt(lucro));
-    const elL=document.getElementById('ip_mLucro'); if(elL) elL.style.color=lucro>=0?'var(--accent2)':'var(--danger)';
-    const elS=document.getElementById('ip_scoreNum'); if(elS) elS.style.color=score>=70?'var(--accent2)':(score>=50?'var(--warn)':'var(--danger)');
-    set('ip_resumo',"Tela ×"+tela+"  ·  Vidro ×"+vidro+"  ·  Marcas ×"+marcas+"\nBateria ×"+bateria+"  ·  Peças ×"+pecas+"  ·  Face ID ×"+faceid+"\nCâmera ×"+camera+"  ·  Áudio ×"+audio+"  ·  Água ×"+agua+"\nOperadora ×"+oper+"  ·  Caixa ×"+caixa+"  ·  Garantia ×"+garant+"\n\nFator total: ×"+fat.toFixed(2));
-  }catch(err){ console.error('Erro:',err); }
+try{
+const base=num('ip_modelo');
+const armaz=f('ip_armaz'), tela=f('ip_tela'), vidro=f('ip_vidro'), marcas=f('ip_marcas'),
+bateria=f('ip_bateria'), pecas=f('ip_pecas'), faceid=f('ip_faceid'), camera=f('ip_camera'),
+audio=f('ip_audio'), agua=f('ip_agua'), oper=f('ip_oper'), caixa=f('ip_caixa'), garant=f('ip_garant');
+const reparo=num('ip_reparo'), custos=num('ip_custos');
+const pedidoEl=document.getElementById('ip_pedido');
+const pedido=pedidoEl&&pedidoEl.value?(parseFloat(pedidoEl.value)||0):NaN;
+const mercado=basearmaz;
+const apos20=mercado0.80;
+const fat=telavidromarcasbateriapecasfaceidcameraaudioaguaopercaixagarant;
+const precoMax=apos20fat;
+const custoTotal=precoMax+reparo+custos;
+const precoVenda=mercado0.95;
+const lucro=precoVenda-custoTotal;
+const score=Math.min(100,Math.round(fat100));
+let scoreLabel="";
+if(score>=85) scoreLabel="Excelente estado";
+else if(score>=70) scoreLabel="Bom estado";
+else if(score>=50) scoreLabel="Regular — só se o preço compensar";
+else scoreLabel="Ruim — provável reparo caro, evite";
+const v=document.getElementById('ip_veredito');
+if(!isNaN(pedido)&&pedido>0){
+if(pedido<=precoMax){ v.className="veredito v-compre"; v.innerText="✅ COMPRE — está ABAIXO do seu preço máximo"; }
+else if(pedido<=precoMax*1.12){ v.className="veredito v-negocie"; v.innerText="⚠️ NEGOCIE — tente baixar até "+fmt(precoMax); }
+else { v.className="veredito v-fuja"; v.innerText="❌ NÃO VALE — muito acima do teto de "+fmt(precoMax); }
+} else {
+if(score>=70&&lucro>200){ v.className="veredito v-compre"; v.innerText="✅ BOA OPORTUNIDADE — pague até "+fmt(precoMax); }
+else if(score>=50){ v.className="veredito v-negocie"; v.innerText="⚠️ SÓ COMPRE SE NEGOCIAR — teto "+fmt(precoMax); }
+else { v.className="veredito v-fuja"; v.innerText="❌ EVITE — estado ruim, risco de prejuízo"; }
+}
+const testes=document.querySelectorAll('.ip_teste'); let faltam=0;
+testes.forEach(t=>{ if(!t.checked) faltam++; });
+const aviso=document.getElementById('ip_avisoTeste');
+if(faltam>0){ aviso.style.display="block"; aviso.innerText="⚠️ Faltam marcar "+faltam+" teste(s). Não compre sem testar TUDO na hora, principalmente IMEI e Face ID."; }
+else aviso.style.display="none";
+set('ip_scoreNum',score); set('ip_scoreLabel',scoreLabel);
+set('ip_mMercado',fmt(mercado)); set('ip_mBase',fmt(apos20)); set('ip_mDesc',"× "+fat.toFixed(2));
+set('ip_mMax',fmt(precoMax)); set('ip_mCusto',"+ "+fmt(reparo+custos)); set('ip_mTotal',fmt(custoTotal));
+set('ip_mVenda',fmt(precoVenda)); set('ip_mLucro',fmt(lucro));
+const elL=document.getElementById('ip_mLucro'); if(elL) elL.style.color=lucro>=0?'var(--accent2)':'var(--danger)';
+const elS=document.getElementById('ip_scoreNum'); if(elS) elS.style.color=score>=70?'var(--accent2)':(score>=50?'var(--warn)':'var(--danger)');
+set('ip_resumo',"Tela ×"+tela+"  ·  Vidro ×"+vidro+"  ·  Marcas ×"+marcas+"\nBateria ×"+bateria+"  ·  Peças ×"+pecas+"  ·  Face ID ×"+faceid+"\nCâmera ×"+camera+"  ·  Áudio ×"+audio+"  ·  Água ×"+agua+"\nOperadora ×"+oper+"  ·  Caixa ×"+caixa+"  ·  Garantia ×"+garant+"\n\nFator total: ×"+fat.toFixed(2));
+}catch(err){ console.error('Erro:',err); }
 }
 calcIP();
 </script>

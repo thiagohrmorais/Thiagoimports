@@ -9,132 +9,122 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  :root {
-    --bg: #131622; --card: #1d2132; --card-border: rgba(139,154,184,0.15);
-    --text: #f0f3f9; --muted: #8c9cb8; --accent: #e5007d;
-    --accent-soft: rgba(229,0,125,0.12); --accent2: #52a38f; --danger: #e06c65;
-    --border: rgba(139,154,184,0.18); --input-bg: #171a28;
-  }
-  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
-  .hfont { font-family:"Cormorant Garamond",serif; }
-  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,.25); transition:transform .2s ease, border-color .2s ease; }
-  .card:hover { transform:translateY(-4px); border-color:var(--accent); }
-  .pill { display:inline-block; padding:2px 10px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent); font-size:11px; font-weight:600; letter-spacing:.03em; }
-  .btn-abrir { display:inline-block; margin-top:16px; padding:10px 20px; background:var(--accent); color:#fff; border-radius:10px; font-weight:700; font-size:14px; text-decoration:none; transition:box-shadow .2s ease; }
-  .btn-abrir:hover { box-shadow:0 6px 18px rgba(229,0,125,.4); }
-  .navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
-  .navlink:hover { color:var(--text); background:rgba(255,255,255,.04); }
-  .navlink.active { color:#fff; background:var(--accent); }
+:root {
+--bg: #131622; --card: #1d2132; --card-border: rgba(139,154,184,0.15);
+--text: #f0f3f9; --muted: #8c9cb8; --accent: #e5007d;
+--accent-soft: rgba(229,0,125,0.12); --accent2: #52a38f; --danger: #e06c65;
+--border: rgba(139,154,184,0.18); --input-bg: #171a28;
+}
+body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
+.hfont { font-family:"Cormorant Garamond",serif; }
+.card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,.25); transition:transform .2s ease, border-color .2s ease; }
+.card:hover { transform:translateY(-4px); border-color:var(--accent); }
+.pill { display:inline-block; padding:2px 10px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent); font-size:11px; font-weight:600; letter-spacing:.03em; }
+.btn-abrir { display:inline-block; margin-top:16px; padding:10px 20px; background:var(--accent); color:#fff; border-radius:10px; font-weight:700; font-size:14px; text-decoration:none; transition:box-shadow .2s ease; }
+.btn-abrir:hover { box-shadow:0 6px 18px rgba(229,0,125,.4); }
+.navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
+.navlink:hover { color:var(--text); background:rgba(255,255,255,.04); }
+.navlink.active { color:#fff; background:var(--accent); }
 </style>
 </head>
 <body>
-
-<!-- TOPO COM LOGO THIAGO M (PUXANDO DA RAIZ) -->
+<!-- TOPO APENAS COM A LOGO THIAGO M (SEM LETRAS) -->
 <div style="position:sticky;top:0;z-index:50;background:rgba(19,22,34,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
-  <div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <img src="../logo-m.svg" alt="Thiago M" style="width:34px;height:34px;border-radius:8px;background:#fff;padding:2px;object-fit:contain;" onerror="this.style.display='none'">
-      <span class="hfont" style="font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--text);">Thiago <span style="color:var(--accent);">M</span></span>
-    </div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-      <a class="navlink active" href="./index.html">Início</a>
-      <a class="navlink" href="./margem/">💰 Margem</a>
-      <a class="navlink" href="./compra-iphone/">📱 iPhone</a>
-      <a class="navlink" href="./scripts/">✍️ Scripts</a>
-    </div>
-  </div>
+<div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+<div style="display:flex;align-items:center;">
+<a href="./index.html" style="display:flex;align-items:center;">
+<img src="../logo-m.svg" alt="Logo" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+</a>
 </div>
-
+<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+<a class="navlink active" href="./index.html">Início</a>
+<a class="navlink" href="./margem/">💰 Margem</a>
+<a class="navlink" href="./compra-iphone/">📱 iPhone</a>
+<a class="navlink" href="./scripts/">✍️ Scripts</a>
+</div>
+</div>
+</div>
 <div style="flex:1;max-width:1100px;margin:0 auto;padding:48px 20px 80px;background:radial-gradient(800px 400px at 80% -10%,rgba(229,0,125,.10),transparent 60%);width:100%;box-sizing:border-box;">
-
-  <header style="text-align:center;max-width:700px;margin:0 auto 48px;">
-    <p class="pill" style="margin-bottom:14px;">USO INTERNO DA EQUIPE · NÃO COMPARTILHE COM CLIENTES</p>
-    <h1 class="hfont" style="font-size:42px;line-height:1.1;font-weight:700;margin:0 0 12px;">
-      Central de <span style="color:var(--accent);">Ferramentas</span> de Venda
-    </h1>
-    <p style="color:var(--muted);font-size:16px;line-height:1.6;margin:0;">
-      Três ferramentas para precificar, comprar e vender eletrônicos com margem real.
-      Tudo roda no seu navegador — nenhum dado é salvo no servidor.
-    </p>
-  </header>
-
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
-
-    <!-- Card 1: Margem -->
-    <div class="card" style="padding:28px;">
-      <div style="font-size:36px;margin-bottom:12px;">💰</div>
-      <span class="pill">Precificação de venda</span>
-      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Calculadora de Margem Completa</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Calcula custo total do pedido (produto + impostos + taxa de pagamento + plataforma + rota de entrega),
-        lucro líquido, preço de equilíbrio e preço para atingir sua margem-alvo.
-      </p>
-      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Comparativo por forma de pagamento (PIX vs cartão)</li>
-        <li>Custo de rota por km (combustível + desgaste + pedágio)</li>
-        <li>Composição do custo em tempo real</li>
-      </ul>
-      <a class="btn-abrir" href="./margem/">Abrir calculadora →</a>
-    </div>
-
-    <!-- Card 2: iPhone -->
-    <div class="card" style="padding:28px;">
-      <div style="font-size:36px;margin-bottom:12px;">📱</div>
-      <span class="pill">Avaliação de compra</span>
-      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Compra & Avaliação de iPhone</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Na hora da compra, marca o estado de cada item e recebe o preço máximo que pode pagar.
-        Aplica 20% abaixo do mercado <strong>antes</strong> de qualquer desconto por problema.
-      </p>
-      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Tela, vidro traseiro, bateria, peças trocadas, Face ID, água</li>
-        <li>Pontuação do estado /100 + veredito: COMPRE / NEGOCIE / FUJA</li>
-        <li>Checklist de 10 testes rápidos na hora</li>
-      </ul>
-      <a class="btn-abrir" href="./compra-iphone/">Abrir avaliação →</a>
-    </div>
-
-    <!-- Card 3: Scripts -->
-    <div class="card" style="padding:28px;">
-      <div style="font-size:36px;margin-bottom:12px;">✍️</div>
-      <span class="pill">Fechamento & atração</span>
-      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Gerador de Scripts de Venda</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Escolhe produto, canal e objetivo → gera 3 ganchos, copy, CTA e matriz de objeções
-        prontos para copiar e colar no WhatsApp, Instagram, Marketplace e TikTok.
-      </p>
-      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Scripts por canal (WhatsApp / Reels / Marketplace / TikTok)</li>
-        <li>Matriz de 3 objeções mais comuns por produto</li>
-        <li>Sequência de follow-up para quem sumiu (3 mensagens)</li>
-      </ul>
-      <a class="btn-abrir" href="./scripts/">Abrir gerador →</a>
-    </div>
-
-  </div>
-
-  <div style="margin-top:48px;padding:20px;border-radius:12px;background:var(--accent-soft);border-left:4px solid var(--accent);font-size:13px;color:var(--text);line-height:1.7;">
-    <strong>Como usar:</strong> a equipe acessa pelo celular. Cada ferramenta é independente — se uma travar, as outras continuam funcionando.
-  </div>
-
-  <p style="color:var(--muted);font-size:12px;text-align:center;margin-top:40px;">
-    * Ferramentas de estimativa. Confirme preços do mercado local, consulte IMEI em site oficial e teste o aparelho por completo antes de comprar.
-  </p>
+<header style="text-align:center;max-width:700px;margin:0 auto 48px;">
+<p class="pill" style="margin-bottom:14px;">USO INTERNO DA EQUIPE · NÃO COMPARTILHE COM CLIENTES</p>
+<h1 class="hfont" style="font-size:42px;line-height:1.1;font-weight:700;margin:0 0 12px;">
+Central de <span style="color:var(--accent);">Ferramentas</span> de Venda
+</h1>
+<p style="color:var(--muted);font-size:16px;line-height:1.6;margin:0;">
+Três ferramentas para precificar, comprar e vender eletrônicos com margem real.
+Tudo roda no seu navegador — nenhum dado é salvo no servidor.
+</p>
+</header>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+<!-- Card 1: Margem -->
+<div class="card" style="padding:28px;">
+<div style="font-size:36px;margin-bottom:12px;">💰</div>
+<span class="pill">Precificação de venda</span>
+<h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Calculadora de Margem Completa</h2>
+<p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
+Calcula custo total do pedido (produto + impostos + taxa de pagamento + plataforma + rota de entrega),
+lucro líquido, preço de equilíbrio e preço para atingir sua margem-alvo.
+</p>
+<ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
+<li>Comparativo por forma de pagamento (PIX vs cartão)</li>
+<li>Custo de rota por km (combustível + desgaste + pedágio)</li>
+<li>Composição do custo em tempo real</li>
+</ul>
+<a class="btn-abrir" href="./margem/">Abrir calculadora →</a>
 </div>
-
-<!-- RODAPÉ MODERNIZADO COM SELO MOBILE-FIRST -->
+<!-- Card 2: iPhone -->
+<div class="card" style="padding:28px;">
+<div style="font-size:36px;margin-bottom:12px;">📱</div>
+<span class="pill">Avaliação de compra</span>
+<h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Compra & Avaliação de iPhone</h2>
+<p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
+Na hora da compra, marca o estado de cada item e recebe o preço máximo que pode pagar.
+Aplica 20% abaixo do mercado <strong>antes</strong> de qualquer desconto por problema.
+</p>
+<ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
+<li>Tela, vidro traseiro, bateria, peças trocadas, Face ID, água</li>
+<li>Pontuação do estado /100 + veredito: COMPRE / NEGOCIE / FUJA</li>
+<li>Checklist de 10 testes rápidos na hora</li>
+</ul>
+<a class="btn-abrir" href="./compra-iphone/">Abrir avaliação →</a>
+</div>
+<!-- Card 3: Scripts -->
+<div class="card" style="padding:28px;">
+<div style="font-size:36px;margin-bottom:12px;">✍️</div>
+<span class="pill">Fechamento & atração</span>
+<h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Gerador de Scripts de Venda</h2>
+<p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
+Escolhe produto, canal e objetivo → gera 3 ganchos, copy, CTA e matriz de objeções
+prontos para copiar e colar no WhatsApp, Instagram, Marketplace e TikTok.
+</p>
+<ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
+<li>Scripts por canal (WhatsApp / Reels / Marketplace / TikTok)</li>
+<li>Matriz de 3 objeções mais comuns por produto</li>
+<li>Sequência de follow-up para quem sumiu (3 mensagens)</li>
+</ul>
+<a class="btn-abrir" href="./scripts/">Abrir gerador →</a>
+</div>
+</div>
+<div style="margin-top:48px;padding:20px;border-radius:12px;background:var(--accent-soft);border-left:4px solid var(--accent);font-size:13px;color:var(--text);line-height:1.7;">
+<strong>Como usar:</strong> a equipe acessa pelo celular. Cada ferramenta é independente — se uma travar, as outras continuam funcionando.
+Os preços-base dos modelos de iPhone são editáveis diretamente no código (campo <code>value=""</code> do select de modelo), ajuste para a realidade de Pernambuco.
+</div>
+<p style="color:var(--muted);font-size:12px;text-align:center;margin-top:40px;">
+* Ferramentas de estimativa. Confirme preços do mercado local, consulte IMEI em site oficial e teste o aparelho por completo antes de comprar.
+</p>
+</div>
+<!-- RODAPÉ EXPLICITANDO O DESENVOLVIMENTO VIA IPHONE SEM COMPUTADOR -->
 <footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
-  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;">
-    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);">
-      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);padding:6px 12px;border-radius:20px;border:1px solid var(--border);">
-        📱 <strong style="color:var(--text);">Mobile-First:</strong> Desenvolvido e otimizado nativamente para uso direto no <span style="color:var(--accent);font-weight:600;">iPhone</span>.
-      </span>
-    </div>
-    <p style="color:var(--muted);font-size:12px;margin:0;">
-      © 2026 Thiago M. Todos os direitos reservados.
-    </p>
-  </div>
+<div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
+<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(229,0,125,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
+📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
+</span>
+</div>
+<p style="color:var(--muted);font-size:12px;margin:0;">
+© 2026 Thiago M. Alta performance e código limpo na palma da mão.
+</p>
+</div>
 </footer>
-
 </body>
 </html>
