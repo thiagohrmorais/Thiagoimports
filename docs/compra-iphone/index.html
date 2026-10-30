@@ -85,19 +85,43 @@
           <div>
             <label class="fld" for="ip_modelo">Modelo</label>
             <select id="ip_modelo" onchange="calcIP()">
-              <option value="1100">iPhone 11</option>
-              <option value="1500">iPhone 12</option>
-              <option value="1900" selected>iPhone 13</option>
-              <option value="2400">iPhone 13 Pro</option>
-              <option value="2300">iPhone 14</option>
-              <option value="3200">iPhone 14 Pro</option>
-              <option value="3600">iPhone 14 Pro Max</option>
-              <option value="2900">iPhone 15</option>
-              <option value="3900">iPhone 15 Pro</option>
-              <option value="4600">iPhone 15 Pro Max</option>
-              <option value="4200">iPhone 16</option>
-              <option value="5500">iPhone 16 Pro</option>
-              <option value="6200">iPhone 16 Pro Max</option>
+              <!-- Antigos -->
+              <option value="500">iPhone 8</option>
+              <option value="650">iPhone 8 Plus</option>
+              <option value="800">iPhone X</option>
+              <option value="900">iPhone XR</option>
+              <option value="950">iPhone XS</option>
+              <option value="1100">iPhone XS Max</option>
+              <!-- Linha 11 ao 13 -->
+              <option value="1250">iPhone 11</option>
+              <option value="1600">iPhone 12</option>
+              <option value="2000" selected>iPhone 13</option>
+              <option value="2600">iPhone 13 Pro</option>
+              <option value="3000">iPhone 13 Pro Max</option>
+              <!-- Linha 14 -->
+              <option value="2400">iPhone 14</option>
+              <option value="2700">iPhone 14 Plus</option>
+              <option value="3400">iPhone 14 Pro</option>
+              <option value="3900">iPhone 14 Pro Max</option>
+              <!-- Linha 15 -->
+              <option value="3100">iPhone 15</option>
+              <option value="3500">iPhone 15 Plus</option>
+              <option value="4200">iPhone 15 Pro</option>
+              <option value="4900">iPhone 15 Pro Max</option>
+              <!-- Linha 16 -->
+              <option value="4300">iPhone 16</option>
+              <option value="4800">iPhone 16 Plus</option>
+              <option value="5800">iPhone 16 Pro</option>
+              <option value="6600">iPhone 16 Pro Max</option>
+              <!-- Linha 17 -->
+              <option value="5400">iPhone 17</option>
+              <option value="5900">iPhone 17 Plus</option>
+              <option value="7200">iPhone 17 Pro</option>
+              <option value="8200">iPhone 17 Pro Max</option>
+              <!-- Linha 18 -->
+              <option value="6800">iPhone 18</option>
+              <option value="8500">iPhone 18 Pro</option>
+              <option value="9800">iPhone 18 Pro Max</option>
             </select>
           </div>
           <div>
@@ -110,6 +134,30 @@
               <option value="1.28">1 TB</option>
             </select>
           </div>
+        </div>
+      </div>
+
+      <!-- NOVO BLOCO: SEGURANÇA & DOCUMENTAÇÃO (IMEI E ICLOUD) -->
+      <div class="card" style="padding:20px;border-color:var(--danger);">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--danger);margin:0 0 12px;">🚨 Verificação Legal e iCloud</h2>
+        <div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:16px;">
+          <div>
+            <label class="fld" for="ip_imei">Status do IMEI / Consulta Anatel</label>
+            <select id="ip_imei" onchange="calcIP()">
+              <option value="limpo" selected>✅ IMEI Limpo / Sem Restrição</option>
+              <option value="sujo">❌ IMEI Sujo / Impedido / Bloqueado</option>
+            </select>
+          </div>
+          <div>
+            <label class="fld" for="ip_icloud">Status da Conta iCloud</label>
+            <select id="ip_icloud" onchange="calcIP()">
+              <option value="livre" selected>✅ iCloud Livre / Pronto p/ Formatar</option>
+              <option value="preso">❌ iCloud Preso / Esqueceu a Senha</option>
+            </select>
+          </div>
+        </div>
+        <div id="ip_alertaIcloudImei" style="display:none;margin-top:12px;padding:10px;background:rgba(255,77,109,0.15);border:1px solid var(--danger);border-radius:8px;font-size:12px;color:var(--danger);font-weight:600;">
+          ⚠️ ATENÇÃO: Aparelhos com IMEI impedido ou iCloud bloqueado são avaliados apenas como sucata/peças no valor simbólico fixo de R$ 50,00.
         </div>
       </div>
 
@@ -222,6 +270,11 @@ function calcIP(){
     const armaz = f('ip_armaz');
     const armazTexto = txtSel('ip_armaz');
 
+    // Validação IMEI / iCloud
+    const imeiVal = document.getElementById('ip_imei') ? document.getElementById('ip_imei').value : 'limpo';
+    const icloudVal = document.getElementById('ip_icloud') ? document.getElementById('ip_icloud').value : 'livre';
+    const alertaBox = document.getElementById('ip_alertaIcloudImei');
+
     const tela = f('ip_tela');
     const vidro = f('ip_vidro');
     const marcas = f('ip_marcas');
@@ -234,20 +287,32 @@ function calcIP(){
     const mercado = base * armaz;
     const apos20 = mercado * 0.80;
     const fat = tela * vidro * marcas * bateria * pecas * faceid * agua * caixa;
-    const precoMax = Math.round(apos20 * fat);
 
-    const score = Math.min(100, Math.round(fat * 100));
+    let precoMax = Math.round(apos20 * fat);
+    let score = Math.min(100, Math.round(fat * 100));
     let scoreLabel = "";
-    if(score >= 85) scoreLabel = "Excelente Estado";
-    else if(score >= 70) scoreLabel = "Bom Estado";
-    else if(score >= 50) scoreLabel = "Estado Regular";
-    else scoreLabel = "Necessita de Reparos";
+
+    // LÓGICA DE BLOQUEIO POR IMEI OU ICLOUD SUJO (R$ 50,00)
+    if(imeiVal === 'sujo' || icloudVal === 'preso'){
+      precoMax = 50;
+      score = 0;
+      scoreLabel = "Bloqueado / Sucata";
+      if(alertaBox) alertaBox.style.display = 'block';
+    } else {
+      if(alertaBox) alertaBox.style.display = 'none';
+      if(score >= 85) scoreLabel = "Excelente Estado";
+      else if(score >= 70) scoreLabel = "Bom Estado";
+      else if(score >= 50) scoreLabel = "Estado Regular";
+      else scoreLabel = "Necessita de Reparos";
+    }
 
     set('ip_scoreNum', score + "/100"); 
     set('ip_scoreLabel', scoreLabel);
     set('ip_mMax', fmt(precoMax));
 
     const resumo = `• Modelo: ${modTexto} (${armazTexto})\n` +
+                   `• IMEI: ${txtSel('ip_imei')}\n` +
+                   `• iCloud: ${txtSel('ip_icloud')}\n` +
                    `• Tela: ${txtSel('ip_tela')}\n` +
                    `• Traseira: ${txtSel('ip_vidro')}\n` +
                    `• Estrutura: ${txtSel('ip_marcas')}\n` +
@@ -262,7 +327,9 @@ function calcIP(){
                    `👤 *Nome:* ${nome}\n` +
                    `📱 *Aparelho:* ${modTexto} (${armazTexto})\n` +
                    `📊 *Pontuação estimada:* ${score}/100 (${scoreLabel})\n\n` +
-                   `*Detalhes informados:*\n` +
+                   `*Status e Conservação:*\n` +
+                   `- Status IMEI: ${txtSel('ip_imei')}\n` +
+                   `- Status iCloud: ${txtSel('ip_icloud')}\n` +
                    `- Tela: ${txtSel('ip_tela')}\n` +
                    `- Vidro Traseiro: ${txtSel('ip_vidro')}\n` +
                    `- Bateria: ${txtSel('ip_bateria')}\n` +
