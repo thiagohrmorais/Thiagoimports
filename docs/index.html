@@ -139,7 +139,7 @@
     text-decoration: none;
     box-shadow: 0 8px 25px -4px rgba(241, 0, 160, 0.5);
     position: relative;
-    z-index: 10; /* Ensures instant clicks */
+    z-index: 10;
     cursor: pointer;
     touch-action: manipulation;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -176,7 +176,7 @@
 <div style="flex:1;max-width:1100px;margin:0 auto;padding:36px 16px 80px;width:100%;position:relative;z-index:2;">
 
   <!-- PROFILE HEADER -->
-  <header style="text-align:center;max-width:680px;margin:0 auto 36px;">
+  <header style="text-align:center;max-width:680px;margin:0 auto 28px;">
     
     <!-- BADGE DESTAQUE -->
     <div style="margin-bottom:16px;">
@@ -209,6 +209,21 @@
       Acompanhar no Instagram
     </a>
   </header>
+
+  <!-- AVISO DE CONSCIENTIZAÇÃO & RESPONSABILIDADE MÉDICA -->
+  <section style="max-width:900px;margin:0 auto 28px;">
+    <div class="ios-glass" style="padding:16px 20px;border-left:4px solid var(--accent-pink);background:rgba(241, 0, 160, 0.06);">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="color:var(--accent-pink);padding-top:2px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        </div>
+        <div style="font-size:12px;line-height:1.6;color:var(--text-muted);">
+          <strong style="color:var(--text-primary);display:block;font-size:13px;margin-bottom:2px;">⚠️ Aviso Legal Importante — Ferramentas de Saúde & Dosagem:</strong>
+          As ferramentas de saúde desta plataforma têm caráter estritamente educativo e de suporte a cálculos matemáticos. <strong>NÃO substituem em nenhuma hipótese a consulta, o diagnóstico ou a prescrição médica presencial.</strong> O uso das calculadoras clínicas é de uso restrito e exclusivo para médicos e profissionais de saúde habilitados. O uso indevido, automedicação ou interpretação inadequada isentam integralmente Thiago Morais, a empresa e os desenvolvedores de qualquer responsabilidade legal, clínica ou civil.
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- APPS GRID -->
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
@@ -248,12 +263,12 @@
           <div class="icon-glass" style="color:var(--accent-cyan);border-color:rgba(0,240,255,0.35);background:rgba(0,240,255,0.12);">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
           </div>
-          <span style="color:var(--accent-cyan);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Saúde & Esporte</span>
+          <span style="color:var(--accent-cyan);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Uso Médico / Saúde</span>
         </div>
 
         <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Protocolo de Emagrecimento</h2>
         <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin:0 0 16px;">
-          Simulador biológico e metabólico. Calcula TMB, meta de calorias, macros de proteína, progressão contínua e dosagens medicamentosas pós-meta.
+          Simulador biológico e metabólico. Calculates TMB, meta de calorias, macros de proteína, progressão contínua e dosagens medicamentosas pós-meta.
         </p>
 
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
@@ -276,7 +291,7 @@
           <div class="icon-glass">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>
           </div>
-          <span style="color:var(--accent-purple);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Dosagem Clínica</span>
+          <span style="color:var(--accent-purple);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Uso Médico / Dosagem</span>
         </div>
 
         <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Calculadora Retatrutida</h2>
@@ -304,7 +319,7 @@
           <div class="icon-glass">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
           </div>
-          <span style="color:var(--accent-pink);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Dosagem Clínica</span>
+          <span style="color:var(--accent-pink);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Uso Médico / Dosagem</span>
         </div>
 
         <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Calculadora Tirzepatida</h2>
