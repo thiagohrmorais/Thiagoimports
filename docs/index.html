@@ -29,15 +29,16 @@
   .pill { display:inline-block; padding:2px 10px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent); font-size:11px; font-weight:600; letter-spacing:.03em; }
   .btn-abrir { display:inline-block; margin-top:16px; padding:10px 20px; background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; border-radius:10px; font-weight:700; font-size:14px; text-decoration:none; transition:box-shadow .2s ease; }
   .btn-abrir:hover { box-shadow:0 6px 20px rgba(241,0,160,.5); }
+  .logo-white { filter: brightness(0) invert(1); }
 </style>
 </head>
 <body>
 
-<!-- CABEÇALHO REFORMULADO: APENAS A LOGO (SEM BOTÕES) -->
+<!-- CABEÇALHO COM LOGO TRATADA PARA COR BRANCA -->
 <div style="position:sticky;top:0;z-index:50;background:rgba(15,9,25,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
   <div style="max-width:1100px;margin:0 auto;display:flex;padding:12px 20px;align-items:center;justify-content:center;">
     <a href="./index.html" style="display:flex;align-items:center;">
-      <img src="../logo-m.svg" alt="Logo" style="height:40px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+      <img src="../logo-m.svg" class="logo-white" alt="Logo" style="height:40px;width:auto;object-fit:contain;" onerror="this.onerror=null; this.src='../logo-m.svg/IMG_4915.svg';">
     </a>
   </div>
 </div>
@@ -69,7 +70,7 @@
       <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
         <li>Comparativo por forma de pagamento (PIX vs cartão)</li>
         <li>Custo de rota por km (combustível + desgaste + pedágio)</li>
-        <li>Composição do custo em tempo real</li>
+        <li>Opção para imprimir / salvar relatório em PDF</li>
       </ul>
       <a class="btn-abrir" href="./margem/">Abrir calculadora →</a>
     </div>
@@ -80,13 +81,12 @@
       <span class="pill">Avaliação de compra</span>
       <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Compra & Avaliação de iPhone</h2>
       <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Na hora da compra, marca o estado de cada item e recebe o preço máximo que pode pagar.
-        Aplica a margem da loja <strong>antes</strong> de qualquer desconto por problema.
+        Autoavaliação online para clientes com cálculo instantâneo, verificação de IMEI/iCloud e envio do relatório direto para o seu WhatsApp.
       </p>
       <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Tela, vidro traseiro, bateria, peças trocadas, Face ID, água</li>
-        <li>Pontuação do estado /100 + veredito instantâneo</li>
-        <li>Checklist completo de autoavaliação com envio ao WhatsApp</li>
+        <li>Modelos do iPhone 8 até a linha 18 Pro Max</li>
+        <li>Trava de segurança para IMEI e iCloud preso</li>
+        <li>Agendamento e simulação direta pelo WhatsApp</li>
       </ul>
       <a class="btn-abrir" href="./compra-iphone/">Abrir avaliação →</a>
     </div>
@@ -114,12 +114,9 @@
     <strong>Como usar:</strong> A equipe e os clientes acessam diretamente pelo celular. Cada ferramenta é independente.
   </div>
 
-  <p style="color:var(--muted);font-size:12px;text-align:center;margin-top:40px;">
-    * Ferramentas de estimativa. Confirme preços do mercado local, consulte IMEI em site oficial e teste o aparelho por completo antes de comprar.
-  </p>
 </div>
 
-<!-- RODAPÉ EXPLICITANDO O DESENVOLVIMENTO VIA IPHONE SEM COMPUTADOR -->
+<!-- RODAPÉ MOBILE-FIRST -->
 <footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
     <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
