@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Dose — Retatrutida 120mg/6mL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0f0919; 
+    --card: #1a102b; 
+    --card-border: rgba(157, 78, 237, 0.2);
+    --text: #f5f0fb; 
+    --muted: #a692c2; 
+    --accent: #f100a0;
+    --accent-soft: rgba(241, 0, 160, 0.15); 
+    --accent2: #9d4edd; 
+    --danger: #ff4d6d;
+    --border: rgba(157, 78, 237, 0.25); 
+    --input-bg: #140b24;
+  }
+  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
+  .hfont { font-family:"Cormorant Garamond",serif; }
+  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 25px rgba(0,0,0,.4); }
+  .num { font-variant-numeric:tabular-nums; }
+  input[type=number], select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; transition:all .2s ease; }
+  input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
+  .outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
+  .tbl-row { transition:background-color .15s ease; }
+  .tbl-row:hover { background-color:rgba(241,0,160,.08); }
+  .active-row { background-color:rgba(241,0,160,.18) !important; border-left:3px solid var(--accent); }
+  @media (min-width:1024px){ .lg-grid { grid-template-columns:5fr 7fr !important; align-items:start; } }
+  @media (min-width:640px){ .sm-grid-2 { grid-template-columns:1fr 1fr !important; } }
+</style>
+</head>
+<body>
+
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:48px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
+
+  <header style="margin-bottom:24px;">
+    <p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Uso Médico & Prescrição Protocolar</p>
+    <h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Calculadora de Dose — <span style="color:var(--accent);">Retatrutida</span></h1>
+    <p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Apresentação do frasco: <strong>120 mg / 6 mL (20 mg/mL)</strong>. Seringa U-100 (100 UI = 1 mL). Selecione ou digite a dose prescrita para verificar as Unidades Internacionais (UI) e a duração do frasco em semanas.</p>
+  </header>
+
+  <!-- BOTAO DE PRINT -->
+  <div class="card" style="padding:16px 20px;margin-bottom:24px;border-left:4px solid var(--accent);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#fff;">📋 Orientação ao Paciente:</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px;">Consulte abaixo a equivalência em UI na seringa e o rendimento em semanas para cada protocolo.</div>
+    </div>
+    <button onclick="window.print()" style="padding:8px 16px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+      🖨️ Imprimir / Salvar PDF
+    </button>
+  </div>
+
+  <div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
+
+    <!-- CALCULADORA PERSONALIZADA -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">1. Configurar Dosagem Prescrita</h2>
+        
+        <div style="margin-bottom:16px;">
+          <label class="fld" for="rt_preset">Doses Predefinidas (mg)</label>
+          <select id="rt_preset" onchange="selecionarPreset()">
+            <option value="custom">Outra dose (digitar manualmente)</option>
+            <option value="0.5">0,5 mg</option>
+            <option value="1.0">1,0 mg</option>
+            <option value="1.5">1,5 mg</option>
+            <option value="2.0">2,0 mg</option>
+            <option value="2.5" selected>2,5 mg (Dose de Entrada - Dura 48 Semanas)</option>
+            <option value="3.0">3,0 mg</option>
+            <option value="4.0">4,0 mg</option>
+            <option value="5.0">5,0 mg</option>
+            <option value="6.0">6,0 mg</option>
+            <option value="7.5">7,5 mg</option>
+            <option value="10.0">10,0 mg</option>
+            <option value="12.0">12,0 mg</option>
+            <option value="15.0">15,0 mg</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="fld" for="rt_doseVal">Dose Semanal Prescrita (mg)</label>
+          <input type="number" id="rt_doseVal" value="2.5" step="0.1" min="0.1" max="120" oninput="calcularUi()">
+        </div>
+      </div>
+
+      <!-- PAINEL RESULTADO DO CÁLCULO -->
+      <div class="outbox" style="border-color:var(--accent);border-width:2px;background:rgba(241,0,160,0.05);">
+        <div style="color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">ASPIRAÇÃO NA SERINGA U-100</div>
+        <div id="rt_uiRes" class="num" style="font-size:42px;font-weight:800;margin-top:4px;color:#fff;">12,5 UI</div>
+        <div id="rt_volRes" class="num" style="color:var(--muted);font-size:13px;margin-top:4px;">Volume por aplicação: 0,125 mL</div>
+      </div>
+
+      <!-- RENDIMENTO DO FRASCO -->
+      <div class="outbox" style="border-color:var(--accent2);border-width:1px;">
+        <div style="color:var(--accent2);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">RENDIMENTO DO FRASCO (120 mg TOTAL)</div>
+        <div id="rt_duraRes" class="num" style="font-size:32px;font-weight:800;margin-top:4px;color:#fff;">48 Semanas</div>
+        <div style="color:var(--muted);font-size:12px;margin-top:4px;">Equivalente a 48 aplicações semanais de 2,5 mg.</div>
+      </div>
+
+      <div class="card" style="padding:16px;">
+        <h3 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px;">Fórmula de Conversão e Rendimento</h3>
+        <p style="color:var(--muted);font-size:12px;line-height:1.6;margin:0;">
+          • Concentração: 120 mg em 6 mL = 20 mg/mL<br>
+          • Proporção U-100: 1 mg = 5 UI (0,05 mL)<br>
+          • <strong>UI na seringa = Dose (mg) × 5 UI</strong><br>
+          • <strong>Duração = 120 mg ÷ Dose semanal (mg)</strong>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- TABELA COMPLETA DE DOSAGENS E RENDIMENTO -->
+    <div class="card" style="padding:20px;">
+      <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 14px;">Tabela Posológica & Rendimento (120mg / 6mL)</h2>
+      
+      <div style="overflow-x:auto;">
+        <table style="width:100%;font-size:14px;border-collapse:collapse;" class="num">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">
+              <th style="text-align:left;padding:10px 12px;font-weight:700;">Dose (mg)</th>
+              <th style="text-align:center;padding:10px 12px;font-weight:700;color:var(--accent);">UI na Seringa</th>
+              <th style="text-align:center;padding:10px 12px;font-weight:700;">Volume (mL)</th>
+              <th style="text-align:right;padding:10px 12px;font-weight:700;color:var(--accent2);">Rendimento</th>
+            </tr>
+          </thead>
+          <tbody id="rt_tableBody">
+            <!-- Gerado via Script -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- RODAPÉ MOBILE-FIRST -->
+<footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
+      <span style="background:rgba(241,0,160,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
+        📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
+      </span>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin:0;">
+      © 2026 Calculadora de Doses Médicas. Todos os direitos reservados.
+    </p>
+  </div>
+</footer>
+
+<script>
+const DOSES_RETATRUTIDA = [
+  { mg: 0.5, ui: 2.5, ml: 0.025, dur: 240 },
+  { mg: 1.0, ui: 5.0, ml: 0.05, dur: 120 },
+  { mg: 1.5, ui: 7.5, ml: 0.075, dur: 80 },
+  { mg: 2.0, ui: 10.0, ml: 0.10, dur: 60 },
+  { mg: 2.5, ui: 12.5, ml: 0.125, dur: 48 },
+  { mg: 3.0, ui: 15.0, ml: 0.15, dur: 40 },
+  { mg: 4.0, ui: 20.0, ml: 0.20, dur: 30 },
+  { mg: 5.0, ui: 25.0, ml: 0.25, dur: 24 },
+  { mg: 6.0, ui: 30.0, ml: 0.30, dur: 20 },
+  { mg: 7.5, ui: 37.5, ml: 0.375, dur: 16 },
+  { mg: 10.0, ui: 50.0, ml: 0.50, dur: 12 },
+  { mg: 12.0, ui: 60.0, ml: 0.60, dur: 10 },
+  { mg: 15.0, ui: 75.0, ml: 0.75, dur: 8 }
+];
+
+function renderTable(activeMg) {
+  const tbody = document.getElementById('rt_tableBody');
+  if(!tbody) return;
+  
+  tbody.innerHTML = '';
+  DOSES_RETATRUTIDA.forEach(item => {
+    const isSelected = Math.abs(item.mg - activeMg) < 0.05;
+    const tr = document.createElement('tr');
+    tr.className = `tbl-row ${isSelected ? 'active-row' : ''}`;
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => {
+      document.getElementById('rt_doseVal').value = item.mg;
+      document.getElementById('rt_preset').value = item.mg.toFixed(1);
+      calcularUi();
+    };
+
+    tr.innerHTML = `
+      <td style="padding:10px 12px;font-weight:${isSelected ? '700' : '500'};border-bottom:1px solid var(--border);">${item.mg.toString().replace('.',',')} mg</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:var(--accent);border-bottom:1px solid var(--border);">${item.ui.toString().replace('.',',')} UI</td>
+      <td style="padding:10px 12px;text-align:center;color:var(--muted);border-bottom:1px solid var(--border);">${item.ml.toFixed(3).replace('.',',')} mL</td>
+      <td style="padding:10px 12px;text-align:right;font-weight:700;color:var(--accent2);border-bottom:1px solid var(--border);">${item.dur} semanas</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function selecionarPreset() {
+  const preset = document.getElementById('rt_preset').value;
+  if (preset !== 'custom') {
+    document.getElementById('rt_doseVal').value = preset;
+    calcularUi();
+  }
+}
+
+function calcularUi() {
+  const inputEl = document.getElementById('rt_doseVal');
+  const dose = parseFloat(inputEl.value) || 0;
+
+  const presetEl = document.getElementById('rt_preset');
+  const found = DOSES_RETATRUTIDA.find(d => Math.abs(d.mg - dose) < 0.05);
+  if (found) {
+    presetEl.value = found.mg.toFixed(1);
+  } else {
+    presetEl.value = 'custom';
+  }
+
+  // Lógica Retatrutida 120mg / 6mL (20 mg/mL -> 1 mg = 5 UI na seringa U-100)
+  let uiCalculado = dose * 5;
+  let mlCalculado = dose / 20;
+  let duracaoSemanas = dose > 0 ? (120 / dose) : 0;
+
+  if (dose <= 0) {
+    uiCalculado = 0;
+    mlCalculado = 0;
+    duracaoSemanas = 0;
+  }
+
+  const uiFmt = Number.isInteger(uiCalculado) ? uiCalculado : uiCalculado.toFixed(1).replace('.',',');
+  const durFmt = Number.isInteger(duracaoSemanas) ? duracaoSemanas : duracaoSemanas.toFixed(1).replace('.',',');
+
+  document.getElementById('rt_uiRes').textContent = `${uiFmt} UI`;
+  document.getElementById('rt_volRes').textContent = `Volume por aplicação: ${mlCalculado.toFixed(3).replace('.',',')} mL`;
+  document.getElementById('rt_duraRes').textContent = `${durFmt} Semanas`;
+
+  renderTable(dose);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  calcularUi();
+});
+</script>
+</body>
+</html>

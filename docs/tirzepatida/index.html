@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Dose — Tirzepatida 15mg/0,5mL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0f0919; 
+    --card: #1a102b; 
+    --card-border: rgba(157, 78, 237, 0.2);
+    --text: #f5f0fb; 
+    --muted: #a692c2; 
+    --accent: #f100a0;
+    --accent-soft: rgba(241, 0, 160, 0.15); 
+    --accent2: #9d4edd; 
+    --danger: #ff4d6d;
+    --border: rgba(157, 78, 237, 0.25); 
+    --input-bg: #140b24;
+  }
+  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
+  .hfont { font-family:"Cormorant Garamond",serif; }
+  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 25px rgba(0,0,0,.4); }
+  .num { font-variant-numeric:tabular-nums; }
+  input[type=number], select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; transition:all .2s ease; }
+  input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
+  .outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
+  .btn-action { display:inline-block; width:100%; text-align:center; padding:14px; background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; border-radius:12px; font-weight:700; font-size:16px; text-decoration:none; transition:box-shadow .2s ease; border:none; cursor:pointer; }
+  .btn-action:hover { box-shadow: 0 6px 20px rgba(241,0,160,0.5); }
+  .tbl-row { transition:background-color .15s ease; }
+  .tbl-row:hover { background-color:rgba(241,0,160,.08); }
+  .active-row { background-color:rgba(241,0,160,.18) !important; border-left:3px solid var(--accent); }
+  @media (min-width:1024px){ .lg-grid { grid-template-columns:5fr 7fr !important; align-items:start; } }
+  @media (min-width:640px){ .sm-grid-2 { grid-template-columns:1fr 1fr !important; } }
+</style>
+</head>
+<body>
+
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:48px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
+
+  <header style="margin-bottom:24px;">
+    <p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Uso Médico & Prescrição</p>
+    <h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Conversão de Dose — <span style="color:var(--accent);">Tirzepatida</span></h1>
+    <p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Concentração padrão: <strong>15 mg / 0,5 mL</strong> em seringa de insulina U-100 (100 UI = 1 mL, logo 50 UI = 0,5 mL). Selecione ou digite a dose prescrita para obter a medida exata em Unidades Internacionais (UI).</p>
+  </header>
+
+  <!-- BOTAO DE PRINT -->
+  <div class="card" style="padding:16px 20px;margin-bottom:24px;border-left:4px solid var(--accent);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#fff;">📋 Orientação ao Paciente:</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px;">Selecione a dose na tabela ou simule um valor customizado para emitir o relatório de aplicação.</div>
+    </div>
+    <button onclick="window.print()" style="padding:8px 16px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+      🖨️ Imprimir / Salvar PDF
+    </button>
+  </div>
+
+  <div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
+
+    <!-- CALCULADORA PERSONALIZADA -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">1. Seleção Rápida ou Personalizada</h2>
+        
+        <div style="margin-bottom:16px;">
+          <label class="fld" for="tz_preset">Doses Predefinidas (mg)</label>
+          <select id="tz_preset" onchange="selecionarPreset()">
+            <option value="custom">Outra dose (digitar manualmente)</option>
+            <option value="0.5">0,5 mg</option>
+            <option value="1.0">1,0 mg</option>
+            <option value="1.5">1,5 mg</option>
+            <option value="2.0">2,0 mg</option>
+            <option value="2.5" selected>2,5 mg (Dose Inicial Padrão)</option>
+            <option value="3.0">3,0 mg</option>
+            <option value="3.5">3,5 mg</option>
+            <option value="4.0">4,0 mg</option>
+            <option value="4.5">4,5 mg</option>
+            <option value="5.0">5,0 mg</option>
+            <option value="6.0">6,0 mg</option>
+            <option value="7.5">7,5 mg</option>
+            <option value="10.0">10,0 mg</option>
+            <option value="12.5">12,5 mg</option>
+            <option value="15.0">15,0 mg (Dose Máxima)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="fld" for="tz_doseVal">Dose Prescrita (mg)</label>
+          <input type="number" id="tz_doseVal" value="2.5" step="0.1" min="0.1" max="30" oninput="calcularUi()">
+        </div>
+      </div>
+
+      <!-- PAINEL RESULTADO DO CÁLCULO -->
+      <div class="outbox" style="border-color:var(--accent);border-width:2px;background:rgba(241,0,160,0.05);">
+        <div style="color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">ASPIRAÇÃO NA SERINGA U-100</div>
+        <div id="tz_uiRes" class="num" style="font-size:42px;font-weight:800;margin-top:4px;color:#fff;">8 UI</div>
+        <div id="tz_volRes" class="num" style="color:var(--muted);font-size:13px;margin-top:4px;">Volume em mL: 0,08 mL</div>
+      </div>
+
+      <div class="card" style="padding:16px;">
+        <h3 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px;">Fórmula de Conversão Utilizada</h3>
+        <p style="color:var(--muted);font-size:12px;line-height:1.6;margin:0;">
+          • Concentração: 15 mg em 0,5 mL (30 mg/mL)<br>
+          • Proporção U-100: 1 mg = 3,33 UI (ou 0,0333 mL)<br>
+          • <strong>UI na seringa = (Dose em mg × 50 UI) ÷ 15 mg</strong>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- TABELA COMPLETA DE DOSAGENS -->
+    <div class="card" style="padding:20px;">
+      <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 14px;">Tabela Posológica Completa (Tirzepatida 15mg/0,5mL)</h2>
+      
+      <div style="overflow-x:auto;">
+        <table style="width:100%;font-size:14px;border-collapse:collapse;" class="num">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">
+              <th style="text-align:left;padding:10px 12px;font-weight:700;">Dose (mg)</th>
+              <th style="text-align:center;padding:10px 12px;font-weight:700;color:var(--accent);">UI na Seringa</th>
+              <th style="text-align:right;padding:10px 12px;font-weight:700;">Volume (mL)</th>
+            </tr>
+          </thead>
+          <tbody id="tz_tableBody">
+            <!-- Gerado via Script para garantir reatividade e precisão -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- RODAPÉ MOBILE-FIRST -->
+<footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
+      <span style="background:rgba(241,0,160,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
+        📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
+      </span>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin:0;">
+      © 2026 Calculadora de Doses Médicas. Todos os direitos reservados.
+    </p>
+  </div>
+</footer>
+
+<script>
+// Tabela exata solicitada no modelo oficial
+const DOSES_PADRAO = [
+  { mg: 0.5, ui: 2, ml: 0.02 },
+  { mg: 1.0, ui: 3, ml: 0.03 },
+  { mg: 1.5, ui: 5, ml: 0.05 },
+  { mg: 2.0, ui: 7, ml: 0.07 },
+  { mg: 2.5, ui: 8, ml: 0.08 },
+  { mg: 3.0, ui: 10, ml: 0.10 },
+  { mg: 3.5, ui: 12, ml: 0.12 },
+  { mg: 4.0, ui: 13, ml: 0.13 },
+  { mg: 4.5, ui: 15, ml: 0.15 },
+  { mg: 5.0, ui: 17, ml: 0.17 },
+  { mg: 6.0, ui: 20, ml: 0.20 },
+  { mg: 7.5, ui: 25, ml: 0.25 },
+  { mg: 10.0, ui: 33, ml: 0.33 },
+  { mg: 12.5, ui: 42, ml: 0.42 },
+  { mg: 15.0, ui: 50, ml: 0.50 }
+];
+
+function renderTable(activeMg) {
+  const tbody = document.getElementById('tz_tableBody');
+  if(!tbody) return;
+  
+  tbody.innerHTML = '';
+  DOSES_PADRAO.forEach(item => {
+    const isSelected = Math.abs(item.mg - activeMg) < 0.05;
+    const tr = document.createElement('tr');
+    tr.className = `tbl-row ${isSelected ? 'active-row' : ''}`;
+    tr.style.cursor = 'pointer';
+    tr.onclick = () => {
+      document.getElementById('tz_doseVal').value = item.mg;
+      document.getElementById('tz_preset').value = item.mg.toFixed(1);
+      calcularUi();
+    };
+
+    tr.innerHTML = `
+      <td style="padding:10px 12px;font-weight:${isSelected ? '700' : '500'};border-bottom:1px solid var(--border);">${item.mg.toString().replace('.',',')} mg</td>
+      <td style="padding:10px 12px;text-align:center;font-weight:700;color:var(--accent);border-bottom:1px solid var(--border);">${item.ui} UI</td>
+      <td style="padding:10px 12px;text-align:right;color:var(--muted);border-bottom:1px solid var(--border);">${item.ml.toFixed(2).replace('.',',')} mL</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function selecionarPreset() {
+  const preset = document.getElementById('tz_preset').value;
+  if (preset !== 'custom') {
+    document.getElementById('tz_doseVal').value = preset;
+    calcularUi();
+  }
+}
+
+function calcularUi() {
+  const inputEl = document.getElementById('tz_doseVal');
+  const dose = parseFloat(inputEl.value) || 0;
+
+  // Atualiza seletor de preset se bater com o valor
+  const presetEl = document.getElementById('tz_preset');
+  const found = DOSES_PADRAO.find(d => Math.abs(d.mg - dose) < 0.05);
+  if (found) {
+    presetEl.value = found.mg.toFixed(1);
+  } else {
+    presetEl.value = 'custom';
+  }
+
+  // Cálculo baseado na proporção Tirzepatida 15mg/0.5mL (U-100: 50 UI = 15 mg)
+  let uiCalculado = Math.round((dose * 50) / 15);
+  let mlCalculado = (dose * 0.5) / 15;
+
+  if (dose <= 0) {
+    uiCalculado = 0;
+    mlCalculado = 0;
+  }
+
+  document.getElementById('tz_uiRes').textContent = `${uiCalculado} UI`;
+  document.getElementById('tz_volRes').textContent = `Volume em mL: ${mlCalculado.toFixed(2).replace('.',',')} mL`;
+
+  renderTable(dose);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  calcularUi();
+});
+</script>
+</body>
+</html>

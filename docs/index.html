@@ -29,29 +29,19 @@
   .pill { display:inline-block; padding:2px 10px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent); font-size:11px; font-weight:600; letter-spacing:.03em; }
   .btn-abrir { display:inline-block; margin-top:16px; padding:10px 20px; background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; border-radius:10px; font-weight:700; font-size:14px; text-decoration:none; transition:box-shadow .2s ease; }
   .btn-abrir:hover { box-shadow:0 6px 20px rgba(241,0,160,.5); }
-  .logo-white { filter: brightness(0) invert(1); }
 </style>
 </head>
 <body>
-
-<!-- CABEÇALHO COM LOGO TRATADA PARA COR BRANCA -->
-<div style="position:sticky;top:0;z-index:50;background:rgba(15,9,25,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
-  <div style="max-width:1100px;margin:0 auto;display:flex;padding:12px 20px;align-items:center;justify-content:center;">
-    <a href="./index.html" style="display:flex;align-items:center;">
-      <img src="../logo-m.svg" class="logo-white" alt="Logo" style="height:40px;width:auto;object-fit:contain;" onerror="this.onerror=null; this.src='../logo-m.svg/IMG_4915.svg';">
-    </a>
-  </div>
-</div>
 
 <div style="flex:1;max-width:1100px;margin:0 auto;padding:48px 20px 80px;background:radial-gradient(800px 400px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
 
   <header style="text-align:center;max-width:700px;margin:0 auto 48px;">
     <p class="pill" style="margin-bottom:14px;">USO INTERNO DA EQUIPE · NÃO COMPARTILHE COM CLIENTES</p>
     <h1 class="hfont" style="font-size:42px;line-height:1.1;font-weight:700;margin:0 0 12px;">
-      Central de <span style="color:var(--accent);">Ferramentas</span> de Venda
+      Painel de <span style="color:var(--accent);">Gestão & Vendas</span>
     </h1>
     <p style="color:var(--muted);font-size:16px;line-height:1.6;margin:0;">
-      Três ferramentas para precificar, comprar e vender eletrônicos com margem real.
+      Ferramentas para precificar, comprar, vender e calcular dosagens médicas com facilidade.
       Tudo roda no seu navegador — nenhum dado é salvo no servidor.
     </p>
   </header>
@@ -108,10 +98,38 @@
       <a class="btn-abrir" href="./scripts/">Abrir gerador →</a>
     </div>
 
-  </div>
+    <!-- Card 4: Tirzepatida -->
+    <div class="card" style="padding:28px;">
+      <div style="font-size:36px;margin-bottom:12px;">💉</div>
+      <span class="pill">Uso Médico</span>
+      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Calculadora de Tirzepatida</h2>
+      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
+        Calculadora de doses e conversão de volumetria para Tirzepatida 15mg/0,5mL em seringa de insulina U-100.
+      </p>
+      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
+        <li>Tabela posológica completa (0,5 mg a 15 mg)</li>
+        <li>Cálculo em tempo real de UI e volume (mL)</li>
+        <li>Pronto para impressão / PDF de prescrição</li>
+      </ul>
+      <a class="btn-abrir" href="./tirzepatida/">Abrir calculadora →</a>
+    </div>
 
-  <div style="margin-top:48px;padding:20px;border-radius:12px;background:var(--accent-soft);border-left:4px solid var(--accent);font-size:13px;color:var(--text);line-height:1.7;">
-    <strong>Como usar:</strong> A equipe e os clientes acessam diretamente pelo celular. Cada ferramenta é independente.
+    <!-- Card 5: Retatrutida -->
+    <div class="card" style="padding:28px;">
+      <div style="font-size:36px;margin-bottom:12px;">🧪</div>
+      <span class="pill">Uso Médico</span>
+      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Calculadora de Retatrutida</h2>
+      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
+        Conversão para Retatrutida 120mg/6mL (20mg/mL) com cálculo de UI em seringa U-100 e rendimento do frasco em semanas.
+      </p>
+      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
+        <li>Confirmação da dose de 2,5 mg = 12,5 UI (48 Semanas de uso)</li>
+        <li>Cálculo dinâmico da duração do frasco de 120mg</li>
+        <li>Relatório otimizado para paciente / PDF</li>
+      </ul>
+      <a class="btn-abrir" href="./retatrutida/">Abrir calculadora →</a>
+    </div>
+
   </div>
 
 </div>
@@ -125,7 +143,7 @@
       </span>
     </div>
     <p style="color:var(--muted);font-size:12px;margin:0;">
-      © 2026 Thiago M. Alta performance e código limpo na palma da mão.
+      © 2026 Central de Ferramentas. Todos os direitos reservados.
     </p>
   </div>
 </footer>
