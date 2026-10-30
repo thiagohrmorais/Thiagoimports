@@ -11,15 +11,15 @@
 <style>
   :root {
     --bg-dark: #07040d;
-    --glass-bg: rgba(22, 12, 38, 0.45);
-    --glass-border: rgba(241, 0, 160, 0.22);
-    --glass-glow: rgba(157, 78, 237, 0.15);
+    --glass-bg: rgba(22, 12, 38, 0.55);
+    --glass-border: rgba(241, 0, 160, 0.28);
     --text-primary: #f8f6fc;
     --text-muted: #b3a1d0;
     --accent-pink: #f100a0;
     --accent-purple: #9d4edd;
     --accent-cyan: #00f0ff;
     --accent-green: #25d366;
+    --shine-hue: 300deg;
   }
 
   * {
@@ -36,32 +36,38 @@
     display: flex; 
     flex-direction: column;
     overflow-x: hidden;
-    perspective: 1000px; /* Perspectiva 3D global para o giroscópio */
   }
 
   .hfont { font-family: 'Outfit', sans-serif; }
 
-  /* Glassmorphism Effect 3D */
+  /* Interactive Glassmorphism with Dynamic Color Shift */
   .ios-glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(24px) saturate(190%);
-    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6),
-                inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.6),
+                inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
     border-radius: 24px;
-    transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
-    transform-style: preserve-3d;
-    will-change: transform;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .ios-glass:hover, .ios-glass:active {
-    border-color: rgba(241, 0, 160, 0.5);
-    box-shadow: 0 20px 45px -5px rgba(241, 0, 160, 0.25),
-                inset 0 1px 2px 0 rgba(255, 255, 255, 0.25);
+  /* Shimmering Dynamic Color Overlay */
+  .ios-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                hsla(var(--shine-hue), 100%, 60%, 0.18), 
+                transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+    transition: background 0.15s ease-out;
   }
 
-  /* Animated Glowing Orbs com Parallax */
+  /* Ambient Glowing Orbs */
   .orb-container {
     position: fixed;
     top: 0;
@@ -70,7 +76,6 @@
     height: 100vh;
     pointer-events: none;
     z-index: 0;
-    transition: transform 0.2s ease-out;
   }
 
   .orb {
@@ -78,18 +83,19 @@
     border-radius: 50%;
     filter: blur(90px);
     pointer-events: none;
-    animation: floatOrb 12s ease-in-out infinite alternate;
+    will-change: transform;
+    animation: floatOrb 10s ease-in-out infinite alternate;
   }
-  .orb-1 { width: 320px; height: 320px; background: rgba(241,0,160,0.22); top: -80px; left: -60px; }
-  .orb-2 { width: 380px; height: 380px; background: rgba(157,78,237,0.22); top: 350px; right: -100px; animation-delay: -4s; }
-  .orb-3 { width: 300px; height: 300px; background: rgba(0,240,255,0.12); bottom: 100px; left: -50px; animation-delay: -8s; }
+  .orb-1 { width: 320px; height: 320px; background: hsla(var(--shine-hue), 100%, 50%, 0.25); top: -60px; left: -60px; }
+  .orb-2 { width: 380px; height: 380px; background: rgba(157,78,237,0.25); top: 40%; right: -80px; animation-delay: -4s; }
+  .orb-3 { width: 280px; height: 280px; background: rgba(0,240,255,0.18); bottom: -40px; left: -40px; animation-delay: -7s; }
 
   @keyframes floatOrb {
     0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(30px, 40px) scale(1.1); }
+    100% { transform: translate(25px, 30px) scale(1.1); }
   }
 
-  /* Shimmering iPhone Badge */
+  /* Badge Highlight */
   .iphone-badge {
     display: inline-flex;
     align-items: center;
@@ -104,47 +110,44 @@
     letter-spacing: .04em;
     text-transform: uppercase;
     box-shadow: 0 0 20px rgba(241, 0, 160, 0.25);
-    animation: pulseBadge 3s infinite ease-in-out;
-    cursor: pointer;
   }
 
-  @keyframes pulseBadge {
-    0%, 100% { box-shadow: 0 0 15px rgba(241, 0, 160, 0.2); }
-    50% { box-shadow: 0 0 28px rgba(241, 0, 160, 0.5); }
-  }
-
-  /* Micro-Feature Tags */
+  /* Feature Pills */
   .feature-pill {
     padding: 3px 9px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     font-size: 11px;
     color: var(--text-muted);
     font-weight: 600;
   }
 
-  /* Button Styling */
+  /* Interactive Buttons - High Touch Priority */
   .btn-ios {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     width: 100%;
-    padding: 14px 20px;
+    padding: 15px 20px;
     background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-    color: #fff;
+    color: #ffffff !important;
     border-radius: 16px;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 15px;
     text-decoration: none;
-    box-shadow: 0 8px 25px -5px rgba(241, 0, 160, 0.5);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 25px -4px rgba(241, 0, 160, 0.5);
+    position: relative;
+    z-index: 10; /* Ensures instant clicks */
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
   .btn-ios:active {
-    transform: scale(0.97);
-    box-shadow: 0 4px 15px -3px rgba(241, 0, 160, 0.4);
+    transform: scale(0.96) !important;
+    box-shadow: 0 4px 15px -2px rgba(241, 0, 160, 0.6);
   }
 
   .icon-glass {
@@ -159,38 +162,32 @@
     color: var(--accent-pink);
     box-shadow: 0 8px 20px -4px rgba(241, 0, 160, 0.25);
   }
-
-  /* Parallax Elements */
-  .tilt-target {
-    transition: transform 0.1s cubic-bezier(0.1, 0.8, 0.3, 1);
-    transform-style: preserve-3d;
-  }
 </style>
 </head>
-<body>
+<body id="interactiveBody">
 
-<!-- GLOWING BACKGROUND ORBS COM PARALLAX DE FUNDO -->
-<div class="orb-container" id="orbContainer">
+<!-- BACKGROUND LIGHTING -->
+<div class="orb-container">
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 </div>
 
-<div style="flex:1;max-width:1100px;margin:0 auto;padding:36px 16px 80px;width:100%;position:relative;z-index:1;">
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:36px 16px 80px;width:100%;position:relative;z-index:2;">
 
-  <!-- PROFILE HEADER (INSTAGRAM BIO LINK STYLE) -->
-  <header class="tilt-target" id="headerTilt" style="text-align:center;max-width:680px;margin:0 auto 40px;">
+  <!-- PROFILE HEADER -->
+  <header style="text-align:center;max-width:680px;margin:0 auto 36px;">
     
-    <!-- SELO DESTAQUE: FEITO NO IPHONE & GIROSCÓPIO -->
+    <!-- BADGE DESTAQUE -->
     <div style="margin-bottom:16px;">
-      <span class="iphone-badge" id="gyroBtn" onclick="requestGyroPermission()">
+      <span class="iphone-badge">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-        <span id="gyroText">100% Criado no iPhone · Giroscópio Ativo 📱</span>
+        <span>100% Criado no iPhone · Sem Computador 📱</span>
       </span>
     </div>
 
-    <!-- AVATAR COM GLOW -->
-    <div style="width:100px;height:100px;border-radius:50%;padding:3px;background:linear-gradient(135deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));margin:0 auto 16px;box-shadow:0 0 30px rgba(241,0,160,0.45);transition:transform 0.2s ease-out;" id="avatarTilt">
+    <!-- AVATAR -->
+    <div style="width:100px;height:100px;border-radius:50%;padding:3px;background:linear-gradient(135deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));margin:0 auto 16px;box-shadow:0 0 30px rgba(241,0,160,0.45);">
       <img src="https://ui-avatars.com/api/?name=Thiago+Morais&background=0d0714&color=f100a0&size=200&bold=true" alt="Thiago Morais" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
     </div>
 
@@ -202,25 +199,23 @@
       @thiagohrmorais · Inovação, Liderança & Tecnologia
     </p>
 
-    <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin:0 auto;max-width:540px;">
-      Hub interativo de aplicações web com resposta ao movimento espacial do iPhone. Projetado e construído <strong>100% no celular, sem computador</strong>.
+    <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin:0 auto 20px;max-width:540px;">
+      Plataforma interativa com resposta de iluminação e cores cintilantes ao movimentar seu aparelho.
     </p>
 
     <!-- BOTAO INSTAGRAM -->
-    <div style="margin-top:18px;">
-      <a href="https://instagram.com/thiagohrmorais" target="_blank" class="ios-glass" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;color:var(--text-primary);font-size:13px;font-weight:700;text-decoration:none;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        Acompanhar no Instagram
-      </a>
-    </div>
+    <a href="https://instagram.com/thiagohrmorais" target="_blank" class="ios-glass" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:99px;color:var(--text-primary);font-size:13px;font-weight:700;text-decoration:none;z-index:10;position:relative;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Acompanhar no Instagram
+    </a>
   </header>
 
-  <!-- APPS & TOOLS GRID -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;" id="cardsGrid">
+  <!-- APPS GRID -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
 
     <!-- APP 1: SIMULADOR IPHONE -->
-    <div class="ios-glass tilt-card" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
-      <div>
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="position:relative;z-index:2;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
           <div class="icon-glass">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
@@ -233,7 +228,6 @@
           Descubra instantaneamente o valor comercial do seu seminovo. Avalia bateria, conservação, estado da tela e gera proposta enviável via WhatsApp.
         </p>
 
-        <!-- RECURSOS DO APP -->
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
           <span class="feature-pill">⚡ Cálculo Automático</span>
           <span class="feature-pill">🛡️ Validação IMEI/iCloud</span>
@@ -248,8 +242,8 @@
     </div>
 
     <!-- APP 2: PROTOCOLO EMAGRECIMENTO -->
-    <div class="ios-glass tilt-card" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
-      <div>
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="position:relative;z-index:2;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
           <div class="icon-glass" style="color:var(--accent-cyan);border-color:rgba(0,240,255,0.35);background:rgba(0,240,255,0.12);">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -262,7 +256,6 @@
           Simulador biológico e metabólico. Calcula TMB, meta de calorias, macros de proteína, progressão contínua e dosagens medicamentosas pós-meta.
         </p>
 
-        <!-- RECURSOS DO APP -->
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
           <span class="feature-pill">📊 TMB & Macros</span>
           <span class="feature-pill">🏃 Fator Treino</span>
@@ -270,15 +263,15 @@
         </div>
       </div>
 
-      <a class="btn-ios" href="./emagrecimento/" style="background:linear-gradient(135deg, #00f0ff, #9d4edd);box-shadow:0 8px 25px -5px rgba(0,240,255,0.4);">
+      <a class="btn-ios" href="./emagrecimento/" style="background:linear-gradient(135deg, #00f0ff, #9d4edd);box-shadow:0 8px 25px -4px rgba(0,240,255,0.4);">
         <span>Montar Meu Protocolo</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
 
     <!-- APP 3: RETATRUTIDA -->
-    <div class="ios-glass tilt-card" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
-      <div>
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="position:relative;z-index:2;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
           <div class="icon-glass">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>
@@ -291,7 +284,6 @@
           Conversor oficial de dosagem para a apresentação 120mg/6mL (20mg/mL). Calcula UI exatas na seringa U-100 e a duração do frasco em semanas.
         </p>
 
-        <!-- RECURSOS DO APP -->
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
           <span class="feature-pill">💉 Conversão U-100</span>
           <span class="feature-pill">📅 Rendimento Semanal</span>
@@ -306,8 +298,8 @@
     </div>
 
     <!-- APP 4: TIRZEPATIDA -->
-    <div class="ios-glass tilt-card" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
-      <div>
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="position:relative;z-index:2;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
           <div class="icon-glass">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
@@ -320,7 +312,6 @@
           Guia de dosagem para a concentração 15mg/0,5mL. Tabela interativa para seringa de insulina (0,5mg até 15mg).
         </p>
 
-        <!-- RECURSOS DO APP -->
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
           <span class="feature-pill">🩸 Concentração 15mg/0.5mL</span>
           <span class="feature-pill">🎯 Tabela Interativa</span>
@@ -334,8 +325,8 @@
     </div>
 
     <!-- APP 5: CALCULADORA MARGEM -->
-    <div class="ios-glass tilt-card" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
-      <div>
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="position:relative;z-index:2;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
           <div class="icon-glass" style="color:var(--accent-green);border-color:rgba(37,211,102,0.35);background:rgba(37,211,102,0.12);">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -348,7 +339,6 @@
           Simulador financeiro completo. Calcula impostos, taxas de maquininha, frete/combustível e ponto de equilíbrio de vendas.
         </p>
 
-        <!-- RECURSOS DO APP -->
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
           <span class="feature-pill">📈 Ponto de Equilíbrio</span>
           <span class="feature-pill">💳 Repasse de Taxas</span>
@@ -356,15 +346,15 @@
         </div>
       </div>
 
-      <a class="btn-ios" href="./margem/" style="background:linear-gradient(135deg, #25d366, #9d4edd);box-shadow:0 8px 25px -5px rgba(37,211,102,0.4);">
+      <a class="btn-ios" href="./margem/" style="background:linear-gradient(135deg, #25d366, #9d4edd);box-shadow:0 8px 25px -4px rgba(37,211,102,0.4);">
         <span>Acessar Margem Completa</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
 
     <!-- APP 6: SCRIPTS -->
-    <div class="ios-glass tilt-card" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
-      <div>
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="position:relative;z-index:2;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
           <div class="icon-glass">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -377,7 +367,6 @@
           Crie abordagens comerciais de alta conversão, ganchos de atração e respostas para contorno de objeções em 1 clique.
         </p>
 
-        <!-- RECURSOS DO APP -->
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
           <span class="feature-pill">📋 Copia e Cola</span>
           <span class="feature-pill">💬 Whats & Direct</span>
@@ -396,7 +385,7 @@
 </div>
 
 <!-- FOOTER -->
-<footer style="position:relative;z-index:1;background:rgba(13, 7, 20, 0.8);backdrop-filter:blur(20px);border-top:1px solid var(--glass-border);padding:24px 20px;margin-top:auto;text-align:center;">
+<footer style="position:relative;z-index:2;background:rgba(13, 7, 20, 0.85);backdrop-filter:blur(20px);border-top:1px solid var(--glass-border);padding:24px 20px;margin-top:auto;text-align:center;">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;">
     <p style="color:var(--text-primary);font-size:13px;font-weight:700;margin:0;">
       Thiago Morais · Inovação & Soluções Interativas
@@ -407,92 +396,68 @@
   </div>
 </footer>
 
-<!-- ENGINE DE GIROSCÓPIO & PERSPECTIVA 3D DYNÂMICA -->
+<!-- ENGINE DE ILUMINAÇÃO & CORES CINTILANTES DE ALTA PERFORMANCE -->
 <script>
-let currentRotX = 0;
-let currentRotY = 0;
-let targetRotX = 0;
-let targetRotY = 0;
+let lastCall = 0;
 
-const orbContainer = document.getElementById('orbContainer');
-const headerTilt = document.getElementById('headerTilt');
-const avatarTilt = document.getElementById('avatarTilt');
-const cards = document.querySelectorAll('.tilt-card');
+// Reação Suave de Cores Cintilantes com Throttle (Sem crash)
+function handleMotion(event) {
+  const now = Date.now();
+  if (now - lastCall < 30) return; // Limita a 30fps para evitar travamento
+  lastCall = now;
 
-// Atualiza a posição de forma fluida via Animação de Frame
-function updateParallax() {
-  currentRotX += (targetRotX - currentRotX) * 0.08;
-  currentRotY += (targetRotY - currentRotY) * 0.08;
+  let beta = event.beta || 0;
+  let gamma = event.gamma || 0;
 
-  // 1. Mover fundo de luzes no sentido oposto
-  if (orbContainer) {
-    orbContainer.style.transform = `translate3d(${-currentRotY * 1.8}px, ${currentRotX * 1.8}px, 0)`;
-  }
+  // Calcula o ângulo em tom de cor HSL
+  let hue = Math.abs(Math.round((gamma * 4) + (beta * 2) + 280)) % 360;
+  document.documentElement.style.setProperty('--shine-hue', hue + 'deg');
 
-  // 2. Mover Header e Avatar
-  if (headerTilt) {
-    headerTilt.style.transform = `rotateX(${currentRotX * 0.4}deg) rotateY(${currentRotY * 0.4}deg)`;
-  }
-  if (avatarTilt) {
-    avatarTilt.style.transform = `translate3d(${currentRotY * 0.8}px, ${-currentRotX * 0.8}px, 20px)`;
-  }
+  // Mover o centro do brilho dos cartões
+  let posX = Math.max(10, Math.min(90, 50 + (gamma * 0.8)));
+  let posY = Math.max(10, Math.min(90, 50 + ((beta - 40) * 0.8)));
 
-  // 3. Inclinar os Cards em 3D
-  cards.forEach(card => {
-    card.style.transform = `rotateX(${currentRotX * 0.6}deg) rotateY(${currentRotY * 0.6}deg) translateZ(10px)`;
+  document.querySelectorAll('.ios-glass').forEach(card => {
+    card.style.setProperty('--mouse-x', posX + '%');
+    card.style.setProperty('--mouse-y', posY + '%');
   });
-
-  requestAnimationFrame(updateParallax);
 }
 
-// Handler de Orientação do Celular (Giroscópio / Acelerômetro)
-function handleOrientation(event) {
-  let beta = event.beta;   // Inclinação Frente / Trás (-180 a 180)
-  let gamma = event.gamma; // Inclinação Esquerda / Direita (-90 a 90)
+// Reação por Touch/Mouse em Telas
+window.addEventListener('touchmove', (e) => {
+  if (e.touches && e.touches[0]) {
+    let touch = e.touches[0];
+    let posX = (touch.clientX / window.innerWidth) * 100;
+    let posY = (touch.clientY / window.innerHeight) * 100;
+    let hue = Math.round((posX + posY) * 1.8) % 360;
 
-  if (beta !== null && gamma !== null) {
-    // Normalizar para centro confortável da postura com celular na mão (~45° de inclinação natural)
-    let normX = (beta - 45) * 0.35;
-    let normY = gamma * 0.35;
+    document.documentElement.style.setProperty('--shine-hue', hue + 'deg');
+    document.querySelectorAll('.ios-glass').forEach(card => {
+      card.style.setProperty('--mouse-x', posX + '%');
+      card.style.setProperty('--mouse-y', posY + '%');
+    });
+  }
+}, { passive: true });
 
-    // Limitar amplitude para manter elegância
-    targetRotX = Math.max(-15, Math.min(15, normX));
-    targetRotY = Math.max(-15, Math.min(15, normY));
+// Tenta iniciar a reação de cores ao carregar ou ao primeiro toque do usuário
+function initInteractivity() {
+  if (typeof DeviceOrientationEvent !== 'undefined') {
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission()
+        .then(state => {
+          if (state === 'granted') {
+            window.addEventListener('deviceorientation', handleMotion, true);
+          }
+        })
+        .catch(() => {});
+    } else {
+      window.addEventListener('deviceorientation', handleMotion, true);
+    }
   }
 }
 
-// Suporte para iOS 13+ (Permissão de Movimento em iPhones)
-function requestGyroPermission() {
-  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission()
-      .then(permissionState => {
-        if (permissionState === 'granted') {
-          window.addEventListener('deviceorientation', handleOrientation);
-          document.getElementById('gyroText').textContent = "100% Criado no iPhone · Giroscópio Ativo 📱";
-        } else {
-          document.getElementById('gyroText').textContent = "100% Criado no iPhone (Toque para Ativar 3D)";
-        }
-      })
-      .catch(console.error);
-  } else {
-    // Android e outros navegadores
-    window.addEventListener('deviceorientation', handleOrientation);
-  }
-}
-
-// Fallback para Mouse / Touch em Computadores/Desktop
-window.addEventListener('mousemove', (e) => {
-  const cx = window.innerWidth / 2;
-  const cy = window.innerHeight / 2;
-  targetRotY = ((e.clientX - cx) / cx) * 12;
-  targetRotX = -((e.clientY - cy) / cy) * 12;
-});
-
-// Inicialização
-if (window.DeviceOrientationEvent) {
-  window.addEventListener('deviceorientation', handleOrientation);
-}
-requestAnimationFrame(updateParallax);
+window.addEventListener('load', initInteractivity);
+window.addEventListener('touchstart', initInteractivity, { once: true });
 </script>
 
 </body>
