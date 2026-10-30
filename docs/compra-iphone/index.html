@@ -1,218 +1,126 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Autoavaliação de iPhone — thiagoimports</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-:root {
---bg: #0f0919;
---card: #1a102b;
---card-border: rgba(157, 78, 237, 0.2);
---text: #f5f0fb;
---muted: #a692c2;
---accent: #f100a0;
---accent-soft: rgba(241, 0, 160, 0.15);
---accent2: #9d4edd;
---danger: #ff4d6d;
---warn: #e0a94b;
---border: rgba(157, 78, 237, 0.25);
---input-bg: #140b24;
-}
-body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
-.hfont { font-family:"Cormorant Garamond",serif; }
-.card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 25px rgba(0,0,0,.4); }
-.num { font-variant-numeric:tabular-nums; }
-input[type=text], input[type=number], select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; transition:all .2s ease; }
-input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
-.outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
-.regra-box { background:var(--accent-soft); border-left:4px solid var(--accent); padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:16px; }
-.veredito { margin-top:12px; padding:12px; border-radius:10px; font-weight:700; font-size:15px; text-align:center; }
-.v-compre { background:rgba(157,78,237,.18); color:#c77dff; border:1px solid var(--accent2); }
-.v-negocie { background:rgba(224,169,75,.12); color:var(--warn); border:1px solid var(--warn); }
-.v-fuja { background:rgba(255,77,109,.12); color:var(--danger); border:1px solid var(--danger); }
-.checks { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
-.checks label { font-weight:400; font-size:13px; display:flex; align-items:center; gap:6px; margin:2px 0; }
-.checks input { width:auto; }
-.navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
-.navlink:hover { color:var(--text); background:rgba(255,255,255,.06); }
-.navlink.active { color:#fff; background:var(--accent); }
-.btn-wsp { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; background:#25d366; color:#000; border:none; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer; text-decoration:none; transition:transform .2s ease, box-shadow .2s ease; }
-.btn-wsp:hover { transform:scale(1.02); box-shadow:0 6px 20px rgba(37,211,102,.4); }
-@media (min-width:1024px){ .lg-grid { grid-template-columns:7fr 5fr !important; align-items:start; } }
-@media (min-width:640px){ .sm-grid-2 { grid-template-columns:1fr 1fr !important; } .sm-grid-3 { grid-template-columns:1fr 1fr 1fr !important; } }
-</style>
-</head>
-<body>
-<!-- TOPO APENAS COM A LOGO THIAGO IMPORTS -->
-<div style="position:sticky;top:0;z-index:50;background:rgba(15,9,25,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
-<div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-<div style="display:flex;align-items:center;">
-<a href="../" style="display:flex;align-items:center;">
-<img src="../../logo-imports.svg" alt="Logo" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-</a>
-</div>
-<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-<a class="navlink" href="../">← Início</a>
-<a class="navlink" href="../margem/">💰 Margem</a>
-<a class="navlink active" href="../compra-iphone/">📱 iPhone</a>
-<a class="navlink" href="../scripts/">✍️ Scripts</a>
-</div>
-</div>
-</div>
-<div style="flex:1;max-width:1100px;margin:0 auto;padding:32px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
-<header style="margin-bottom:20px;">
-<p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Pré-Avaliação Online · Cliente</p>
-<h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Simulador de Valor de <span style="color:var(--accent);">Troca/Venda</span></h1>
-<p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Responda às perguntas abaixo sobre o estado do seu iPhone para receber uma pré-avaliação instantânea. Ao finalizar, envie o resultado direto para o nosso WhatsApp para confirmar a avaliação presencial!</p>
-</header>
-<div class="regra-box"><strong>📌 IMPORTANTE:</strong> Os valores gerados são uma <strong>Pré-Avaliação</strong>. A proposta final e o pagamento são validados após os testes físicos em loja por nossa equipe (Pós-Avaliação).</div>
-<div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
-<!-- Formulário do Cliente -->
-<div style="display:flex;flex-direction:column;gap:16px;">
-<div class="card" style="padding:20px;">
-<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">Seus Dados</h2>
-<div><label class="fld" for="ip_nome">Seu Nome</label><input type="text" id="ip_nome" placeholder="Digite seu nome completo" oninput="calcIP()"></div>
-</div>
-<div class="card" style="padding:20px;">
-<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">1. Modelo e Armazenamento</h2>
-<div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:16px;">
-<div><label class="fld" for="ip_modelo">Modelo do iPhone</label>
-<select id="ip_modelo" onchange="calcIP()">
-<option value="1100">iPhone 11</option><option value="1500">iPhone 12</option><option value="1900" selected>iPhone 13</option><option value="2400">iPhone 13 Pro</option><option value="2300">iPhone 14</option><option value="3200">iPhone 14 Pro</option><option value="3600">iPhone 14 Pro Max</option><option value="2900">iPhone 15</option><option value="3900">iPhone 15 Pro</option><option value="4600">iPhone 15 Pro Max</option><option value="4200">iPhone 16</option><option value="5500">iPhone 16 Pro</option><option value="6200">iPhone 16 Pro Max</option><option value="6800">iPhone 17</option><option value="8800">iPhone 17 Pro</option><option value="10500">iPhone 17 Pro Max</option>
-</select></div>
-<div><label class="fld" for="ip_armaz">Armazenamento</label>
-<select id="ip_armaz" onchange="calcIP()">
-<option value="0.90">64 GB</option><option value="1.00" selected>128 GB</option><option value="1.08">256 GB</option><option value="1.18">512 GB</option><option value="1.28">1 TB</option>
-</select></div>
-</div>
-</div>
-<div class="card" style="padding:20px;">
-<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">2. Condição Estética</h2>
-<div style="display:flex;flex-direction:column;gap:12px;">
-<div><label class="fld" for="ip_tela">Estado da Tela Frontal</label><select id="ip_tela" onchange="calcIP()"><option value="1.00">Perfeita, sem riscos</option><option value="0.97">Riscos bem leves</option><option value="0.90">Riscos visíveis</option><option value="0.68">Trincada ou quebrada</option></select></div>
-<div><label class="fld" for="ip_vidro">Vidro Traseiro</label><select id="ip_vidro" onchange="calcIP()"><option value="1.00">Perfeito, sem trincos/marcas</option><option value="0.95">Arranhado</option><option value="0.75">Trincado / quebrado</option></select></div>
-<div><label class="fld" for="ip_marcas">Laterais e Estrutura</label><select id="ip_marcas" onchange="calcIP()"><option value="1.00">Como novo (sem marcas)</option><option value="0.95">Leves marcas de uso</option><option value="0.85">Amassados ou riscos profundos</option><option value="0.60">Estrutura torta</option></select></div>
-</div>
-</div>
-<div class="card" style="padding:20px;">
-<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">3. Saúde e Peças</h2>
-<div style="display:flex;flex-direction:column;gap:12px;">
-<div><label class="fld" for="ip_bateria">Saúde da Bateria (Ajustes > Bateria)</label><select id="ip_bateria" onchange="calcIP()"><option value="1.00">90% a 100%</option><option value="0.95">85% a 89%</option><option value="0.88">80% a 84%</option><option value="0.72">Abaixo de 80% / "Manutenção"</option></select></div>
-<div><label class="fld" for="ip_pecas">Alguma peça já foi trocada?</label><select id="ip_pecas" onchange="calcIP()"><option value="1.00">Não, todas as peças são originais de fábrica</option><option value="0.82">Sim (tela ou bateria não originais)</option><option value="0.62">Sim (múltiplas peças trocadas)</option></select></div>
-<div><label class="fld" for="ip_faceid">Face ID / Touch ID funciona?</label><select id="ip_faceid" onchange="calcIP()"><option value="1.00">Sim, funciona perfeitamente</option><option value="0.68">Não funciona</option></select></div>
-<div><label class="fld" for="ip_agua">Já teve contato com água / umidade?</label><select id="ip_agua" onchange="calcIP()"><option value="1.00">Nunca teve contato com água</option><option value="0.55">Sim, já molhou ou caiu na água</option></select></div>
-<div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:12px;">
-<div><label class="fld" for="ip_caixa">Acompanha caixa/cabo?</label><select id="ip_caixa" onchange="calcIP()"><option value="1.02">Caixa + cabo original</option><option value="1.00">Apenas o aparelho</option><option value="0.97">Aparelho sem nada</option></select></div>
-<div><label class="fld" for="ip_garant">Garantia Apple</label><select id="ip_garant" onchange="calcIP()"><option value="1.05">Sim, ainda na garantia Apple</option><option value="1.00">Não possui garantia</option></select></div>
-</div>
-</div>
-</div>
-</div>
-<!-- Resultados e Botão de Envio via WhatsApp -->
-<div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:70px;">
-<div class="outbox text-center" style="text-align:center;border-color:var(--accent);">
-<div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Estado Estimado do Aparelho</div>
-<div id="ip_scoreNum" class="num" style="font-size:40px;font-weight:800;margin-top:4px;color:var(--accent);">—</div>
-<div id="ip_scoreLabel" style="font-size:12px;margin-top:4px;font-weight:600;">—</div>
-</div>
-<div class="outbox" style="border-color:var(--accent);border-width:2px;text-align:center;">
-<div style="color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">VALOR ESTIMADO DA PRÉ-AVALIAÇÃO</div>
-<div id="ip_mMax" class="num" style="font-size:32px;font-weight:800;margin-top:4px;color:var(--accent);">—</div>
-<div style="color:var(--muted);font-size:12px;margin-top:4px;">Sujeito a verificação técnica em loja.</div>
-</div>
-<div class="card" style="padding:20px;text-align:center;">
-<h3 style="font-size:14px;font-weight:700;margin:0 0 8px;color:var(--text);">Pronto para enviar?</h3>
-<p style="color:var(--muted);font-size:12px;margin:0 0 16px;line-height:1.5;">Clique no botão abaixo para disparar o relatório da pré-avaliação diretamente para a nossa equipe no WhatsApp!</p>
-<a id="ip_wspBtn" href="#" target="_blank" class="btn-wsp">
-💬 Agendar Avaliação no WhatsApp
-</a>
-</div>
-<div class="card" style="padding:16px;">
-<h3 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px;">Resumo dos itens informados</h3>
-<div id="ip_resumo" class="num" style="color:var(--muted);font-size:12px;line-height:1.7;white-space:pre-line;">—</div>
-</div>
-</div>
-</div>
-<p style="color:var(--muted);font-size:11px;line-height:1.7;margin-top:24px;">* A simulação é um orçamento preliminar. A confirmação do pagamento e da troca ocorre mediante inspeção física dos componentes e consulta do IMEI na nossa loja física.</p>
-</div>
+<!-- ... existing code ... -->
 <!-- RODAPÉ EXPLICITANDO O DESENVOLVIMENTO VIA IPHONE SEM COMPUTADOR -->
 <footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
-<div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
-<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
-<span style="background:rgba(241,0,160,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
-📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
-</span>
-</div>
-<p style="color:var(--muted);font-size:12px;margin:0;">
-© 2026 thiagoimports. Todos os direitos reservados.
-</p>
-</div>
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
+      <span style="background:rgba(241,0,160,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
+        📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
+      </span>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin:0;">
+      © 2026 thiagoimports. Todos os direitos reservados.
+    </p>
+  </div>
 </footer>
+
 <script>
-// CONFIGURAÇÃO DO WHATSAPP DA EMPRESA (Ajuste o número aqui se necessário)
-const TELEFONE_EMPRESA = "5587920007963";
-function fmt(v){ if(!isFinite(v)||isNaN(v)) return '—'; const s=v<0?'− ':''; return s+'R$ '+Math.abs(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function num(id){ const e=document.getElementById(id); return e?(parseFloat(e.value)||0):0; }
-function set(id,val){ const e=document.getElementById(id); if(e) e.textContent=val; }
-function f(id){ const e=document.getElementById(id); return e?(parseFloat(e.value)||1):1; }
-function txtSel(id){ const e=document.getElementById(id); return e && e.options[e.selectedIndex] ? e.options[e.selectedIndex].text : ''; }
-function calcIP(){
-try{
-const nome = document.getElementById('ip_nome').value.trim() || 'Cliente';
-const modTexto = txtSel('ip_modelo');
-const base = num('ip_modelo');
-const armaz = f('ip_armaz');
-const armazTexto = txtSel('ip_armaz');
-const tela = f('ip_tela'), vidro = f('ip_vidro'), marcas = f('ip_marcas'),
-bateria = f('ip_bateria'), pecas = f('ip_pecas'), faceid = f('ip_faceid'),
-agua = f('ip_agua'), caixa = f('ip_caixa'), garant = f('ip_garant');
-const mercado = base * armaz;
-const apos20 = mercado * 0.80;
-const fat = tela * vidro * marcas * bateria * pecas * faceid * agua * caixa * garant;
-const precoMax = Math.round(apos20 * fat);
-const score = Math.min(100, Math.round(fat * 100));
-let scoreLabel = "";
-if(score >= 85) scoreLabel = "Excelente Estado";
-else if(score >= 70) scoreLabel = "Bom Estado";
-else if(score >= 50) scoreLabel = "Estado Regular";
-else scoreLabel = "Necessita de Reparos";
-set('ip_scoreNum', score + "/100");
-set('ip_scoreLabel', scoreLabel);
-set('ip_mMax', fmt(precoMax));
-const resumo = ⁠• Modelo: ${modTexto} (${armazTexto})\n⁠ +
-⁠• Tela: ${txtSel('ip_tela')}\n⁠ +
-⁠• Traseira: ${txtSel('ip_vidro')}\n⁠ +
-⁠• Estrutura: ${txtSel('ip_marcas')}\n⁠ +
-⁠• Bateria: ${txtSel('ip_bateria')}\n⁠ +
-⁠• Peças: ${txtSel('ip_pecas')}\n⁠ +
-⁠• Face ID: ${txtSel('ip_faceid')}\n⁠ +
-⁠• Acessórios: ${txtSel('ip_caixa')}⁠;
-set('ip_resumo', resumo);
-// Montar Mensagem Pré-Configurada para o WhatsApp
-const msgWsp = ⁠*PRÉ-AVALIAÇÃO DE IPHONE - THIAGOIMPORTS*\n\n⁠ +
-⁠👤 *Nome:* ${nome}\n⁠ +
-⁠📱 *Aparelho:* ${modTexto} (${armazTexto})\n⁠ +
-⁠📊 *Pontuação estimada:* ${score}/100 (${scoreLabel})\n\n⁠ +
-⁠*Detalhes informados:*\n⁠ +
-⁠- Tela: ${txtSel('ip_tela')}\n⁠ +
-⁠- Vidro Traseiro: ${txtSel('ip_vidro')}\n⁠ +
-⁠- Bateria: ${txtSel('ip_bateria')}\n⁠ +
-⁠- Peças: ${txtSel('ip_pecas')}\n⁠ +
-⁠- Face ID: ${txtSel('ip_faceid')}\n⁠ +
-⁠- Contato com água: ${txtSel('ip_agua')}\n⁠ +
-⁠- Caixa/Acessórios: ${txtSel('ip_caixa')}\n\n⁠ +
-⁠💰 *Valor estimado da Pré-Avaliação:* ${fmt(precoMax)}\n\n⁠ +
-⁠_Gostaria de agendar a pós-avaliação técnica em loja para confirmar o pagamento!_⁠;
-const wspUrl = ⁠https://wa.me/${TELEFONE_EMPRESA}?text=${encodeURIComponent(msgWsp)}⁠;
-document.getElementById('ip_wspBtn').href = wspUrl;
-}catch(err){ console.error('Erro no cálculo:', err); }
+// CONFIGURAÇÃO DO WHATSAPP DA EMPRESA (Ajuste o número com seu DDD)
+const TELEFONE_EMPRESA = "5581999999999"; 
+
+function fmt(v){ 
+  if(!isFinite(v) || isNaN(v)) return '—'; 
+  const s = v < 0 ? '− ' : ''; 
+  return s + 'R$ ' + Math.abs(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); 
 }
+
+function num(id){ 
+  const e = document.getElementById(id); 
+  if(!e) return 0;
+  const val = parseFloat(e.value);
+  return isNaN(val) ? 0 : val;
+}
+
+function set(id, val){ 
+  const e = document.getElementById(id); 
+  if(e) e.textContent = val; 
+}
+
+function f(id){ 
+  const e = document.getElementById(id); 
+  if(!e) return 1;
+  const val = parseFloat(e.value);
+  return isNaN(val) ? 1 : val;
+}
+
+function txtSel(id){ 
+  const e = document.getElementById(id); 
+  return e && e.options && e.options[e.selectedIndex] ? e.options[e.selectedIndex].text : ''; 
+}
+
+function calcIP(){
+  try{
+    const nomeEl = document.getElementById('ip_nome');
+    const nome = (nomeEl && nomeEl.value.trim()) ? nomeEl.value.trim() : 'Cliente';
+    
+    const modTexto = txtSel('ip_modelo');
+    const base = num('ip_modelo');
+    const armaz = f('ip_armaz');
+    const armazTexto = txtSel('ip_armaz');
+
+    const tela = f('ip_tela');
+    const vidro = f('ip_vidro');
+    const marcas = f('ip_marcas');
+    const bateria = f('ip_bateria');
+    const pecas = f('ip_pecas');
+    const faceid = f('ip_faceid');
+    const agua = f('ip_agua');
+    const caixa = f('ip_caixa');
+    const garant = f('ip_garant');
+
+    const mercado = base * armaz;
+    const apos20 = mercado * 0.80;
+    const fat = tela * vidro * marcas * bateria * pecas * faceid * agua * caixa * garant;
+    const precoMax = Math.round(apos20 * fat);
+
+    const score = Math.min(100, Math.round(fat * 100));
+    let scoreLabel = "";
+    if(score >= 85) scoreLabel = "Excelente Estado";
+    else if(score >= 70) scoreLabel = "Bom Estado";
+    else if(score >= 50) scoreLabel = "Estado Regular";
+    else scoreLabel = "Necessita de Reparos";
+
+    set('ip_scoreNum', score + "/100"); 
+    set('ip_scoreLabel', scoreLabel);
+    set('ip_mMax', fmt(precoMax));
+
+    const resumo = `• Modelo: ${modTexto} (${armazTexto})\n` +
+                   `• Tela: ${txtSel('ip_tela')}\n` +
+                   `• Traseira: ${txtSel('ip_vidro')}\n` +
+                   `• Estrutura: ${txtSel('ip_marcas')}\n` +
+                   `• Bateria: ${txtSel('ip_bateria')}\n` +
+                   `• Peças: ${txtSel('ip_pecas')}\n` +
+                   `• Face ID: ${txtSel('ip_faceid')}\n` +
+                   `• Acessórios: ${txtSel('ip_caixa')}`;
+    
+    set('ip_resumo', resumo);
+
+    // Montar Mensagem Pré-Configurada para o WhatsApp
+    const msgWsp = `*PRÉ-AVALIAÇÃO DE IPHONE - THIAGOIMPORTS*\n\n` +
+                   `👤 *Nome:* ${nome}\n` +
+                   `📱 *Aparelho:* ${modTexto} (${armazTexto})\n` +
+                   `📊 *Pontuação estimada:* ${score}/100 (${scoreLabel})\n\n` +
+                   `*Detalhes informados:*\n` +
+                   `- Tela: ${txtSel('ip_tela')}\n` +
+                   `- Vidro Traseiro: ${txtSel('ip_vidro')}\n` +
+                   `- Bateria: ${txtSel('ip_bateria')}\n` +
+                   `- Peças: ${txtSel('ip_pecas')}\n` +
+                   `- Face ID: ${txtSel('ip_faceid')}\n` +
+                   `- Contato com água: ${txtSel('ip_agua')}\n` +
+                   `- Caixa/Acessórios: ${txtSel('ip_caixa')}\n\n` +
+                   `💰 *Valor estimado da Pré-Avaliação:* ${fmt(precoMax)}\n\n` +
+                   `_Gostaria de agendar a pós-avaliação técnica em loja para confirmar o pagamento!_`;
+
+    const wspBtn = document.getElementById('ip_wspBtn');
+    if(wspBtn){
+      wspBtn.href = `https://wa.me/${TELEFONE_EMPRESA}?text=${encodeURIComponent(msgWsp)}`;
+    }
+
+  } catch(err){ 
+    console.error('Erro no cálculo do iPhone:', err); 
+  }
+}
+
+document.addEventListener('DOMContentLoaded', calcIP);
 calcIP();
 </script>
 </body>

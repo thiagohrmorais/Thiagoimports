@@ -1,149 +1,103 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerador de Scripts de Venda — Central de Ferramentas</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-:root {
---bg: #0f0919;
---card: #1a102b;
---card-border: rgba(157, 78, 237, 0.2);
---text: #f5f0fb;
---muted: #a692c2;
---accent: #f100a0;
---accent-soft: rgba(241, 0, 160, 0.15);
---accent2: #9d4edd;
---danger: #ff4d6d;
---border: rgba(157, 78, 237, 0.25);
---input-bg: #140b24;
-}
-body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
-.hfont { font-family:"Cormorant Garamond",serif; }
-.card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 25px rgba(0,0,0,.4); }
-.num { font-variant-numeric:tabular-nums; }
-input, select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; }
-select:focus, input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
-.navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
-.navlink:hover { color:var(--text); background:rgba(255,255,255,.06); }
-.navlink.active { color:#fff; background:var(--accent); }
-@media (min-width:1024px){ .lg-grid { grid-template-columns:5fr 7fr !important; align-items:start; } }
-</style>
-</head>
-<body>
-<!-- TOPO APENAS COM A LOGO THIAGO IMPORTS (SEM LETRAS) -->
-<div style="position:sticky;top:0;z-index:50;background:rgba(15,9,25,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
-<div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-<div style="display:flex;align-items:center;">
-<a href="../" style="display:flex;align-items:center;">
-<img src="../../logo-imports.svg" alt="Logo" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-</a>
-</div>
-<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-<a class="navlink" href="../">← Início</a>
-<a class="navlink" href="../margem/">💰 Margem</a>
-<a class="navlink" href="../compra-iphone/">📱 iPhone</a>
-<a class="navlink active" href="../scripts/">✍️ Scripts</a>
-</div>
-</div>
-</div>
-<div style="flex:1;max-width:1100px;margin:0 auto;padding:32px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
-<header style="margin-bottom:28px;">
-<p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Ferramenta 03 · Fechamento & atração</p>
-<h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Gerador de Scripts <span style="color:var(--accent);">Copia e Cola</span></h1>
-<p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Escolha o produto, o canal e o objetivo. O script é gerado na hora — é só copiar e colar.</p>
-</header>
-<div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
-<div class="card" style="padding:24px;display:flex;flex-direction:column;gap:16px;">
-<h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0;">Configurar script</h2>
-<div><label class="fld" for="sc_produto">Produto</label>
-<select id="sc_produto"><option>iPhone</option><option>MacBook</option><option>AirPods</option><option>Periféricos e carregadores</option></select></div>
-<div><label class="fld" for="sc_canal">Canal</label>
-<select id="sc_canal"><option value="whatsapp">WhatsApp — fechamento</option><option value="instagram">Instagram — Reels/Stories</option><option value="marketplace">Facebook Marketplace — anúncio</option><option value="tiktok">TikTok — vídeo curto</option></select></div>
-<div><label class="fld" for="sc_objetivo">Objetivo</label>
-<select id="sc_objetivo"><option value="lead">Atrair lead (gerar contato)</option><option value="fechar">Fechar venda quente</option><option value="followup">Follow-up — quem sumiu</option></select></div>
-<button onclick="gerarScript()" style="width:100%;padding:14px;background:linear-gradient(135deg, var(--accent), var(--accent2));color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;">GERAR SCRIPT</button>
-</div>
-<div class="card" style="padding:24px;">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-<h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;">Script pronto</h3>
-<button onclick="copiarScript(event)" style="padding:6px 14px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">📋 Copiar tudo</button>
-</div>
-<div id="sc_saida" style="white-space:pre-line;font-size:14px;line-height:1.7;color:var(--text);background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:16px;min-height:320px;">Clique em "GERAR SCRIPT" ao lado.</div>
-<p style="color:var(--muted);font-size:12px;margin:0 0 0;">Dica: altere o preço e o modelo antes de colar. Mantenha sempre a verdade sobre estado e garantia.</p>
-</div>
-</div>
-</div>
+<!-- ... existing code ... -->
 <!-- RODAPÉ EXPLICITANDO O DESENVOLVIMENTO VIA IPHONE SEM COMPUTADOR -->
 <footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
-<div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
-<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
-<span style="background:rgba(241,0,160,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
-📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
-</span>
-</div>
-<p style="color:var(--muted);font-size:12px;margin:0;">
-© 2026 thiagoimports. Todos os direitos reservados.
-</p>
-</div>
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
+      <span style="background:rgba(241,0,160,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
+        📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
+      </span>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin:0;">
+      © 2026 thiagoimports. Todos os direitos reservados.
+    </p>
+  </div>
 </footer>
+
 <script>
 function gerarScript(){
-const p=document.getElementById('sc_produto').value;
-const canal=document.getElementById('sc_canal').value;
-const obj=document.getElementById('sc_objetivo').value;
-let hooks=[],corpo="",cta="",o1="",o2="",o3="";
-if(canal==="whatsapp"){
-hooks=["Eai, tudo bem? Vi que você se interessou pelo "+p+". Ele tá disponível sim.","Olá! Vim do seu contato sobre o "+p+". Posso te passar todos os detalhes agora.","Fala! Vi seu interesse no "+p+". Separei uma condição especial para hoje."];
-corpo="O "+p+" está seminovo, testado, com nota e IMEI consultado. Aceito Pix e dinheiro na hora. Se fechar hoje, eu dou mais R￼
-￼50 de sinal e o resto na entrega.";
-o1="É original? — Original, com nota e IMEI consultado. Pode testar tudo na hora, se achar que não é original não leva.";
-o2="Tem garantia? — Garantia de 30 dias por escrito. Bateria e tela já testadas, 100%.";
-o3="Vou pensar. — Sem problema. Só te aviso que tem mais 2 pessoas interessadas e eu vendo por ordem de chegada. R￼
-} else if(canal==="instagram"){
-￼
-￼
-￼
-￼
-￼
-￼
-} else if(canal==="marketplace"){
-￼200 menos hoje","Vendo "+p+" por PREÇO DE USADO, mas estado de novo (olha as fotos)","URGENTE: "+p+" — preciso vender até amanhã, preço abaixo do mercado"];
-corpo=p+", seminovo, sem arranhões na tela, carregador e caixa originais. Vendo abaixo do mercado porque preciso fechar uma compra hoje e quero girar o dinheiro rápido. Primeiro que vier e levar, leva. Não reservo sem sinal. Aceito Pix e dinheiro na hora. Testa aí na sua frente, sem compromisso.";
-cta="Chama no WhatsApp agora (link na bio) e reserva o seu — se demorar, passa pra frente.";
-o1="É original? — Original, com nota e IMEI. Testa na hora.";
-o2="Tem garantia? — 30 dias por escrito.";
-o3="Aceita cartão? — Só Pix ou dinheiro na entrega. Por isso o preço é mais baixo.";
-} else {
-hooks=["POV: você acabou de encontrar o "+p+" mais barato da internet 👀","Eu pago muito menos por "+p+" do que você. Vou te mostrar onde.","Esse "+p+" custou menos de R$2 mil. Adivinha como?"];
-corpo="Sempre tenho "+p+" em estoque com preço de revendedor, seminovo testado e com garantia. A lista atualiza todo dia.";
-cta='Comenta "QUERO" que eu te mando o link da lista no direct.';
-o1="É golpe? — Não, entrego na hora e você testa antes de pagar.";
-o2="Tem em outra cidade? — Envio para todo Brasil com seguro.";
-o3="Aceita troca? — Só vendo, não troco.";
+  try {
+    const p = document.getElementById('sc_produto').value;
+    const canal = document.getElementById('sc_canal').value;
+    const obj = document.getElementById('sc_objetivo').value;
+    let hooks = [], corpo = "", cta = "", o1 = "", o2 = "", o3 = "";
+
+    if(canal === "whatsapp"){
+      hooks = [
+        "Eai, tudo bem? Vi que você se interessou pelo " + p + ". Ele tá disponível sim.",
+        "Olá! Vim do seu contato sobre o " + p + ". Posso te passar todos os detalhes agora.",
+        "Fala! Vi seu interesse no " + p + ". Separei uma condição especial para hoje."
+      ];
+      corpo = "O " + p + " está seminovo, testado, com nota e IMEI consultado. Aceito Pix e dinheiro na hora. Se fechar hoje, eu dou mais R$50 de desconto e entrego hoje mesmo na sua região.";
+      cta = "Quer que eu reserve pra você? Só R$50 de sinal e o resto na entrega.";
+      o1 = "É original? — Original, com nota e IMEI consultado. Pode testar tudo na hora, se achar que não é original não leva.";
+      o2 = "Tem garantia? — Garantia de 30 dias por escrito. Bateria e tela já testadas, 100%.";
+      o3 = "Vou pensar. — Sem problema. Só te aviso que tem mais 2 pessoas interessadas e eu vendo por ordem de chegada. R$50 de sinal reserva por 24h; se desistir, devolvo na hora.";
+    } else if(canal === "instagram"){
+      hooks = [
+        "Quanto você acha que eu paguei nesse " + p + "? Menos do que você imagina. Vou te mostrar.",
+        "Ninguém te conta o segredo de comprar " + p + " barato de verdade. Olha esse.",
+        "Se você tá pensando em comprar " + p + ", NÃO compra antes de ver esse vídeo."
+      ];
+      corpo = "Tenho sempre unidades de " + p + " com preço de revendedor, seminovos, testados e com garantia de 30 dias. Atualizo a lista todo dia.";
+      cta = "Chama no Direct ou no WhatsApp que eu passo a lista de hoje — link na bio.";
+      o1 = "É original? — Original, com nota. Posto vídeo testando antes de vender.";
+      o2 = "Por que tão barato? — Compro em lote e quero girar rápido, não porque tem problema.";
+      o3 = "Entrega em outra cidade? — Sim, envio para todo Brasil com seguro e rastreio.";
+    } else if(canal === "marketplace"){
+      hooks = [
+        p + " — MENOR PREÇO DA REGIÃO, levo R$200 menos hoje",
+        "Vendo " + p + " por PREÇO DE USADO, mas estado de novo (olha as fotos)",
+        "URGENTE: " + p + " — preciso vender até amanhã, preço abaixo do mercado"
+      ];
+      corpo = p + ", seminovo, sem arranhões na tela, carregador e caixa originais. Vendo abaixo do mercado porque preciso fechar uma compra hoje e quero girar o dinheiro rápido. Primeiro que vier e levar, leva. Não reservo sem sinal. Aceito Pix e dinheiro na hora. Testa aí na sua frente, sem compromisso.";
+      cta = "Chama no WhatsApp agora (link na bio) e reserva o seu — se demorar, passa pra frente.";
+      o1 = "É original? — Original, com nota e IMEI. Testa na hora.";
+      o2 = "Tem garantia? — 30 dias por escrito.";
+      o3 = "Aceita cartão? — Só Pix ou dinheiro na entrega. Por isso o preço é mais baixo.";
+    } else {
+      hooks = [
+        "POV: você acabou de encontrar o " + p + " mais barato da internet 👀",
+        "Eu pago muito menos por " + p + " do que você. Vou te mostrar onde.",
+        "Esse " + p + " custou menos de R$2 mil. Adivinha como?"
+      ];
+      corpo = "Sempre tenho " + p + " em estoque com preço de revendedor, seminovo testado e com garantia. A lista atualiza todo dia.";
+      cta = 'Comenta "QUERO" que eu te mando o link da lista no direct.';
+      o1 = "É golpe? — Não, entrego na hora e você testa antes de pagar.";
+      o2 = "Tem em outra cidade? — Envio para todo Brasil com seguro.";
+      o3 = "Aceita troca? — Só vendo, não troco.";
+    }
+
+    let intro = "";
+    if(obj === "lead") intro = "🎯 OBJETIVO: gerar contato. Use tom de curiosidade, não fale de preço no primeiro contato.\n\n";
+    else if(obj === "fechar") intro = "🔥 OBJETIVO: fechar venda quente. Seja direto, ofereça desconto de hoje e peça sinal.\n\n";
+    else intro = "⏰ OBJETIVO: follow-up. Seja leve, não pressione, reative o interesse.\n\n";
+
+    let saida = intro + "📌 3 GANCHOS (escolha um):\n1. " + hooks[0] + "\n2. " + hooks[1] + "\n3. " + hooks[2] + "\n\n📝 CORPO DA MENSAGEM / LEGENDA:\n" + corpo + "\n\n👉 CHAMADA PARA AÇÃO (CTA):\n" + cta + "\n\n🛡 MATRIZ DE OBJEÇÕES:\n• " + o1 + "\n• " + o2 + "\n• " + o3;
+
+    if(obj === "followup"){
+      saida += "\n\n💬 MENSAGENS DE FOLLOW-UP (1ª em 24h, 2ª em 3 dias, 3ª em 7 dias):\n1. Eai, só passando pra lembrar que o " + p + " ainda tá disponível. Se fechar hoje, mantenho o preço com desconto.\n2. Oi! Tudo bem? O " + p + " continua aqui. Se tiver dúvida sobre estado ou garantia, me fala que eu te mostro vídeo testando.\n3. Última mensagem, ok? O " + p + " vai sair do preço promocional amanhã. Se quiser garantir, é só chamar. Se não, te desejo ótima compra em outro lugar!";
+    }
+
+    const saidaEl = document.getElementById('sc_saida');
+    if(saidaEl) saidaEl.innerText = saida;
+  } catch(err) {
+    console.error('Erro ao gerar script:', err);
+  }
 }
-let intro="";
-if(obj==="lead") intro="🎯 OBJETIVO: gerar contato. Use tom de curiosidade, não fale de preço no primeiro contato.\n\n";
-else if(obj==="fechar") intro="🔥 OBJETIVO: fechar venda quente. Seja direto, ofereça desconto de hoje e peça sinal.\n\n";
-else intro="⏰ OBJETIVO: follow-up. Seja leve, não pressione, reative o interesse.\n\n";
-let saida=intro+"📌 3 GANCHOS (escolha um):\n1. "+hooks[0]+"\n2. "+hooks[1]+"\n3. "+hooks[2]+"\n\n📝 CORPO DA MENSAGEM / LEGENDA:\n"+corpo+"\n\n👉 CHAMADA PARA AÇÃO (CTA):\n"+cta+"\n\n🛡 MATRIZ DE OBJEÇÕES:\n• "+o1+"\n• "+o2+"\n• "+o3;
-if(obj==="followup"){
-saida+="\n\n💬 MENSAGENS DE FOLLOW-UP (1ª em 24h, 2ª em 3 dias, 3ª em 7 dias):\n1. Eai, só passando pra lembrar que o "+p+" ainda tá disponível. Se fechar hoje, mantenho o preço com desconto.\n2. Oi! Tudo bem? O "+p+" continua aqui. Se tiver dúvida sobre estado ou garantia, me fala que eu te mostro vídeo testando.\n3. Última mensagem, ok? O "+p+" vai sair do preço promocional amanhã. Se quiser garantir, é só chamar. Se não, te desejo ótima compra em outro lugar!";
-}
-document.getElementById('sc_saida').innerText=saida;
-}
+
 function copiarScript(ev){
-const txt=document.getElementById('sc_saida').innerText;
-navigator.clipboard.writeText(txt).then(()=>{
-const btn=ev.target; const original=btn.innerText;
-btn.innerText="✅ Copiado!"; setTimeout(()=>btn.innerText=original,1500);
-});
+  const txt = document.getElementById('sc_saida').innerText;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn = ev.target; 
+    const original = btn.innerText;
+    btn.innerText = "✅ Copiado!"; 
+    setTimeout(() => btn.innerText = original, 1500);
+  }).catch(err => {
+    console.error('Erro ao copiar:', err);
+  });
 }
+
+document.addEventListener('DOMContentLoaded', gerarScript);
 gerarScript();
 </script>
 </body>
