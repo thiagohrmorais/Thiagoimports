@@ -1,4 +1,89 @@
-<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Scripts de Venda — thiagoimports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0f0919; 
+    --card: #1a102b; 
+    --card-border: rgba(157, 78, 237, 0.2);
+    --text: #f5f0fb; 
+    --muted: #a692c2; 
+    --accent: #f100a0;
+    --accent-soft: rgba(241, 0, 160, 0.15); 
+    --accent2: #9d4edd; 
+    --danger: #ff4d6d;
+    --border: rgba(157, 78, 237, 0.25); 
+    --input-bg: #140b24;
+  }
+  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
+  .hfont { font-family:"Cormorant Garamond",serif; }
+  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 25px rgba(0,0,0,.4); }
+  .num { font-variant-numeric:tabular-nums; }
+  input, select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; }
+  select:focus, input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
+  .navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
+  .navlink:hover { color:var(--text); background:rgba(255,255,255,.06); }
+  .navlink.active { color:#fff; background:var(--accent); }
+  @media (min-width:1024px){ .lg-grid { grid-template-columns:5fr 7fr !important; align-items:start; } }
+</style>
+</head>
+<body>
+
+<!-- TOPO COM LOGO THIAGO IMPORTS (SEM LETRAS) -->
+<div style="position:sticky;top:0;z-index:50;background:rgba(15,9,25,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
+  <div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;">
+      <a href="../" style="display:flex;align-items:center;">
+        <img src="../../logo-imports.svg" alt="Logo" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+      </a>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+      <a class="navlink" href="../">← Início</a>
+      <a class="navlink" href="../margem/">💰 Margem</a>
+      <a class="navlink" href="../compra-iphone/">📱 iPhone</a>
+      <a class="navlink active" href="../scripts/">✍️ Scripts</a>
+    </div>
+  </div>
+</div>
+
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:32px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
+
+  <header style="margin-bottom:28px;">
+    <p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Ferramenta 03 · Fechamento & atração</p>
+    <h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Gerador de Scripts <span style="color:var(--accent);">Copia e Cola</span></h1>
+    <p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Escolha o produto, o canal e o objetivo. O script é gerado na hora — é só copiar e colar.</p>
+  </header>
+
+  <div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
+    <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+      <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0;">Configurar script</h2>
+      <div><label class="fld" for="sc_produto">Produto</label>
+        <select id="sc_produto" onchange="gerarScript()"><option>iPhone</option><option>MacBook</option><option>AirPods</option><option>Periféricos e carregadores</option></select></div>
+      <div><label class="fld" for="sc_canal">Canal</label>
+        <select id="sc_canal" onchange="gerarScript()"><option value="whatsapp">WhatsApp — fechamento</option><option value="instagram">Instagram — Reels/Stories</option><option value="marketplace">Facebook Marketplace — anúncio</option><option value="tiktok">TikTok — vídeo curto</option></select></div>
+      <div><label class="fld" for="sc_objetivo">Objetivo</label>
+        <select id="sc_objetivo" onchange="gerarScript()"><option value="lead">Atrair lead (gerar contato)</option><option value="fechar">Fechar venda quente</option><option value="followup">Follow-up — quem sumiu</option></select></div>
+      <button onclick="gerarScript()" style="width:100%;padding:14px;background:linear-gradient(135deg, var(--accent), var(--accent2));color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;">GERAR SCRIPT</button>
+    </div>
+
+    <div class="card" style="padding:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;">Script pronto</h3>
+        <button onclick="copiarScript(event)" style="padding:6px 14px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">📋 Copiar tudo</button>
+      </div>
+      <div id="sc_saida" style="white-space:pre-line;font-size:14px;line-height:1.7;color:var(--text);background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:16px;min-height:320px;">Clique em "GERAR SCRIPT" ao lado.</div>
+    </div>
+  </div>
+</div>
+
 <!-- RODAPÉ EXPLICITANDO O DESENVOLVIMENTO VIA IPHONE SEM COMPUTADOR -->
 <footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">

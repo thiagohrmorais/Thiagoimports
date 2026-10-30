@@ -1,4 +1,170 @@
-<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoavaliação de iPhone — thiagoimports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0f0919; 
+    --card: #1a102b; 
+    --card-border: rgba(157, 78, 237, 0.2);
+    --text: #f5f0fb; 
+    --muted: #a692c2; 
+    --accent: #f100a0;
+    --accent-soft: rgba(241, 0, 160, 0.15); 
+    --accent2: #9d4edd; 
+    --danger: #ff4d6d;
+    --border: rgba(157, 78, 237, 0.25); 
+    --input-bg: #140b24;
+  }
+  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
+  .hfont { font-family:"Cormorant Garamond",serif; }
+  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 25px rgba(0,0,0,.4); }
+  .num { font-variant-numeric:tabular-nums; }
+  input[type=text], input[type=number], select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; transition:all .2s ease; }
+  input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
+  .outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
+  .navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
+  .navlink:hover { color:var(--text); background:rgba(255,255,255,.06); }
+  .navlink.active { color:#fff; background:var(--accent); }
+  .btn-wsp { display:inline-block; width:100%; text-align:center; padding:14px; background:#25d366; color:#fff; border-radius:12px; font-weight:700; font-size:16px; text-decoration:none; transition:box-shadow .2s ease; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
+  .btn-wsp:hover { box-shadow: 0 6px 20px rgba(37,211,102,0.5); }
+  @media (min-width:1024px){ .lg-grid { grid-template-columns:7fr 5fr !important; align-items:start; } }
+  @media (min-width:640px){ .sm-grid-2 { grid-template-columns:1fr 1fr !important; } }
+</style>
+</head>
+<body>
+
+<!-- TOPO COM LOGO THIAGO IMPORTS (SEM LETRAS) -->
+<div style="position:sticky;top:0;z-index:50;background:rgba(15,9,25,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
+  <div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;">
+      <a href="../" style="display:flex;align-items:center;">
+        <img src="../../logo-imports.svg" alt="Logo" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+      </a>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+      <a class="navlink" href="../">← Início</a>
+      <a class="navlink" href="../margem/">💰 Margem</a>
+      <a class="navlink active" href="../compra-iphone/">📱 iPhone</a>
+      <a class="navlink" href="../scripts/">✍️ Scripts</a>
+    </div>
+  </div>
+</div>
+
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:32px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
+
+  <header style="margin-bottom:24px;">
+    <p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Pré-Avaliação Online</p>
+    <h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Simule o Valor do seu <span style="color:var(--accent);">iPhone</span></h1>
+    <p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Responda às perguntas abaixo sobre o estado do seu celular. O sistema calcula uma pré-avaliação instantânea para enviar direto ao nosso WhatsApp.</p>
+  </header>
+
+  <div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
+
+    <!-- FORMULÁRIO -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">Seus Dados</h2>
+        <div>
+          <label class="fld" for="ip_nome">Seu Nome</label>
+          <input type="text" id="ip_nome" placeholder="Digite seu nome" oninput="calcIP()">
+        </div>
+      </div>
+
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">1. Modelo e Armazenamento</h2>
+        <div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:16px;">
+          <div>
+            <label class="fld" for="ip_modelo">Modelo</label>
+            <select id="ip_modelo" onchange="calcIP()">
+              <option value="1100">iPhone 11</option>
+              <option value="1500">iPhone 12</option>
+              <option value="1900" selected>iPhone 13</option>
+              <option value="2400">iPhone 13 Pro</option>
+              <option value="2300">iPhone 14</option>
+              <option value="3200">iPhone 14 Pro</option>
+              <option value="3600">iPhone 14 Pro Max</option>
+              <option value="2900">iPhone 15</option>
+              <option value="3900">iPhone 15 Pro</option>
+              <option value="4600">iPhone 15 Pro Max</option>
+              <option value="4200">iPhone 16</option>
+              <option value="5500">iPhone 16 Pro</option>
+              <option value="6200">iPhone 16 Pro Max</option>
+            </select>
+          </div>
+          <div>
+            <label class="fld" for="ip_armaz">Armazenamento</label>
+            <select id="ip_armaz" onchange="calcIP()">
+              <option value="0.90">64 GB</option>
+              <option value="1.00" selected>128 GB</option>
+              <option value="1.08">256 GB</option>
+              <option value="1.18">512 GB</option>
+              <option value="1.28">1 TB</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">2. Estado Conservação Visual</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div><label class="fld" for="ip_tela">Tela Frontal</label><select id="ip_tela" onchange="calcIP()"><option value="1.00">Perfeita, sem marcas</option><option value="0.97">Micro riscos imperceptíveis</option><option value="0.90">Riscos visíveis</option><option value="0.68">Trincada ou trincos profundos</option></select></div>
+          <div><label class="fld" for="ip_vidro">Traseira</label><select id="ip_vidro" onchange="calcIP()"><option value="1.00">Perfeita</option><option value="0.95">Com pequenos riscos</option><option value="0.75">Trincada</option></select></div>
+          <div><label class="fld" for="ip_marcas">Laterais e Estrutura</label><select id="ip_marcas" onchange="calcIP()"><option value="1.00">Sem marcas de uso</option><option value="0.95">Marcas leves de uso</option><option value="0.85">Marcas / descascados fortes</option></select></div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">3. Bateria & Peças</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div><label class="fld" for="ip_bateria">Saúde da Bateria</label><select id="ip_bateria" onchange="calcIP()"><option value="1.00">90% a 100%</option><option value="0.95">85% a 89%</option><option value="0.88">80% a 84%</option><option value="0.72">Abaixo de 80% / Mensagem de Manutenção</option></select></div>
+          <div><label class="fld" for="ip_pecas">Troca de Peças anteriores</label><select id="ip_pecas" onchange="calcIP()"><option value="1.00">Tudo original de fábrica</option><option value="0.82">Uma peça trocada</option><option value="0.62">Duas ou mais peças trocadas</option></select></div>
+          <div><label class="fld" for="ip_faceid">Face ID / Touch ID</label><select id="ip_faceid" onchange="calcIP()"><option value="1.00">Funcionando perfeitamente</option><option value="0.68">Não funciona</option></select></div>
+          <div><label class="fld" for="ip_agua">Contato com Água/Umidade</label><select id="ip_agua" onchange="calcIP()"><option value="1.00">Nunca teve contato com água</option><option value="0.55">Já molhou / aviso de umidade</option></select></div>
+          <div><label class="fld" for="ip_caixa">Acompanha Caixinha e Cabo</label><select id="ip_caixa" onchange="calcIP()"><option value="1.02">Caixa + Cabo original</option><option value="1.00">Apenas o celular</option></select></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PAINEL RESULTADO -->
+    <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:70px;">
+      <div class="outbox text-center" style="text-align:center;border-color:var(--accent);">
+        <div style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Pontuação de Conservação</div>
+        <div id="ip_scoreNum" class="num" style="font-size:36px;font-weight:800;margin-top:4px;color:var(--accent);">—</div>
+        <div id="ip_scoreLabel" style="font-size:12px;margin-top:4px;font-weight:600;">—</div>
+      </div>
+
+      <div class="outbox" style="border-color:var(--accent);border-width:2px;background:rgba(241,0,160,0.05);">
+        <div style="color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">VALOR ESTIMADO DA PRÉ-AVALIAÇÃO</div>
+        <div id="ip_mMax" class="num" style="font-size:32px;font-weight:800;margin-top:4px;color:#fff;">—</div>
+        <div style="color:var(--muted);font-size:12px;margin-top:6px;line-height:1.4;">
+          *Estimativa base sujeita à pós-avaliação e testes técnicos na loja física.
+        </div>
+      </div>
+
+      <div class="card" style="padding:16px;">
+        <h3 style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 8px;">Resumo Selecionado</h3>
+        <div id="ip_resumo" class="num" style="color:var(--muted);font-size:12px;line-height:1.6;white-space:pre-line;">—</div>
+      </div>
+
+      <a id="ip_wspBtn" href="#" target="_blank" class="btn-wsp">
+        💬 Agendar Avaliação no WhatsApp
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
 <!-- RODAPÉ EXPLICITANDO O DESENVOLVIMENTO VIA IPHONE SEM COMPUTADOR -->
 <footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
   <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
@@ -14,7 +180,6 @@
 </footer>
 
 <script>
-// CONFIGURAÇÃO DO WHATSAPP DA EMPRESA (Ajuste o número com seu DDD)
 const TELEFONE_EMPRESA = "5581999999999"; 
 
 function fmt(v){ 
@@ -65,11 +230,10 @@ function calcIP(){
     const faceid = f('ip_faceid');
     const agua = f('ip_agua');
     const caixa = f('ip_caixa');
-    const garant = f('ip_garant');
 
     const mercado = base * armaz;
     const apos20 = mercado * 0.80;
-    const fat = tela * vidro * marcas * bateria * pecas * faceid * agua * caixa * garant;
+    const fat = tela * vidro * marcas * bateria * pecas * faceid * agua * caixa;
     const precoMax = Math.round(apos20 * fat);
 
     const score = Math.min(100, Math.round(fat * 100));
@@ -94,7 +258,6 @@ function calcIP(){
     
     set('ip_resumo', resumo);
 
-    // Montar Mensagem Pré-Configurada para o WhatsApp
     const msgWsp = `*PRÉ-AVALIAÇÃO DE IPHONE - THIAGOIMPORTS*\n\n` +
                    `👤 *Nome:* ${nome}\n` +
                    `📱 *Aparelho:* ${modTexto} (${armazTexto})\n` +
@@ -107,8 +270,8 @@ function calcIP(){
                    `- Face ID: ${txtSel('ip_faceid')}\n` +
                    `- Contato com água: ${txtSel('ip_agua')}\n` +
                    `- Caixa/Acessórios: ${txtSel('ip_caixa')}\n\n` +
-                   `💰 *Valor estimado da Pré-Avaliação:* ${fmt(precoMax)}\n\n` +
-                   `_Gostaria de agendar a pós-avaliação técnica em loja para confirmar o pagamento!_`;
+                   `💰 *Valor estimado:* ${fmt(precoMax)}\n\n` +
+                   `_Gostaria de agendar a pós-avaliação técnica na loja!_`;
 
     const wspBtn = document.getElementById('ip_wspBtn');
     if(wspBtn){
@@ -116,7 +279,7 @@ function calcIP(){
     }
 
   } catch(err){ 
-    console.error('Erro no cálculo do iPhone:', err); 
+    console.error('Erro no cálculo:', err); 
   }
 }
 
