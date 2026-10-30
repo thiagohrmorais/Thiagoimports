@@ -30,9 +30,6 @@
   input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
   label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
   .outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
-  .navlink { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; transition:all .2s ease; }
-  .navlink:hover { color:var(--text); background:rgba(255,255,255,.06); }
-  .navlink.active { color:#fff; background:var(--accent); }
   .btn-wsp { display:inline-block; width:100%; text-align:center; padding:14px; background:#25d366; color:#fff; border-radius:12px; font-weight:700; font-size:16px; text-decoration:none; transition:box-shadow .2s ease; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
   .btn-wsp:hover { box-shadow: 0 6px 20px rgba(37,211,102,0.5); }
   @media (min-width:1024px){ .lg-grid { grid-template-columns:7fr 5fr !important; align-items:start; } }
@@ -41,20 +38,12 @@
 </head>
 <body>
 
-<!-- TOPO COM LOGO THIAGO IMPORTS (SEM LETRAS) -->
+<!-- CABEÇALHO REFORMULADO: APENAS A LOGO (SEM BOTÕES) -->
 <div style="position:sticky;top:0;z-index:50;background:rgba(15,9,25,.90);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);">
-  <div style="max-width:1100px;margin:0 auto;display:flex;gap:8px;padding:12px 20px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-    <div style="display:flex;align-items:center;">
-      <a href="../" style="display:flex;align-items:center;">
-        <img src="../../logo-imports.svg" alt="Logo" style="height:36px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
-      </a>
-    </div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-      <a class="navlink" href="../">← Início</a>
-      <a class="navlink" href="../margem/">💰 Margem</a>
-      <a class="navlink active" href="../compra-iphone/">📱 iPhone</a>
-      <a class="navlink" href="../scripts/">✍️ Scripts</a>
-    </div>
+  <div style="max-width:1100px;margin:0 auto;display:flex;padding:12px 20px;align-items:center;justify-content:center;">
+    <a href="../" style="display:flex;align-items:center;">
+      <img src="../../logo-imports.svg" alt="Logo" style="height:40px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+    </a>
   </div>
 </div>
 
@@ -137,7 +126,7 @@
         </div>
       </div>
 
-      <!-- NOVO BLOCO: SEGURANÇA & DOCUMENTAÇÃO (IMEI E ICLOUD) -->
+      <!-- BLOCO: SEGURANÇA & DOCUMENTAÇÃO (IMEI E ICLOUD) -->
       <div class="card" style="padding:20px;border-color:var(--danger);">
         <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--danger);margin:0 0 12px;">🚨 Verificação Legal e iCloud</h2>
         <div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:16px;">
@@ -195,7 +184,7 @@
         <div style="color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">VALOR ESTIMADO DA PRÉ-AVALIAÇÃO</div>
         <div id="ip_mMax" class="num" style="font-size:32px;font-weight:800;margin-top:4px;color:#fff;">—</div>
         <div style="color:var(--muted);font-size:12px;margin-top:6px;line-height:1.4;">
-          *Estimativa base sujeita à pós-avaliação e testes técnicos na loja física.
+          *Estimativa oficial de compra da loja baseada na conservação e modelo informado. Sujeita à pós-avaliação presencial.
         </div>
       </div>
 
@@ -228,7 +217,7 @@
 </footer>
 
 <script>
-const TELEFONE_EMPRESA = "5587920007963"; 
+const TELEFONE_EMPRESA = "5581999999999"; 
 
 function fmt(v){ 
   if(!isFinite(v) || isNaN(v)) return '—'; 
@@ -285,11 +274,12 @@ function calcIP(){
     const caixa = f('ip_caixa');
 
     const mercado = base * armaz;
-    const apos20 = mercado * 0.80;
-    const fat = tela * vidro * marcas * bateria * pecas * faceid * agua * caixa;
+    const baseComDescontoMargem = mercado * 0.80; // Aplicação da margem interna de 20%
+    
+    const fatAvarias = tela * vidro * marcas * bateria * pecas * faceid * agua * caixa;
 
-    let precoMax = Math.round(apos20 * fat);
-    let score = Math.min(100, Math.round(fat * 100));
+    let precoMax = Math.round(baseComDescontoMargem * fatAvarias);
+    let score = Math.min(100, Math.round(fatAvarias * 100));
     let scoreLabel = "";
 
     // LÓGICA DE BLOQUEIO POR IMEI OU ICLOUD SUJO (R$ 50,00)
@@ -311,22 +301,20 @@ function calcIP(){
     set('ip_mMax', fmt(precoMax));
 
     const resumo = `• Modelo: ${modTexto} (${armazTexto})\n` +
-                   `• IMEI: ${txtSel('ip_imei')}\n` +
-                   `• iCloud: ${txtSel('ip_icloud')}\n` +
-                   `• Tela: ${txtSel('ip_tela')}\n` +
-                   `• Traseira: ${txtSel('ip_vidro')}\n` +
-                   `• Estrutura: ${txtSel('ip_marcas')}\n` +
-                   `• Bateria: ${txtSel('ip_bateria')}\n` +
+                   `• Status IMEI: ${txtSel('ip_imei')}\n` +
+                   `• Status iCloud: ${txtSel('ip_icloud')}\n` +
+                   `• Conservação Tela: ${txtSel('ip_tela')}\n` +
+                   `• Vidro Traseiro: ${txtSel('ip_vidro')}\n` +
+                   `• Saúde Bateria: ${txtSel('ip_bateria')}\n` +
                    `• Peças: ${txtSel('ip_pecas')}\n` +
-                   `• Face ID: ${txtSel('ip_faceid')}\n` +
-                   `• Acessórios: ${txtSel('ip_caixa')}`;
+                   `• Face ID: ${txtSel('ip_faceid')}`;
     
     set('ip_resumo', resumo);
 
     const msgWsp = `*PRÉ-AVALIAÇÃO DE IPHONE - THIAGOIMPORTS*\n\n` +
                    `👤 *Nome:* ${nome}\n` +
                    `📱 *Aparelho:* ${modTexto} (${armazTexto})\n` +
-                   `📊 *Pontuação estimada:* ${score}/100 (${scoreLabel})\n\n` +
+                   `📊 *Pontuação do Aparelho:* ${score}/100 (${scoreLabel})\n\n` +
                    `*Status e Conservação:*\n` +
                    `- Status IMEI: ${txtSel('ip_imei')}\n` +
                    `- Status iCloud: ${txtSel('ip_icloud')}\n` +
@@ -337,7 +325,7 @@ function calcIP(){
                    `- Face ID: ${txtSel('ip_faceid')}\n` +
                    `- Contato com água: ${txtSel('ip_agua')}\n` +
                    `- Caixa/Acessórios: ${txtSel('ip_caixa')}\n\n` +
-                   `💰 *Valor estimado:* ${fmt(precoMax)}\n\n` +
+                   `🏷️ *Valor da Pré-Avaliação:* ${fmt(precoMax)}\n\n` +
                    `_Gostaria de agendar a pós-avaliação técnica na loja!_`;
 
     const wspBtn = document.getElementById('ip_wspBtn');
