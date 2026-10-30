@@ -2,148 +2,386 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Central de Ferramentas — Precificação & Vendas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Thiago Morais | Hub de Soluções Interativas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
-    --bg: #0f0919; 
-    --card: #1a102b; 
-    --card-border: rgba(157, 78, 237, 0.2);
-    --text: #f5f0fb; 
-    --muted: #a692c2; 
-    --accent: #f100a0;
-    --accent-soft: rgba(241, 0, 160, 0.15); 
-    --accent2: #9d4edd; 
-    --danger: #ff4d6d;
-    --border: rgba(157, 78, 237, 0.25); 
-    --input-bg: #140b24;
+    --bg-dark: #07040d;
+    --glass-bg: rgba(22, 12, 38, 0.45);
+    --glass-border: rgba(241, 0, 160, 0.22);
+    --glass-glow: rgba(157, 78, 237, 0.15);
+    --text-primary: #f8f6fc;
+    --text-muted: #b3a1d0;
+    --accent-pink: #f100a0;
+    --accent-purple: #9d4edd;
+    --accent-cyan: #00f0ff;
+    --accent-green: #25d366;
   }
-  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
-  .hfont { font-family:"Cormorant Garamond",serif; }
-  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 25px rgba(0,0,0,.4); transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
-  .card:hover { transform:translateY(-4px); border-color:var(--accent); box-shadow:0 8px 30px rgba(241,0,160,0.25); }
-  .pill { display:inline-block; padding:2px 10px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent); font-size:11px; font-weight:600; letter-spacing:.03em; }
-  .btn-abrir { display:inline-block; margin-top:16px; padding:10px 20px; background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; border-radius:10px; font-weight:700; font-size:14px; text-decoration:none; transition:box-shadow .2s ease; }
-  .btn-abrir:hover { box-shadow:0 6px 20px rgba(241,0,160,.5); }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+
+  body { 
+    background: var(--bg-dark); 
+    color: var(--text-primary); 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    margin: 0; 
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  .hfont { font-family: 'Outfit', sans-serif; }
+
+  /* Glassmorphism Effect */
+  .ios-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6),
+                inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ios-glass:hover, .ios-glass:active {
+    border-color: rgba(241, 0, 160, 0.5);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 20px 45px -5px rgba(241, 0, 160, 0.25),
+                inset 0 1px 2px 0 rgba(255, 255, 255, 0.25);
+  }
+
+  /* Animated Glowing Orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    z-index: 0;
+    pointer-events: none;
+    animation: floatOrb 12s ease-in-out infinite alternate;
+  }
+  .orb-1 { width: 320px; height: 320px; background: rgba(241,0,160,0.22); top: -80px; left: -60px; }
+  .orb-2 { width: 380px; height: 380px; background: rgba(157,78,237,0.22); top: 350px; right: -100px; animation-delay: -4s; }
+  .orb-3 { width: 300px; height: 300px; background: rgba(0,240,255,0.12); bottom: 100px; left: -50px; animation-delay: -8s; }
+
+  @keyframes floatOrb {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 40px) scale(1.1); }
+  }
+
+  /* Shimmering iPhone Badge */
+  .iphone-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 99px;
+    background: rgba(241, 0, 160, 0.12);
+    border: 1px solid rgba(241, 0, 160, 0.4);
+    color: var(--accent-pink);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    box-shadow: 0 0 20px rgba(241, 0, 160, 0.25);
+    animation: pulseBadge 3s infinite ease-in-out;
+  }
+
+  @keyframes pulseBadge {
+    0%, 100% { box-shadow: 0 0 15px rgba(241, 0, 160, 0.2); }
+    50% { box-shadow: 0 0 28px rgba(241, 0, 160, 0.5); }
+  }
+
+  /* Micro-Feature Tags */
+  .feature-pill {
+    padding: 3px 9px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* Button Styling */
+  .btn-ios {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+    color: #fff;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    box-shadow: 0 8px 25px -5px rgba(241, 0, 160, 0.5);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-ios:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 15px -3px rgba(241, 0, 160, 0.4);
+  }
+
+  .icon-glass {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(241, 0, 160, 0.2), rgba(157, 78, 237, 0.2));
+    border: 1px solid rgba(241, 0, 160, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-pink);
+    box-shadow: 0 8px 20px -4px rgba(241, 0, 160, 0.25);
+  }
 </style>
 </head>
 <body>
 
-<div style="flex:1;max-width:1100px;margin:0 auto;padding:48px 20px 80px;background:radial-gradient(800px 400px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
+<!-- GLOWING BACKGROUND ORBS -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-  <header style="text-align:center;max-width:700px;margin:0 auto 48px;">
-    <p class="pill" style="margin-bottom:14px;">USO INTERNO DA EQUIPE · NÃO COMPARTILHE COM CLIENTES</p>
-    <h1 class="hfont" style="font-size:42px;line-height:1.1;font-weight:700;margin:0 0 12px;">
-      Painel de <span style="color:var(--accent);">Gestão & Vendas</span>
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:36px 16px 80px;width:100%;position:relative;z-index:1;">
+
+  <!-- PROFILE HEADER (INSTAGRAM BIO LINK STYLE) -->
+  <header style="text-align:center;max-width:680px;margin:0 auto 40px;">
+    
+    <!-- SELO DESTAQUE: FEITO NO IPHONE -->
+    <div style="margin-bottom:16px;">
+      <span class="iphone-badge">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        100% Criado no iPhone · Sem Computador
+      </span>
+    </div>
+
+    <!-- AVATAR COM GLOW -->
+    <div style="width:100px;height:100px;border-radius:50%;padding:3px;background:linear-gradient(135deg, var(--accent-pink), var(--accent-purple), var(--accent-cyan));margin:0 auto 16px;box-shadow:0 0 30px rgba(241,0,160,0.45);">
+      <img src="https://ui-avatars.com/api/?name=Thiago+Morais&background=0d0714&color=f100a0&size=200&bold=true" alt="Thiago Morais" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+    </div>
+
+    <h1 class="hfont" style="font-size:36px;line-height:1.1;font-weight:800;margin:0 0 6px;letter-spacing:-0.02em;">
+      Thiago Morais
     </h1>
-    <p style="color:var(--muted);font-size:16px;line-height:1.6;margin:0;">
-      Ferramentas para precificar, comprar, vender e calcular dosagens médicas com facilidade.
-      Tudo roda no seu navegador — nenhum dado é salvo no servidor.
+    
+    <p style="color:var(--accent-pink);font-size:14px;font-weight:700;letter-spacing:.02em;margin:0 0 12px;">
+      @thiagohrmorais · Inovação, Liderança & Tecnologia
     </p>
+
+    <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin:0 auto;max-width:540px;">
+      Hub interativo de aplicações web de alta precisão. Projetado e construído <strong>100% através de um celular iPhone</strong>, provando o poder da inovação mobile.
+    </p>
+
+    <!-- BOTAO INSTAGRAM -->
+    <div style="margin-top:18px;">
+      <a href="https://instagram.com/thiagohrmorais" target="_blank" class="ios-glass" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:99px;color:var(--text-primary);font-size:13px;font-weight:700;text-decoration:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Acompanhar no Instagram
+      </a>
+    </div>
   </header>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+  <!-- APPS & TOOLS GRID -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
 
-    <!-- Card 1: Margem -->
-    <div class="card" style="padding:28px;">
-      <div style="font-size:36px;margin-bottom:12px;">💰</div>
-      <span class="pill">Precificação de venda</span>
-      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Calculadora de Margem Completa</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Calcula custo total do pedido (produto + impostos + taxa de pagamento + plataforma + rota de entrega),
-        lucro líquido, preço de equilíbrio e preço para atingir sua margem-alvo.
-      </p>
-      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Comparativo por forma de pagamento (PIX vs cartão)</li>
-        <li>Custo de rota por km (combustível + desgaste + pedágio)</li>
-        <li>Opção para imprimir / salvar relatório em PDF</li>
-      </ul>
-      <a class="btn-abrir" href="./margem/">Abrir calculadora →</a>
+    <!-- APP 1: SIMULADOR IPHONE -->
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="icon-glass">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+          <span style="color:var(--accent-pink);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Trade-In</span>
+        </div>
+
+        <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Autoavaliação de iPhone</h2>
+        <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin:0 0 16px;">
+          Descubra instantaneamente o valor comercial do seu seminovo. Avalia bateria, conservação, estado da tela e gera proposta enviável via WhatsApp.
+        </p>
+
+        <!-- RECURSOS DO APP -->
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span class="feature-pill">⚡ Cálculo Automático</span>
+          <span class="feature-pill">🛡️ Validação IMEI/iCloud</span>
+          <span class="feature-pill">💬 Direct WhatsApp</span>
+        </div>
+      </div>
+
+      <a class="btn-ios" href="./compra-iphone/">
+        <span>Simular Valor do iPhone</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
 
-    <!-- Card 2: iPhone -->
-    <div class="card" style="padding:28px;">
-      <div style="font-size:36px;margin-bottom:12px;">📱</div>
-      <span class="pill">Avaliação de compra</span>
-      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Compra & Avaliação de iPhone</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Autoavaliação online para clientes com cálculo instantâneo, verificação de IMEI/iCloud e envio do relatório direto para o seu WhatsApp.
-      </p>
-      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Modelos do iPhone 8 até a linha 18 Pro Max</li>
-        <li>Trava de segurança para IMEI e iCloud preso</li>
-        <li>Agendamento e simulação direta pelo WhatsApp</li>
-      </ul>
-      <a class="btn-abrir" href="./compra-iphone/">Abrir avaliação →</a>
+    <!-- APP 2: PROTOCOLO EMAGRECIMENTO -->
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="icon-glass" style="color:var(--accent-cyan);border-color:rgba(0,240,255,0.35);background:rgba(0,240,255,0.12);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <span style="color:var(--accent-cyan);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Saúde & Esporte</span>
+        </div>
+
+        <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Protocolo de Emagrecimento</h2>
+        <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin:0 0 16px;">
+          Simulador biológico e metabólico. Calcula TMB, meta de calorias, macros de proteína, progressão contínua e dosagens medicamentosas pós-meta.
+        </p>
+
+        <!-- RECURSOS DO APP -->
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span class="feature-pill">📊 TMB & Macros</span>
+          <span class="feature-pill">🏃 Fator Treino</span>
+          <span class="feature-pill">🛡️ Dose Manutenção</span>
+        </div>
+      </div>
+
+      <a class="btn-ios" href="./emagrecimento/" style="background:linear-gradient(135deg, #00f0ff, #9d4edd);box-shadow:0 8px 25px -5px rgba(0,240,255,0.4);">
+        <span>Montar Meu Protocolo</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
 
-    <!-- Card 3: Scripts -->
-    <div class="card" style="padding:28px;">
-      <div style="font-size:36px;margin-bottom:12px;">✍️</div>
-      <span class="pill">Fechamento & atração</span>
-      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Gerador de Scripts de Venda</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Escolhe produto, canal e objetivo → gera 3 ganchos, copy, CTA e matriz de objeções
-        prontos para copiar e colar no WhatsApp, Instagram, Marketplace e TikTok.
-      </p>
-      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Scripts por canal (WhatsApp / Reels / Marketplace / TikTok)</li>
-        <li>Matriz de 3 objeções mais comuns por produto</li>
-        <li>Sequência de follow-up para quem sumiu (3 mensagens)</li>
-      </ul>
-      <a class="btn-abrir" href="./scripts/">Abrir gerador →</a>
+    <!-- APP 3: RETATRUTIDA -->
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="icon-glass">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>
+          </div>
+          <span style="color:var(--accent-purple);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Dosagem Clínica</span>
+        </div>
+
+        <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Calculadora Retatrutida</h2>
+        <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin:0 0 16px;">
+          Conversor oficial de dosagem para a apresentação 120mg/6mL (20mg/mL). Calcula UI exatas na seringa U-100 e a duração do frasco em semanas.
+        </p>
+
+        <!-- RECURSOS DO APP -->
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span class="feature-pill">💉 Conversão U-100</span>
+          <span class="feature-pill">📅 Rendimento Semanal</span>
+          <span class="feature-pill">📄 Exportar PDF</span>
+        </div>
+      </div>
+
+      <a class="btn-ios" href="./retatrutida/">
+        <span>Calcular Doses Retatrutida</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
 
-    <!-- Card 4: Tirzepatida -->
-    <div class="card" style="padding:28px;">
-      <div style="font-size:36px;margin-bottom:12px;">💉</div>
-      <span class="pill">Uso Médico</span>
-      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Calculadora de Tirzepatida</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Calculadora de doses e conversão de volumetria para Tirzepatida 15mg/0,5mL em seringa de insulina U-100.
-      </p>
-      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Tabela posológica completa (0,5 mg a 15 mg)</li>
-        <li>Cálculo em tempo real de UI e volume (mL)</li>
-        <li>Pronto para impressão / PDF de prescrição</li>
-      </ul>
-      <a class="btn-abrir" href="./tirzepatida/">Abrir calculadora →</a>
+    <!-- APP 4: TIRZEPATIDA -->
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="icon-glass">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+          <span style="color:var(--accent-pink);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Dosagem Clínica</span>
+        </div>
+
+        <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Calculadora Tirzepatida</h2>
+        <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin:0 0 16px;">
+          Guia de dosagem para a concentração 15mg/0,5mL. Tabela interativa para seringa de insulina (0,5mg até 15mg).
+        </p>
+
+        <!-- RECURSOS DO APP -->
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span class="feature-pill">🩸 Concentração 15mg/0.5mL</span>
+          <span class="feature-pill">🎯 Tabela Interativa</span>
+        </div>
+      </div>
+
+      <a class="btn-ios" href="./tirzepatida/">
+        <span>Calcular Doses Tirzepatida</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
 
-    <!-- Card 5: Retatrutida -->
-    <div class="card" style="padding:28px;">
-      <div style="font-size:36px;margin-bottom:12px;">🧪</div>
-      <span class="pill">Uso Médico</span>
-      <h2 class="hfont" style="font-size:26px;font-weight:700;margin:12px 0 8px;">Calculadora de Retatrutida</h2>
-      <p style="color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 10px;">
-        Conversão para Retatrutida 120mg/6mL (20mg/mL) com cálculo de UI em seringa U-100 e rendimento do frasco em semanas.
-      </p>
-      <ul style="color:var(--muted);font-size:13px;line-height:1.8;padding-left:18px;margin:0;">
-        <li>Confirmação da dose de 2,5 mg = 12,5 UI (48 Semanas de uso)</li>
-        <li>Cálculo dinâmico da duração do frasco de 120mg</li>
-        <li>Relatório otimizado para paciente / PDF</li>
-      </ul>
-      <a class="btn-abrir" href="./retatrutida/">Abrir calculadora →</a>
+    <!-- APP 5: CALCULADORA MARGEM -->
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="icon-glass" style="color:var(--accent-green);border-color:rgba(37,211,102,0.35);background:rgba(37,211,102,0.12);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <span style="color:var(--accent-green);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Comercial</span>
+        </div>
+
+        <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Precificação & Margem</h2>
+        <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin:0 0 16px;">
+          Simulador financeiro completo. Calcula impostos, taxas de maquininha, frete/combustível e ponto de equilíbrio de vendas.
+        </p>
+
+        <!-- RECURSOS DO APP -->
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span class="feature-pill">📈 Ponto de Equilíbrio</span>
+          <span class="feature-pill">💳 Repasse de Taxas</span>
+          <span class="feature-pill">🚗 Custo de Rota</span>
+        </div>
+      </div>
+
+      <a class="btn-ios" href="./margem/" style="background:linear-gradient(135deg, #25d366, #9d4edd);box-shadow:0 8px 25px -5px rgba(37,211,102,0.4);">
+        <span>Acessar Margem Completa</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- APP 6: SCRIPTS -->
+    <div class="ios-glass" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="icon-glass">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <span style="color:var(--accent-purple);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;">Vendas</span>
+        </div>
+
+        <h2 class="hfont" style="font-size:22px;font-weight:700;margin:0 0 8px;">Gerador de Scripts</h2>
+        <p style="color:var(--text-muted);font-size:13px;line-height:1.6;margin:0 0 16px;">
+          Crie abordagens comerciais de alta conversão, ganchos de atração e respostas para contorno de objeções em 1 clique.
+        </p>
+
+        <!-- RECURSOS DO APP -->
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span class="feature-pill">📋 Copia e Cola</span>
+          <span class="feature-pill">💬 Whats & Direct</span>
+          <span class="feature-pill">🎯 Quebra de Objeções</span>
+        </div>
+      </div>
+
+      <a class="btn-ios" href="./scripts/">
+        <span>Gerar Script Profissional</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
 
   </div>
 
 </div>
 
-<!-- RODAPÉ MOBILE-FIRST -->
-<footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
-  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
-    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
-      <span style="background:rgba(241,0,160,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
-        📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
-      </span>
-    </div>
-    <p style="color:var(--muted);font-size:12px;margin:0;">
-      © 2026 Central de Ferramentas. Todos os direitos reservados.
+<!-- FOOTER -->
+<footer style="position:relative;z-index:1;background:rgba(13, 7, 20, 0.8);backdrop-filter:blur(20px);border-top:1px solid var(--glass-border);padding:24px 20px;margin-top:auto;text-align:center;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;">
+    <p style="color:var(--text-primary);font-size:13px;font-weight:700;margin:0;">
+      Thiago Morais · Inovação & Soluções Interativas
+    </p>
+    <p style="color:var(--text-muted);font-size:11px;margin:0;">
+      📱 Desenvolvido inteiramente por um iPhone (Sem Computador) · © 2026
     </p>
   </div>
 </footer>

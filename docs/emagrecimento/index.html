@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocolo Personalizado de Emagrecimento & Metabolismo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0f0919; 
+    --card: #1a102b; 
+    --card-border: rgba(157, 78, 237, 0.2);
+    --text: #f5f0fb; 
+    --muted: #a692c2; 
+    --accent: #f100a0;
+    --accent-soft: rgba(241, 0, 160, 0.15); 
+    --accent2: #9d4edd; 
+    --danger: #ff4d6d;
+    --border: rgba(157, 78, 237, 0.25); 
+    --input-bg: #140b24;
+  }
+  body { background:var(--bg); color:var(--text); font-family:"Source Sans 3",sans-serif; margin:0; min-height:100vh; display: flex; flex-direction: column; }
+  .hfont { font-family:"Cormorant Garamond",serif; }
+  .card { background:var(--card); border:1px solid var(--card-border); border-radius:16px; box-shadow:0 4px 25px rgba(0,0,0,.4); }
+  .num { font-variant-numeric:tabular-nums; }
+  input[type=number], input[type=text], select { background-color:var(--input-bg); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text); width:100%; font-family:"Source Sans 3",sans-serif; font-size:15px; transition:all .2s ease; }
+  input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  label.fld { font-size:12px; color:var(--muted); display:block; margin-bottom:6px; font-weight:600; letter-spacing:.02em; }
+  .outbox { padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; }
+  .tbl-row { transition:background-color .15s ease; }
+  .tbl-row:hover { background-color:rgba(241,0,160,.08); }
+  .goal-reached { background-color:rgba(37, 211, 102, 0.12) !important; border-left:3px solid #25d366; }
+  @media (min-width:1024px){ .lg-grid { grid-template-columns:5fr 7fr !important; align-items:start; } }
+  @media (min-width:640px){ .sm-grid-2 { grid-template-columns:1fr 1fr !important; } }
+</style>
+</head>
+<body>
+
+<div style="flex:1;max-width:1100px;margin:0 auto;padding:48px 20px 80px;background:radial-gradient(1000px 500px at 80% -10%,rgba(241,0,160,.18),transparent 60%);width:100%;box-sizing:border-box;">
+
+  <header style="margin-bottom:24px;">
+    <p style="font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;">Uso Clínico, Nutricional & Esportivo</p>
+    <h1 class="hfont" style="font-size:34px;font-weight:700;margin:0;">Protocolo Metabólico & <span style="color:var(--accent);">Emagrecimento</span></h1>
+    <p style="color:var(--muted);font-size:14px;margin:8px 0 0;max-width:640px;line-height:1.6;">Simulador completo: dosagem medicamentosa, progressão contínua de peso, diretriz de manutenção, Taxa Metabólica Basal (TMB), meta calórica e prescrição de musculação.</p>
+  </header>
+
+  <!-- BARRA DE IMPRESSÃO -->
+  <div class="card" style="padding:16px 20px;margin-bottom:24px;border-left:4px solid var(--accent);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#fff;">📄 Prescrição Integrada do Paciente:</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px;">Contém orientações medicamentosas, estratégia alimentar de deficit e prescrição de musculação.</div>
+    </div>
+    <button onclick="window.print()" style="padding:8px 16px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+      🖨️ Imprimir / Salvar PDF
+    </button>
+  </div>
+
+  <div class="lg-grid" style="display:grid;grid-template-columns:1fr;gap:24px;align-items:start;">
+
+    <!-- FORMULÁRIO DE CONFIGURAÇÃO -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">1. Dados Biométricos & Paciente</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <label class="fld" for="em_nome">Nome do Paciente</label>
+            <input type="text" id="em_nome" placeholder="Digite o nome completo" oninput="calcProtocolo()">
+          </div>
+          <div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:12px;">
+            <div>
+              <label class="fld" for="em_sexo">Sexo Biológico</label>
+              <select id="em_sexo" onchange="calcProtocolo()">
+                <option value="M" selected>Masculino</option>
+                <option value="F">Feminino</option>
+              </select>
+            </div>
+            <div>
+              <label class="fld" for="em_idade">Idade (Anos)</label>
+              <input type="number" id="em_idade" value="35" step="1" min="15" max="100" oninput="calcProtocolo()">
+            </div>
+          </div>
+          <div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:12px;">
+            <div>
+              <label class="fld" for="em_peso">Peso Atual (kg)</label>
+              <input type="number" id="em_peso" value="95" step="0.5" min="30" max="300" oninput="calcProtocolo()">
+            </div>
+            <div>
+              <label class="fld" for="em_altura">Altura (cm)</label>
+              <input type="number" id="em_altura" value="175" step="1" min="100" max="230" oninput="calcProtocolo()">
+            </div>
+          </div>
+          <div>
+            <label class="fld" for="em_meta">Meta de Peso Desejada (kg)</label>
+            <input type="number" id="em_meta" value="78" step="0.5" min="30" max="250" oninput="calcProtocolo()">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">2. Medicamento & Titulação</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <label class="fld" for="em_med">Incretina / Peptídeo</label>
+            <select id="em_med" onchange="calcProtocolo()">
+              <option value="retatrutida" selected>Retatrutida 120mg/6mL (20mg/mL - Tríplice Agonista)</option>
+              <option value="tirzepatida">Tirzepatida 15mg/0,5mL (30mg/mL - Duplo Agonista)</option>
+              <option value="semaglutida">Semaglutida (Canetas Clicks / Ozempic / Wegovy)</option>
+            </select>
+          </div>
+          <div>
+            <label class="fld" for="em_perfil">Cronograma de Dosagem</label>
+            <select id="em_perfil" onchange="calcProtocolo()">
+              <option value="economico">🟢 Econômico / Conservador (Adaptação suave e menor custo)</option>
+              <option value="normal" selected>🟡 Normal / Padrão Clínico (Estudos Fase 3)</option>
+              <option value="rapido">🔴 Rápido / Agressivo (Titulação quinzenal acelerada)</option>
+            </select>
+          </div>
+          <div>
+            <label class="fld" for="em_duracao">Duração do Acompanhamento Visualizado</label>
+            <select id="em_duracao" onchange="calcProtocolo()">
+              <option value="12">12 Semanas (3 Meses)</option>
+              <option value="16" selected>16 Semanas (4 Meses)</option>
+              <option value="20">20 Semanas (5 Meses)</option>
+              <option value="24">24 Semanas (6 Meses)</option>
+              <option value="48">48 Semanas (~11 Meses)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 12px;">3. Treino & Nível de Atividade (Aceleração)</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <label class="fld" for="em_atividade">Frequência Semanal de Musculação</label>
+            <select id="em_atividade" onchange="calcProtocolo()">
+              <option value="1.2">Sedentário / Sem Musculação (Fator 1,0x)</option>
+              <option value="1.375">Leve (1 a 2x por semana - Fator 1,1x)</option>
+              <option value="1.55" selected>Moderado (3 a 4x por semana - Fator 1,2x - Recomendado)</option>
+              <option value="1.725">Intenso (5 a 6x por semana - Fator 1,35x - Aceleração Máxima)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAINEL DE METAS & IMC -->
+      <div class="outbox" style="border-color:var(--accent);background:rgba(241,0,160,0.05);">
+        <div style="color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">PROJEÇÃO DE RESULTADO CLÍNICO</div>
+        <div id="em_perdaTotal" class="num" style="font-size:32px;font-weight:800;margin-top:4px;color:#fff;">-17,0 kg (-17,9%)</div>
+        <div id="em_tempoMeta" class="num" style="color:#25d366;font-size:14px;margin-top:4px;font-weight:700;">🎯 Meta atingida na Semana 14 (~3,5 meses)</div>
+        <div id="em_imcRes" style="color:var(--muted);font-size:13px;margin-top:6px;line-height:1.4;">IMC Inicial: 31,0 (Obesidade I) → Final: 25,5 (Sobrepeso)</div>
+        <div id="em_fatorAcelera" class="num" style="color:var(--accent2);font-size:13px;margin-top:6px;font-weight:700;">🚀 Fator de Aceleração por Treino: +20% na taxa de queima</div>
+      </div>
+
+      <!-- PAINEL DE MANUTENÇÃO RECOMENDADA -->
+      <div class="outbox" style="border-color:#25d366;background:rgba(37,211,102,0.05);">
+        <div style="color:#25d366;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;">🛡️ RECOMENDAÇÃO DE MANUTENÇÃO (PÓS-META)</div>
+        <div id="em_doseManutencao" class="num" style="font-size:20px;font-weight:800;margin-top:4px;color:#fff;">—</div>
+        <div id="em_descManutencao" style="color:var(--muted);font-size:12px;margin-top:4px;line-height:1.4;">—</div>
+      </div>
+
+    </div>
+
+    <!-- DIRETRIA NUTRICIONAL, TREINO & TABELA -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      
+      <!-- CARD NUTRIÇÃO & MACROS -->
+      <div class="card" style="padding:20px;border-left:4px solid var(--accent2);">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);margin:0 0 12px;">📊 Prescrição Dietética & Macro Nutrientes</h2>
+        
+        <div class="sm-grid-2" style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:12px;">
+          <div class="outbox" style="padding:10px;">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;">Taxa Metabólica Basal (TMB)</div>
+            <div id="em_tmbVal" class="num" style="font-size:20px;font-weight:700;color:#fff;">1.920 kcal</div>
+          </div>
+          <div class="outbox" style="padding:10px;border-color:var(--accent);">
+            <div style="font-size:11px;color:var(--accent);text-transform:uppercase;font-weight:700;">Meta Calórica Diária (Deficit)</div>
+            <div id="em_metaCalVal" class="num" style="font-size:20px;font-weight:800;color:var(--accent);">1.850 kcal/dia</div>
+          </div>
+        </div>
+
+        <div style="background:var(--input-bg);padding:12px;border-radius:10px;font-size:13px;" class="num">
+          <div style="font-weight:700;color:var(--text);margin-bottom:6px;">Divisão Diária de Macronutrientes (Proteção Muscular):</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;">
+            <div style="background:rgba(241,0,160,0.1);padding:8px;border-radius:8px;border:1px solid rgba(241,0,160,0.3);">
+              <span style="color:var(--accent);font-weight:700;display:block;">Proteínas</span>
+              <strong id="em_protVal" style="font-size:15px;">190g</strong> <span style="font-size:11px;color:var(--muted);">(2.0g/kg)</span>
+            </div>
+            <div style="background:rgba(157,78,237,0.1);padding:8px;border-radius:8px;border:1px solid rgba(157,78,237,0.3);">
+              <span style="color:var(--accent2);font-weight:700;display:block;">Carbos</span>
+              <strong id="em_carbVal" style="font-size:15px;">140g</strong> <span style="font-size:11px;color:var(--muted);">(Moderado)</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:8px;border:1px solid var(--border);">
+              <span style="color:var(--muted);font-weight:700;display:block;">Gorduras</span>
+              <strong id="em_gordVal" style="font-size:15px;">58g</strong> <span style="font-size:11px;color:var(--muted);">(Saudáveis)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD PROTOCOLO DE TREINO DE MUSCULAÇÃO -->
+      <div class="card" style="padding:20px;border-left:4px solid #25d366;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#25d366;margin:0 0 8px;">🏋️ Recomendação de Treino & Preservação de Massa Magra</h2>
+        <p id="em_treinoDesc" style="color:var(--muted);font-size:13px;line-height:1.6;margin:0;">
+          —
+        </p>
+      </div>
+
+      <!-- CRONOGRAMA SEMANAL E CONVERSÃO -->
+      <div class="card" style="padding:20px;">
+        <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 14px;">Cronograma de Aplicações & Evolução Semanal</h2>
+        
+        <div style="overflow-x:auto;">
+          <table style="width:100%;font-size:13px;border-collapse:collapse;" class="num">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;">
+                <th style="text-align:left;padding:8px 6px;font-weight:700;">Semana</th>
+                <th style="text-align:center;padding:8px 6px;font-weight:700;">Dose (mg)</th>
+                <th style="text-align:center;padding:8px 6px;font-weight:700;color:var(--accent);">Medida Seringa/Caneta</th>
+                <th style="text-align:right;padding:8px 6px;font-weight:700;color:var(--accent2);">Peso Est. (kg)</th>
+              </tr>
+            </thead>
+            <tbody id="em_tableBody">
+              <!-- Gerado dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- RODAPÉ MOBILE-FIRST -->
+<footer style="background:var(--card);border-top:1px solid var(--border);padding:24px 20px;margin-top:auto;text-align:center;">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);flex-wrap:wrap;justify-content:center;">
+      <span style="background:rgba(241,0,160,0.15);padding:6px 14px;border-radius:20px;border:1px solid var(--accent);color:var(--accent);font-weight:600;">
+        📱 100% Mobile-First · Desenvolvido inteiramente por um iPhone (Sem Computador)
+      </span>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin:0;">
+      © 2026 Protocolo de Emagrecimento Médico. Todos os direitos reservados.
+    </p>
+  </div>
+</footer>
+
+<script>
+function calcImc(peso, alturaCm) {
+  if(!peso || !alturaCm) return { imc: 0, status: '—' };
+  const altM = alturaCm / 100;
+  const imc = peso / (altM * altM);
+  let status = '';
+  if(imc < 18.5) status = 'Abaixo do peso';
+  else if(imc < 25) status = 'Eutrófico (Normal)';
+  else if(imc < 30) status = 'Sobrepeso';
+  else if(imc < 35) status = 'Obesidade I';
+  else if(imc < 40) status = 'Obesidade II';
+  else status = 'Obesidade III';
+  return { imc: imc.toFixed(1).replace('.',','), status };
+}
+
+function calcTMB(peso, altura, idade, sexo) {
+  if (sexo === 'M') {
+    return (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
+  } else {
+    return (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
+  }
+}
+
+function getDoseEmedida(med, perfil, semana) {
+  let dose = 0;
+  let medida = '';
+
+  if (med === 'retatrutida') {
+    if (perfil === 'economico') {
+      if (semana <= 4) dose = 1.0;
+      else if (semana <= 12) dose = 2.5;
+      else if (semana <= 24) dose = 4.0;
+      else dose = 6.0;
+    } else if (perfil === 'normal') {
+      if (semana <= 4) dose = 2.0;
+      else if (semana <= 8) dose = 4.0;
+      else if (semana <= 12) dose = 6.0;
+      else if (semana <= 16) dose = 9.0;
+      else dose = 12.0;
+    } else {
+      if (semana <= 2) dose = 2.5;
+      else if (semana <= 4) dose = 5.0;
+      else if (semana <= 8) dose = 7.5;
+      else if (semana <= 12) dose = 10.0;
+      else dose = 12.0;
+    }
+    const ui = dose * 5;
+    const ml = dose / 20;
+    const uiStr = Number.isInteger(ui) ? ui : ui.toFixed(1).replace('.',',');
+    medida = `${uiStr} UI (${ml.toFixed(3).replace('.',',')} mL)`;
+
+  } else if (med === 'tirzepatida') {
+    if (perfil === 'economico') {
+      if (semana <= 6) dose = 2.5;
+      else if (semana <= 14) dose = 5.0;
+      else dose = 7.5;
+    } else if (perfil === 'normal') {
+      if (semana <= 4) dose = 2.5;
+      else if (semana <= 8) dose = 5.0;
+      else if (semana <= 12) dose = 7.5;
+      else if (semana <= 16) dose = 10.0;
+      else if (semana <= 20) dose = 12.5;
+      else dose = 15.0;
+    } else {
+      if (semana <= 2) dose = 2.5;
+      else if (semana <= 5) dose = 5.0;
+      else if (semana <= 8) dose = 7.5;
+      else if (semana <= 12) dose = 10.0;
+      else dose = 15.0;
+    }
+    const ui = Math.round((dose * 50) / 15);
+    const ml = (dose * 0.5) / 15;
+    medida = `${ui} UI (${ml.toFixed(2).replace('.',',')} mL)`;
+
+  } else {
+    if (perfil === 'economico') {
+      if (semana <= 6) dose = 0.25;
+      else if (semana <= 14) dose = 0.50;
+      else dose = 1.00;
+    } else if (perfil === 'normal') {
+      if (semana <= 4) dose = 0.25;
+      else if (semana <= 8) dose = 0.50;
+      else if (semana <= 12) dose = 1.00;
+      else if (semana <= 16) dose = 1.70;
+      else dose = 2.40;
+    } else {
+      if (semana <= 2) dose = 0.25;
+      else if (semana <= 5) dose = 0.50;
+      else if (semana <= 9) dose = 1.00;
+      else if (semana <= 13) dose = 1.70;
+      else dose = 2.40;
+    }
+    
+    if (dose === 0.25) medida = '18 Clicks (0,25 mg)';
+    else if (dose === 0.50) medida = '37 Clicks (0,50 mg)';
+    else if (dose === 1.00) medida = '74 Clicks (1,00 mg)';
+    else medida = `Caneta de ${dose.toString().replace('.',',')} mg`;
+  }
+
+  return { dose, medida };
+}
+
+function getRecomendacaoManutencao(med) {
+  if (med === 'retatrutida') {
+    return {
+      dose: "Dose de Manutenção: 2,5 mg a 4,0 mg / semana (12,5 a 20 UI)",
+      desc: "Redução do protocolo pleno para dose mínima e/ou ampliação do intervalo de aplicação para cada 10-14 dias para estabilizar o peso sem perda adicional excessiva de gordura."
+    };
+  } else if (med === 'tirzepatida') {
+    return {
+      dose: "Dose de Manutenção: 2,5 mg a 5,0 mg / semana (8 a 17 UI)",
+      desc: "Desmame gradual até a menor dose efetiva para manutenção do IMC alvo e controle do apetite sem induzir deficit calórico agressivo."
+    };
+  } else {
+    return {
+      dose: "Dose de Manutenção: 0,5 mg a 1,0 mg / semana (37 a 74 clicks)",
+      desc: "Manutenção com a dose média recomendada para sustentação de hábitos e prevenção do efeito sanfona."
+    };
+  }
+}
+
+function calcProtocolo() {
+  const peso = parseFloat(document.getElementById('em_peso').value) || 0;
+  const altura = parseFloat(document.getElementById('em_altura').value) || 0;
+  const idade = parseFloat(document.getElementById('em_idade').value) || 30;
+  const sexo = document.getElementById('em_sexo').value;
+  const meta = parseFloat(document.getElementById('em_meta').value) || 0;
+  const med = document.getElementById('em_med').value;
+  const perfil = document.getElementById('em_perfil').value;
+  const fatorAtividade = parseFloat(document.getElementById('em_atividade').value) || 1.2;
+  const semanasMax = parseInt(document.getElementById('em_duracao').value) || 16;
+
+  // 1. TMB E METAS NUTRICIONAIS
+  const tmb = calcTMB(peso, altura, idade, sexo);
+  const tdee = tmb * fatorAtividade;
+  const metaCalorica = Math.max(1200, Math.round(tdee - 500));
+
+  const gProteina = Math.round(peso * 2.0);
+  const gGordura = Math.round(peso * 0.7);
+  const calProtGord = (gProteina * 4) + (gGordura * 9);
+  const gCarbo = Math.max(50, Math.round((metaCalorica - calProtGord) / 4));
+
+  document.getElementById('em_tmbVal').textContent = `${Math.round(tmb).toLocaleString('pt-BR')} kcal`;
+  document.getElementById('em_metaCalVal').textContent = `${metaCalorica.toLocaleString('pt-BR')} kcal/dia`;
+  document.getElementById('em_protVal').textContent = `${gProteina}g`;
+  document.getElementById('em_carbVal').textContent = `${gCarbo}g`;
+  document.getElementById('em_gordVal').textContent = `${gGordura}g`;
+
+  // 2. FATOR DE TREINO
+  let aceleradorTreino = 1.0;
+  let treinoTexto = "";
+  if (fatorAtividade === 1.2) {
+    aceleradorTreino = 0.85;
+    treinoTexto = "⚠️ <strong>Atenção:</strong> Sem musculação, até 35% do peso perdido pode ser massa magra (músculo). Recomendado iniciar musculação leve.";
+  } else if (fatorAtividade === 1.375) {
+    aceleradorTreino = 1.0;
+    treinoTexto = "💪 <strong>Frequência Inicial (1 a 2x/sem):</strong> Ajuda na manutenção básica de força e massa magra.";
+  } else if (fatorAtividade === 1.55) {
+    aceleradorTreino = 1.2;
+    treinoTexto = "🔥 <strong>Padrão Otimizado (3 a 4x/sem - Divisão AB ou ABC):</strong> Preserva a massa magra, aumenta a sensibilidade à insulina e acelera a perda de gordura pura em até 20%.";
+  } else {
+    aceleradorTreino = 1.35;
+    treinoTexto = "🚀 <strong>Aceleração Máxima (5 a 6x/sem - Divisão ABCDE):</strong> Alta densidade metabólica. Garante recomposição corporal rápida.";
+  }
+  document.getElementById('em_treinoDesc').innerHTML = treinoTexto;
+  document.getElementById('em_fatorAcelera').textContent = `🚀 Fator de Aceleração do Treino: ${Math.round((aceleradorTreino - 1) * 100)}% de eficiência extra`;
+
+  // 3. PROGRESSÃO ARITMÉTICA CONTÍNUA DA PERDA DE PESO
+  let pesoAtualIter = peso;
+  let semanaAtingiuMeta = 0;
+  const tbody = document.getElementById('em_tableBody');
+  tbody.innerHTML = '';
+
+  let taxaBaseKgPorSemana = 1.0; 
+  if (med === 'retatrutida') taxaBaseKgPorSemana = perfil === 'economico' ? 0.9 : (perfil === 'normal' ? 1.3 : 1.6);
+  else if (med === 'tirzepatida') taxaBaseKgPorSemana = perfil === 'economico' ? 0.7 : (perfil === 'normal' ? 1.1 : 1.3);
+  else taxaBaseKgPorSemana = perfil === 'economico' ? 0.5 : (perfil === 'normal' ? 0.8 : 1.0);
+
+  const perdaSemanalEfetiva = taxaBaseKgPorSemana * aceleradorTreino;
+
+  for (let i = 1; i <= semanasMax; i++) {
+    const info = getDoseEmedida(med, perfil, i);
+    
+    // Progressão aritmética contínua sem interrupção
+    const fatorDose = info.dose / (med === 'retatrutida' ? 12.0 : (med === 'tirzepatida' ? 15.0 : 2.4));
+    const perdaDaSemana = perdaSemanalEfetiva * (0.6 + (fatorDose * 0.4));
+    
+    const pesoAnterior = pesoAtualIter;
+    pesoAtualIter -= perdaDaSemana;
+
+    let isGoalRow = false;
+    if (pesoAnterior >= meta && pesoAtualIter <= meta && semanaAtingiuMeta === 0) {
+      semanaAtingiuMeta = i;
+      isGoalRow = true;
+    }
+
+    const tr = document.createElement('tr');
+    tr.className = `tbl-row ${isGoalRow ? 'goal-reached' : ''}`;
+    tr.innerHTML = `
+      <td style="padding:8px 6px;border-bottom:1px solid var(--border);font-weight:600;">Semana ${i} ${isGoalRow ? '🎯' : ''}</td>
+      <td style="padding:8px 6px;text-align:center;border-bottom:1px solid var(--border);font-weight:600;">${info.dose.toString().replace('.',',')} mg</td>
+      <td style="padding:8px 6px;text-align:center;border-bottom:1px solid var(--border);font-weight:700;color:var(--accent);">${info.medida}</td>
+      <td style="padding:8px 6px;text-align:right;border-bottom:1px solid var(--border);font-weight:700;color:${isGoalRow ? '#25d366' : 'var(--accent2)'};">${pesoAtualIter.toFixed(1).replace('.',',')} kg</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  // 4. ATUALIZAÇÃO DOS RESULTADOS PRINCIPAIS E RECOMENDAÇÃO DE MANUTENÇÃO
+  const perdaTotalReal = peso - pesoAtualIter;
+  const pctReal = peso > 0 ? (perdaTotalReal / peso) * 100 : 0;
+  const imcInicial = calcImc(peso, altura);
+  const imcFinal = calcImc(pesoAtualIter, altura);
+
+  document.getElementById('em_perdaTotal').textContent = `-${perdaTotalReal.toFixed(1).replace('.',',')} kg (-${pctReal.toFixed(1).replace('.',',')}%)`;
+  
+  const tempoMetaEl = document.getElementById('em_tempoMeta');
+  if (semanaAtingiuMeta > 0) {
+    const meses = (semanaAtingiuMeta / 4).toFixed(1).replace('.',',');
+    tempoMetaEl.textContent = `🎯 Meta de ${meta.toString().replace('.',',')} kg Cruzada na Semana ${semanaAtingiuMeta} (~${meses} meses)`;
+    tempoMetaEl.style.color = "#25d366";
+  } else {
+    tempoMetaEl.textContent = `⏳ Em evolução contínua: falta(m) ${(pesoAtualIter - meta).toFixed(1).replace('.',',')} kg para cruzar a meta de ${meta.toString().replace('.',',')} kg`;
+    tempoMetaEl.style.color = "var(--accent)";
+  }
+
+  document.getElementById('em_imcRes').textContent = `IMC Inicial: ${imcInicial.imc} (${imcInicial.status}) → Projetado: ${imcFinal.imc} (${imcFinal.status})`;
+
+  // Atualiza diretriz de dose de manutenção
+  const manutencaoInfo = getRecomendacaoManutencao(med);
+  document.getElementById('em_doseManutencao').textContent = manutencaoInfo.dose;
+  document.getElementById('em_descManutencao').textContent = manutencaoInfo.desc;
+}
+
+document.addEventListener('DOMContentLoaded', calcProtocolo);
+</script>
+</body>
+</html>
