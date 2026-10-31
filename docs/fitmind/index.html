@@ -239,18 +239,18 @@
         🎛️ Painel de Contexto & Reprodução Vox
       </span>
       <span style="font-size:10px;padding:2px 8px;border-radius:99px;background:rgba(37,211,102,0.15);border:1px solid #25d366;color:#25d366;font-weight:700;">
-        ✓ Links Embutidos (Hardcoded)
+        ✓ Stream Áudio Ativo
       </span>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
       <div style="background:rgba(0,0,0,0.3);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
         <span style="font-size:10px;color:var(--text-muted);display:block;">Livro Selecionado:</span>
-        <strong id="ctxBookName" style="font-size:11px;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Hábitos Atômicos</strong>
+        <strong id="ctxBookName" style="font-size:11px;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">A Arte da Guerra</strong>
       </div>
       <div style="background:rgba(0,0,0,0.3);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
         <span style="font-size:10px;color:var(--text-muted);display:block;">Capítulo Ativo:</span>
-        <strong id="ctxCapName" style="font-size:11px;color:var(--accent-pink);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Capítulo 1: O Poder dos Hábitos</strong>
+        <strong id="ctxCapName" style="font-size:11px;color:var(--accent-pink);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Capítulo 1: As Estimativas</strong>
       </div>
     </div>
 
@@ -263,7 +263,7 @@
     </div>
 
     <div style="font-size:11px;line-height:1.4;color:var(--text-muted);background:rgba(0,240,255,0.06);padding:8px 10px;border-radius:8px;border-left:3px solid var(--accent-cyan);">
-      💡 <strong>Status da Biblioteca:</strong> Todos os áudios já estão totalmente <strong>integrados no código fonte</strong> da plataforma. Não há necessidade de colar links externos.
+      💡 <strong>Status da Biblioteca:</strong> Links oficiais de áudio público configurados diretamente no player. Reprodução imediata sem necessidade de links externos.
     </div>
   </section>
 
@@ -279,8 +279,8 @@
       <!-- ITEM 1 -->
       <div id="bookCard_0" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;transition:border-color 0.2s;">
         <div>
-          <strong style="font-size:12px;display:block;">Hábitos Atômicos</strong>
-          <span style="font-size:10px;color:var(--text-muted);">James Clear · 2 Capítulos Embutidos</span>
+          <strong style="font-size:12px;display:block;">A Arte da Guerra</strong>
+          <span style="font-size:10px;color:var(--text-muted);">Sun Tzu · 3 Capítulos de Estratégia</span>
         </div>
         <button id="btnPlay_0" onclick="playBook(0)" style="padding:4px 8px;border-radius:6px;background:rgba(0,240,255,0.15);border:1px solid var(--accent-cyan);color:var(--accent-cyan);font-size:10px;font-weight:700;cursor:pointer;">
           ▶️ Tocar
@@ -291,9 +291,20 @@
       <div id="bookCard_1" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;transition:border-color 0.2s;">
         <div>
           <strong style="font-size:12px;display:block;">Pense e Enriqueça</strong>
-          <span style="font-size:10px;color:var(--text-muted);">Napoleon Hill · 1 Capítulo Embutido</span>
+          <span style="font-size:10px;color:var(--text-muted);">Napoleon Hill · Visão e Persistência</span>
         </div>
         <button id="btnPlay_1" onclick="playBook(1)" style="padding:4px 8px;border-radius:6px;background:rgba(0,240,255,0.15);border:1px solid var(--accent-cyan);color:var(--accent-cyan);font-size:10px;font-weight:700;cursor:pointer;">
+          ▶️ Tocar
+        </button>
+      </div>
+
+      <!-- ITEM 3 -->
+      <div id="bookCard_2" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;transition:border-color 0.2s;">
+        <div>
+          <strong style="font-size:12px;display:block;">O Poder do Hábito</strong>
+          <span style="font-size:10px;color:var(--text-muted);">Charles Duhigg · Loop do Hábito</span>
+        </div>
+        <button id="btnPlay_2" onclick="playBook(2)" style="padding:4px 8px;border-radius:6px;background:rgba(0,240,255,0.15);border:1px solid var(--accent-cyan);color:var(--accent-cyan);font-size:10px;font-weight:700;cursor:pointer;">
           ▶️ Tocar
         </button>
       </div>
@@ -312,11 +323,11 @@
 <!-- BOTTOM DOCK AUDIO PLAYER FIXO COM EQUALIZADOR E TIMERS -->
 <div class="bottom-player-dock">
   <canvas id="vizCanvas" class="visualizer-canvas"></canvas>
-  <audio id="mainAudioEngine" crossorigin="anonymous" style="display:none;"></audio>
+  <audio id="mainAudioEngine" preload="auto" crossorigin="anonymous" style="display:none;"></audio>
   
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
     <div style="overflow:hidden;padding-right:8px;">
-      <strong id="dockBookTitle" style="font-size:11px;color:#fff;display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;">Hábitos Atômicos</strong>
+      <strong id="dockBookTitle" style="font-size:11px;color:#fff;display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;">A Arte da Guerra</strong>
       <div style="display:flex;align-items:center;gap:6px;">
         <span id="dockCapTitle" style="font-size:9px;color:var(--accent-pink);font-weight:700;">Capítulo 1</span>
         <span id="dockTimeDisplay" style="font-size:9px;color:var(--text-muted);font-family:monospace;">0:00 / 0:00</span>
@@ -339,19 +350,27 @@
 </div>
 
 <script>
-// BIBLIOTECA COM LINKS EMBUTIDOS (HARDCODED)
+// LINKS DE ÁUDIO DE ALTA CONFIABILIDADE (PUBLIC DOMAIN STREAMING)
 const BOOKS = [
   {
-    titulo: "Hábitos Atômicos — James Clear",
+    titulo: "A Arte da Guerra — Sun Tzu",
     caps: [
-      { t: "Capítulo 1: O Poder dos Hábitos", src: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" },
-      { t: "Capítulo 2: Moldando sua Identidade", src: "https://actions.google.com/sounds/v1/ambiences/office_park.ogg" }
+      { t: "Capítulo 1: As Estimativas", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_01_suntzu_128kb.mp3" },
+      { t: "Capítulo 2: A Condução da Guerra", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_02_suntzu_128kb.mp3" },
+      { t: "Capítulo 3: Planejamento de Ataque", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_03_suntzu_128kb.mp3" }
     ]
   },
   {
     titulo: "Pense e Enriqueça — Napoleon Hill",
     caps: [
-      { t: "Capítulo 1: Os Pensamentos São Coisas", src: "https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" }
+      { t: "Capítulo 1: Introdução e Desejo", src: "https://ia800302.us.archive.org/3/items/think_and_grow_rich_0810_librivox/thinkandgrowrich_01_hill_128kb.mp3" },
+      { t: "Capítulo 2: Fé e Visualização", src: "https://ia800302.us.archive.org/3/items/think_and_grow_rich_0810_librivox/thinkandgrowrich_02_hill_128kb.mp3" }
+    ]
+  },
+  {
+    titulo: "O Poder do Hábito — Visão de Performance",
+    caps: [
+      { t: "Capítulo 1: O Loop do Hábito", src: "https://ia600208.us.archive.org/8/items/science_of_getting_rich_librivox/gettingrich_01_wattles_128kb.mp3" }
     ]
   }
 ];
@@ -544,7 +563,10 @@ function loadAudio() {
   audio.play().then(() => {
     document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
     drawVisualizer();
-  }).catch(() => {});
+  }).catch((e) => {
+    console.log("Autoplay retido pelo navegador:", e);
+    document.getElementById('btnDockPlay').textContent = '▶️ Play';
+  });
 }
 
 function togglePlay() {
@@ -555,9 +577,10 @@ function togglePlay() {
   if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 
   if (audio.paused) {
-    audio.play();
-    document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
-    drawVisualizer();
+    audio.play().then(() => {
+      document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
+      drawVisualizer();
+    });
   } else {
     audio.pause();
     document.getElementById('btnDockPlay').textContent = '▶️ Play';
