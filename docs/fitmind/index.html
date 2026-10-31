@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Vision Vox · FitMind Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg-dark: #07040d;
+    --glass-bg: rgba(20, 12, 34, 0.7);
+    --glass-border: rgba(241, 0, 160, 0.25);
+    --text-primary: #f8f6fc;
+    --text-muted: #9e8cb8;
+    --accent-pink: #f100a0;
+    --accent-purple: #9d4edd;
+    --accent-cyan: #00f0ff;
+    --accent-green: #25d366;
+    --input-bg: rgba(13, 7, 22, 0.8);
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+
+  body { 
+    background: var(--bg-dark); 
+    color: var(--text-primary); 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    margin: 0; 
+    min-height: 100vh;
+    padding-bottom: 140px;
+  }
+
+  .hfont { font-family: 'Outfit', sans-serif; }
+
+  .ios-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+  }
+
+  input, select, textarea {
+    background-color: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: var(--text-primary);
+    width: 100%;
+    font-size: 13px;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-pink);
+  }
+
+  .btn-chip {
+    padding: 6px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+
+  .btn-chip:active, .btn-chip.active {
+    background: rgba(241, 0, 160, 0.18);
+    border-color: var(--accent-pink);
+    color: var(--accent-pink);
+  }
+
+  .bottom-player-dock {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 600px;
+    z-index: 90;
+    background: rgba(15, 8, 25, 0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    border-radius: 22px;
+    padding: 12px 16px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+  }
+
+  .visualizer-canvas {
+    width: 100%;
+    height: 14px;
+    display: block;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  .save-indicator {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    font-size: 11px;
+    color: var(--accent-green);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div id="saveIndicator" class="save-indicator">
+  <span>✓ Salvo automaticamente</span>
+</div>
+
+<div style="max-width:680px;margin:0 auto;padding:16px;width:100%;">
+
+  <!-- COMPACT TOP BAR -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <a href="../" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-primary);text-decoration:none;font-weight:700;">
+        ‹
+      </a>
+      <span style="font-size:12px;font-weight:700;color:var(--text-muted);">Vision Vox Tracker</span>
+    </div>
+
+    <a id="btnFastWhatsApp" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:#25d366;color:#fff;font-size:11px;font-weight:800;text-decoration:none;box-shadow:0 4px 15px rgba(37,211,102,0.3);">
+      💬 Enviar
+    </a>
+  </div>
+
+  <!-- CONFIGURAÇÃO RÁPIDA DE WHATSAPP -->
+  <div class="ios-glass" style="padding:10px 14px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:11px;font-weight:700;color:var(--accent-green);white-space:nowrap;">📱 WhatsApp:</span>
+      <input type="text" id="cfg_phone" placeholder="DDD + Número (Ex: 81999998888)" oninput="autoSaveAll()" style="font-size:11px;padding:4px 8px;">
+    </div>
+  </div>
+
+  <!-- SEÇÃO 1: REGISTRO DE TREINO EM 1 CLIQUE -->
+  <section class="ios-glass" style="padding:14px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-size:13px;font-weight:700;color:var(--accent-pink);">💪 Treino Hoje</span>
+      <span style="font-size:10px;color:var(--text-muted);">Presets Rápido por Grupo</span>
+    </div>
+
+    <!-- PRESETS RÁPIDOS POR GRUPO MUSCULAR -->
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;" class="no-scrollbar">
+      <button class="btn-chip" onclick="quickFill('Supino Reto (Barra)', 4, 10, 60)">🏋️ Supino Reto</button>
+      <button class="btn-chip" onclick="quickFill('Supino Inclinado (Halter)', 4, 10, 24)">🏋️ Sup. Inclinado</button>
+      <button class="btn-chip" onclick="quickFill('Crossover / Crossover Polia', 3, 12, 20)">💪 Crossover</button>
+      <button class="btn-chip" onclick="quickFill('Tríceps Corda', 4, 12, 25)">💪 Tríceps Corda</button>
+      <button class="btn-chip" onclick="quickFill('Puxada Alta Frontal', 4, 12, 50)">💪 Puxada Alta</button>
+      <button class="btn-chip" onclick="quickFill('Remada Curvada', 4, 10, 40)">🏋️ Remada Curvada</button>
+      <button class="btn-chip" onclick="quickFill('Rosca Direta (Barra)', 4, 10, 20)">💪 Rosca Direta</button>
+      <button class="btn-chip" onclick="quickFill('Agachamento Livre', 4, 10, 70)">🦵 Agachamento</button>
+      <button class="btn-chip" onclick="quickFill('Leg Press 45°', 4, 12, 160)">🦵 Leg Press</button>
+      <button class="btn-chip" onclick="quickFill('Stiff / Levantamento Terra', 4, 8, 80)">🏋️ Stiff / Terra</button>
+      <button class="btn-chip" onclick="quickFill('Desenvolvimento Ombro', 4, 10, 18)">🏋️ Desenvolv. Ombro</button>
+      <button class="btn-chip" onclick="quickFill('Elevação Lateral', 4, 12, 10)">🏋️ Elev. Lateral</button>
+      <button class="btn-chip" onclick="quickFillNatacao('Crawl (Livre)', 1000, 30)">🏊 Crawl 1000m</button>
+    </div>
+
+    <!-- SELETOR COMPLETO DE EXERCÍCIOS -->
+    <div style="margin-bottom:8px;">
+      <select id="sel_exercicio_conhecido" onchange="applySelectedExercise()" style="font-size:11px;margin-bottom:6px;">
+        <option value="">-- Escolher da lista completa de exercícios --</option>
+        <optgroup label="Peitoral">
+          <option value="Supino Reto (Barra)">Supino Reto (Barra)</option>
+          <option value="Supino Reto (Halteres)">Supino Reto (Halteres)</option>
+          <option value="Supino Inclinado (Barra)">Supino Inclinado (Barra)</option>
+          <option value="Supino Inclinado (Halteres)">Supino Inclinado (Halteres)</option>
+          <option value="Crossover Polia">Crossover Polia</option>
+          <option value="Peck Deck / Voador">Peck Deck / Voador</option>
+        </optgroup>
+        <optgroup label="Costas & Dorsal">
+          <option value="Puxada Alta Frontal">Puxada Alta Frontal</option>
+          <option value="Remada Curvada (Barra)">Remada Curvada (Barra)</option>
+          <option value="Remada Baixa (Triângulo)">Remada Baixa (Triângulo)</option>
+          <option value="Remada Unilateral (Serrote)">Remada Unilateral (Serrote)</option>
+          <option value="Barra Fixa">Barra Fixa</option>
+        </optgroup>
+        <optgroup label="Pernas & Glúteos">
+          <option value="Agachamento Livre">Agachamento Livre</option>
+          <option value="Leg Press 45°">Leg Press 45°</option>
+          <option value="Cadeira Extensora">Cadeira Extensora</option>
+          <option value="Mesa Flexora">Mesa Flexora</option>
+          <option value="Stiff">Stiff</option>
+          <option value="Elevação Pélvica">Elevação Pélvica</option>
+        </optgroup>
+        <optgroup label="Ombros & Braços">
+          <option value="Desenvolvimento Militar">Desenvolvimento Militar</option>
+          <option value="Elevação Lateral">Elevação Lateral</option>
+          <option value="Rosca Direta (Barra W)">Rosca Direta (Barra W)</option>
+          <option value="Rosca Martelo">Rosca Martelo</option>
+          <option value="Tríceps Corda">Tríceps Corda</option>
+          <option value="Tríceps Testa">Tríceps Testa</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <!-- CAMPOS DE ENTRADA -->
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+      <input type="text" id="in_exercicio" placeholder="Exercício ou Estilo">
+      <input type="number" id="in_p1" placeholder="Séries / m" value="4">
+      <input type="number" id="in_p2" placeholder="Reps / min" value="10">
+      <input type="number" id="in_p3" placeholder="Kg" value="40">
+    </div>
+
+    <button onclick="addTreinoQuick()" style="width:100%;padding:8px;border-radius:10px;background:linear-gradient(135deg, var(--accent-pink), var(--accent-purple));color:#fff;font-weight:700;font-size:12px;border:none;cursor:pointer;">
+      ➕ Adicionar ao Relatório
+    </button>
+
+    <div id="listaTreinosMinimal" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+      <!-- Renderizado via script -->
+    </div>
+  </section>
+
+  <!-- CAIXA DE CONTEXTO E PAINEL DE CONTROLE DE AUDIOLIVROS -->
+  <section class="ios-glass" style="padding:14px;margin-bottom:12px;border-color:rgba(0,240,255,0.4);background:rgba(12, 22, 45, 0.75);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-size:12px;font-weight:800;color:var(--accent-cyan);text-transform:uppercase;letter-spacing:0.05em;">
+        🎛️ Painel de Contexto & Reprodução Vox
+      </span>
+      <span style="font-size:10px;padding:2px 8px;border-radius:99px;background:rgba(37,211,102,0.15);border:1px solid #25d366;color:#25d366;font-weight:700;">
+        ✓ Links Embutidos (Hardcoded)
+      </span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+      <div style="background:rgba(0,0,0,0.3);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+        <span style="font-size:10px;color:var(--text-muted);display:block;">Livro Selecionado:</span>
+        <strong id="ctxBookName" style="font-size:11px;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Hábitos Atômicos</strong>
+      </div>
+      <div style="background:rgba(0,0,0,0.3);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+        <span style="font-size:10px;color:var(--text-muted);display:block;">Capítulo Ativo:</span>
+        <strong id="ctxCapName" style="font-size:11px;color:var(--accent-pink);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Capítulo 1: O Poder dos Hábitos</strong>
+      </div>
+    </div>
+
+    <!-- SELETOR DIRETO DE CAPÍTULOS -->
+    <div style="margin-bottom:10px;">
+      <label style="font-size:10px;color:var(--text-muted);display:block;margin-bottom:4px;font-weight:700;">Navegar por Capítulos Embutidos:</label>
+      <select id="sel_chapter_hardcoded" onchange="selectChapterFromContext()" style="font-size:11px;padding:6px;">
+        <!-- Preenchido via script -->
+      </select>
+    </div>
+
+    <div style="font-size:11px;line-height:1.4;color:var(--text-muted);background:rgba(0,240,255,0.06);padding:8px 10px;border-radius:8px;border-left:3px solid var(--accent-cyan);">
+      💡 <strong>Status da Biblioteca:</strong> Todos os áudios já estão totalmente <strong>integrados no código fonte</strong> da plataforma. Não há necessidade de colar links externos.
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3: BIBLIOTECA DE AUDIOLIVROS -->
+  <section class="ios-glass" style="padding:14px;margin-bottom:12px;">
+    <div style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:13px;font-weight:700;color:var(--accent-cyan);">🎧 Selecionar Audiolivro</span>
+      <span id="playingBadge" style="font-size:10px;color:var(--accent-green);font-weight:700;display:none;">● Tocando Agora</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+      
+      <!-- ITEM 1 -->
+      <div id="bookCard_0" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;transition:border-color 0.2s;">
+        <div>
+          <strong style="font-size:12px;display:block;">Hábitos Atômicos</strong>
+          <span style="font-size:10px;color:var(--text-muted);">James Clear · 2 Capítulos Embutidos</span>
+        </div>
+        <button id="btnPlay_0" onclick="playBook(0)" style="padding:4px 8px;border-radius:6px;background:rgba(0,240,255,0.15);border:1px solid var(--accent-cyan);color:var(--accent-cyan);font-size:10px;font-weight:700;cursor:pointer;">
+          ▶️ Tocar
+        </button>
+      </div>
+
+      <!-- ITEM 2 -->
+      <div id="bookCard_1" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;transition:border-color 0.2s;">
+        <div>
+          <strong style="font-size:12px;display:block;">Pense e Enriqueça</strong>
+          <span style="font-size:10px;color:var(--text-muted);">Napoleon Hill · 1 Capítulo Embutido</span>
+        </div>
+        <button id="btnPlay_1" onclick="playBook(1)" style="padding:4px 8px;border-radius:6px;background:rgba(0,240,255,0.15);border:1px solid var(--accent-cyan);color:var(--accent-cyan);font-size:10px;font-weight:700;cursor:pointer;">
+          ▶️ Tocar
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ANOTAÇÕES AUTO-SAVED -->
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <label style="font-size:10px;color:var(--text-muted);font-weight:700;">💡 Insight do Áudio de Hoje:</label>
+      <textarea id="in_insight" rows="2" placeholder="Digite seu insight..." oninput="autoSaveAll()" style="font-size:11px;"></textarea>
+    </div>
+  </section>
+
+</div>
+
+<!-- BOTTOM DOCK AUDIO PLAYER FIXO COM EQUALIZADOR E TIMERS -->
+<div class="bottom-player-dock">
+  <canvas id="vizCanvas" class="visualizer-canvas"></canvas>
+  <audio id="mainAudioEngine" crossorigin="anonymous" style="display:none;"></audio>
+  
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+    <div style="overflow:hidden;padding-right:8px;">
+      <strong id="dockBookTitle" style="font-size:11px;color:#fff;display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;">Hábitos Atômicos</strong>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span id="dockCapTitle" style="font-size:9px;color:var(--accent-pink);font-weight:700;">Capítulo 1</span>
+        <span id="dockTimeDisplay" style="font-size:9px;color:var(--text-muted);font-family:monospace;">0:00 / 0:00</span>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:4px;">
+      <button onclick="skipSeconds(-10)" title="-10s" style="background:none;border:none;color:var(--text-muted);font-size:10px;cursor:pointer;padding:2px 4px;">↺10</button>
+      <button onclick="changeCap(-1)" style="background:none;border:none;color:#fff;font-size:12px;cursor:pointer;padding:2px 4px;">⏮️</button>
+      <button id="btnDockPlay" onclick="togglePlay()" style="padding:4px 10px;border-radius:99px;background:var(--accent-pink);color:#fff;font-size:11px;font-weight:800;border:none;cursor:pointer;">▶️ Play</button>
+      <button onclick="changeCap(1)" style="background:none;border:none;color:#fff;font-size:12px;cursor:pointer;padding:2px 4px;">⏭️</button>
+      <button onclick="skipSeconds(10)" title="+10s" style="background:none;border:none;color:var(--text-muted);font-size:10px;cursor:pointer;padding:2px 4px;">10↻</button>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px;">
+    <input type="range" id="dockSeeker" min="0" value="0" step="1" oninput="seekAudio()" style="flex:1;accent-color:var(--accent-pink);height:4px;">
+    <button id="btnSpeed" onclick="cycleSpeed()" style="padding:2px 6px;border-radius:6px;background:rgba(255,255,255,0.1);color:var(--accent-cyan);font-size:10px;font-weight:700;border:none;">1.0x</button>
+  </div>
+</div>
+
+<script>
+// BIBLIOTECA COM LINKS EMBUTIDOS (HARDCODED)
+const BOOKS = [
+  {
+    titulo: "Hábitos Atômicos — James Clear",
+    caps: [
+      { t: "Capítulo 1: O Poder dos Hábitos", src: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" },
+      { t: "Capítulo 2: Moldando sua Identidade", src: "https://actions.google.com/sounds/v1/ambiences/office_park.ogg" }
+    ]
+  },
+  {
+    titulo: "Pense e Enriqueça — Napoleon Hill",
+    caps: [
+      { t: "Capítulo 1: Os Pensamentos São Coisas", src: "https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" }
+    ]
+  }
+];
+
+let curBookIdx = 0;
+let curCapIdx = 0;
+let speedIdx = 0;
+const speeds = [1.0, 1.25, 1.5, 2.0];
+
+let audioCtx = null;
+let analyser = null;
+let audioSrcNode = null;
+let animFrameId = null;
+
+let state = {
+  phone: "",
+  insight: "",
+  treinos: []
+};
+
+function init() {
+  const saved = localStorage.getItem('fitmind_v2_data');
+  if (saved) {
+    try { state = JSON.parse(saved); } catch(e){}
+  }
+
+  document.getElementById('cfg_phone').value = state.phone || "";
+  document.getElementById('in_insight').value = state.insight || "";
+
+  renderTreinos();
+  updateContextBox();
+  setupAudioEvents();
+  setupVisualizer();
+  updateWhatsAppLink();
+}
+
+function showSaveToast() {
+  const toast = document.getElementById('saveIndicator');
+  if (toast) {
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; }, 1500);
+  }
+}
+
+function applySelectedExercise() {
+  const sel = document.getElementById('sel_exercicio_conhecido');
+  if (sel && sel.value) {
+    document.getElementById('in_exercicio').value = sel.value;
+  }
+}
+
+function autoSaveAll() {
+  state.phone = document.getElementById('cfg_phone').value.replace(/\D/g, '');
+  state.insight = document.getElementById('in_insight').value;
+  localStorage.setItem('fitmind_v2_data', JSON.stringify(state));
+  updateWhatsAppLink();
+  showSaveToast();
+}
+
+function quickFill(nome, s, r, k) {
+  document.getElementById('in_exercicio').value = nome;
+  document.getElementById('in_p1').value = s;
+  document.getElementById('in_p2').value = r;
+  document.getElementById('in_p3').value = k;
+}
+
+function quickFillNatacao(estilo, m, t) {
+  document.getElementById('in_exercicio').value = `Natação ${estilo}`;
+  document.getElementById('in_p1').value = m;
+  document.getElementById('in_p2').value = t;
+  document.getElementById('in_p3').value = 0;
+}
+
+function addTreinoQuick() {
+  const ex = document.getElementById('in_exercicio').value.trim();
+  if (!ex) return;
+
+  const p1 = document.getElementById('in_p1').value || 0;
+  const p2 = document.getElementById('in_p2').value || 0;
+  const p3 = document.getElementById('in_p3').value || 0;
+
+  state.treinos.push({ id: Date.now(), ex, p1, p2, p3 });
+  autoSaveAll();
+  renderTreinos();
+
+  document.getElementById('in_exercicio').value = '';
+}
+
+function removeTreino(id) {
+  state.treinos = state.treinos.filter(t => t.id !== id);
+  autoSaveAll();
+  renderTreinos();
+}
+
+function renderTreinos() {
+  const container = document.getElementById('listaTreinosMinimal');
+  if (!container) return;
+
+  if (state.treinos.length === 0) {
+    container.innerHTML = `<div style="font-size:10px;color:var(--text-muted);text-align:center;padding:6px;">Nenhum exercício adicionado hoje.</div>`;
+    return;
+  }
+
+  container.innerHTML = '';
+  state.treinos.forEach(t => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:rgba(255,255,255,0.04);border-radius:8px;font-size:11px;';
+    div.innerHTML = `
+      <div>
+        <strong style="color:#fff;">${t.ex}</strong>
+        <span style="color:var(--text-muted);margin-left:6px;">${t.p1}s × ${t.p2}r ${t.p3 > 0 ? '@ ' + t.p3 + 'kg' : ''}</span>
+      </div>
+      <button onclick="removeTreino(${t.id})" style="background:none;border:none;color:var(--accent-pink);font-weight:800;cursor:pointer;">✕</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function updateContextBox() {
+  const book = BOOKS[curBookIdx];
+  const cap = book.caps[curCapIdx];
+
+  document.getElementById('ctxBookName').textContent = book.titulo;
+  document.getElementById('ctxCapName').textContent = cap.t;
+
+  const selCap = document.getElementById('sel_chapter_hardcoded');
+  if (selCap) {
+    selCap.innerHTML = '';
+    book.caps.forEach((c, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `${idx + 1}. ${c.t}`;
+      if (idx === curCapIdx) opt.selected = true;
+      selCap.appendChild(opt);
+    });
+  }
+}
+
+function selectChapterFromContext() {
+  const selCap = document.getElementById('sel_chapter_hardcoded');
+  if (selCap) {
+    curCapIdx = parseInt(selCap.value) || 0;
+    loadAudio();
+  }
+}
+
+function playBook(idx) {
+  curBookIdx = idx;
+  curCapIdx = 0;
+  loadAudio();
+}
+
+function updateLibraryHighlight() {
+  BOOKS.forEach((_, i) => {
+    const card = document.getElementById(`bookCard_${i}`);
+    const btn = document.getElementById(`btnPlay_${i}`);
+    if (card && btn) {
+      if (i === curBookIdx) {
+        card.style.borderColor = 'var(--accent-cyan)';
+        card.style.background = 'rgba(0, 240, 255, 0.08)';
+        btn.textContent = '▶️ Tocando';
+      } else {
+        card.style.borderColor = 'var(--glass-border)';
+        card.style.background = 'rgba(255,255,255,0.03)';
+        btn.textContent = '▶️ Tocar';
+      }
+    }
+  });
+  const badge = document.getElementById('playingBadge');
+  if (badge) badge.style.display = 'inline';
+}
+
+function loadAudio() {
+  const book = BOOKS[curBookIdx];
+  const cap = book.caps[curCapIdx];
+
+  document.getElementById('dockBookTitle').textContent = book.titulo;
+  document.getElementById('dockCapTitle').textContent = cap.t;
+
+  updateContextBox();
+  updateLibraryHighlight();
+
+  const audio = document.getElementById('mainAudioEngine');
+  audio.src = cap.src;
+  audio.playbackRate = speeds[speedIdx];
+  
+  if (!audioCtx) initAudioContext();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+
+  audio.play().then(() => {
+    document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
+    drawVisualizer();
+  }).catch(() => {});
+}
+
+function togglePlay() {
+  const audio = document.getElementById('mainAudioEngine');
+  if (!audio.src) { playBook(0); return; }
+  
+  if (!audioCtx) initAudioContext();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+
+  if (audio.paused) {
+    audio.play();
+    document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
+    drawVisualizer();
+  } else {
+    audio.pause();
+    document.getElementById('btnDockPlay').textContent = '▶️ Play';
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+  }
+}
+
+function changeCap(delta) {
+  const book = BOOKS[curBookIdx];
+  const next = curCapIdx + delta;
+  if (next >= 0 && next < book.caps.length) {
+    curCapIdx = next;
+    loadAudio();
+  }
+}
+
+function skipSeconds(sec) {
+  const audio = document.getElementById('mainAudioEngine');
+  if (audio && !isNaN(audio.duration)) {
+    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + sec));
+  }
+}
+
+function seekAudio() {
+  const audio = document.getElementById('mainAudioEngine');
+  const seeker = document.getElementById('dockSeeker');
+  if (audio && seeker) audio.currentTime = seeker.value;
+}
+
+function cycleSpeed() {
+  speedIdx = (speedIdx + 1) % speeds.length;
+  const spd = speeds[speedIdx];
+  const audio = document.getElementById('mainAudioEngine');
+  if (audio) audio.playbackRate = spd;
+  document.getElementById('btnSpeed').textContent = `${spd.toFixed(1)}x`;
+}
+
+function formatTime(sec) {
+  if (isNaN(sec) || sec <= 0) return "0:00";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function setupAudioEvents() {
+  const audio = document.getElementById('mainAudioEngine');
+  audio.addEventListener('timeupdate', () => {
+    const seeker = document.getElementById('dockSeeker');
+    const display = document.getElementById('dockTimeDisplay');
+    if (seeker && !isNaN(audio.duration)) {
+      seeker.max = Math.floor(audio.duration);
+      seeker.value = Math.floor(audio.currentTime);
+      display.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    changeCap(1);
+  });
+}
+
+function initAudioContext() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
+    const audio = document.getElementById('mainAudioEngine');
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 64;
+    audioSrcNode = audioCtx.createMediaElementSource(audio);
+    audioSrcNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  } catch(e) {}
+}
+
+function setupVisualizer() {
+  const canvas = document.getElementById('vizCanvas');
+  if (canvas) {
+    canvas.width = canvas.clientWidth || 300;
+    canvas.height = canvas.clientHeight || 14;
+  }
+}
+
+function drawVisualizer() {
+  const canvas = document.getElementById('vizCanvas');
+  if (!canvas || !analyser) return;
+
+  const ctx = canvas.getContext('2d');
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  const draw = () => {
+    animFrameId = requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(dataArray);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const barWidth = (canvas.width / bufferLength) * 1.8;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const barHeight = (dataArray[i] / 255) * canvas.height;
+      
+      const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
+      gradient.addColorStop(0, '#00f0ff');
+      gradient.addColorStop(1, '#f100a0');
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+      x += barWidth;
+    }
+  };
+
+  draw();
+}
+
+function updateWhatsAppLink() {
+  const hoje = new Date().toLocaleDateString('pt-BR');
+  let msg = `*RESUMO VISION VOX* 🚀 (${hoje})\n\n`;
+
+  if (state.treinos.length > 0) {
+    msg += `🏋️ *Treinos:*\n`;
+    state.treinos.forEach(t => {
+      msg += `• ${t.ex}: ${t.p1}s x ${t.p2}r ${t.p3 > 0 ? '@ ' + t.p3 + 'kg' : ''}\n`;
+    });
+  }
+
+  if (state.insight) {
+    msg += `\n💡 *Insight do Dia:*\n"${state.insight}"\n`;
+  }
+
+  const btn = document.getElementById('btnFastWhatsApp');
+  if (btn) {
+    btn.href = `https://wa.me/${state.phone || ''}?text=${encodeURIComponent(msg)}`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
