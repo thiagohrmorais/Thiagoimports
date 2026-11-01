@@ -1,919 +1,733 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VisionVox · Body & Mind Tracker</title>
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Vision Vox · FitMind Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg-dark: #07040d;
+    --glass-bg: rgba(20, 12, 34, 0.7);
+    --glass-border: rgba(241, 0, 160, 0.25);
+    --text-primary: #f8f6fc;
+    --text-muted: #9e8cb8;
+    --accent-pink: #f100a0;
+    --accent-purple: #9d4edd;
+    --accent-cyan: #00f0ff;
+    --accent-green: #25d366;
+    --input-bg: rgba(13, 7, 22, 0.8);
+  }
 
-  <style>
-    :root {
-      --bg-dark: #06030c;
-      --glass-bg: rgba(18, 10, 32, 0.75);
-      --glass-border: rgba(241, 0, 160, 0.22);
-      --glass-border-cyan: rgba(0, 240, 255, 0.3);
-      --text-primary: #f8f6fc;
-      --text-muted: #9e8cb8;
-      --accent-pink: #f100a0;
-      --accent-purple: #9d4edd;
-      --accent-cyan: #00f0ff;
-      --accent-green: #25d366;
-      --input-bg: rgba(12, 6, 22, 0.85);
-    }
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
 
-    * {
-      -webkit-tap-highlight-color: transparent;
-      box-sizing: border-box;
-    }
+  body { 
+    background: var(--bg-dark); 
+    color: var(--text-primary); 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    margin: 0; 
+    min-height: 100vh;
+    padding-bottom: 140px;
+  }
 
-    body {
-      background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(157, 78, 221, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 85% 60%, rgba(241, 0, 160, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 50% 90%, rgba(0, 240, 255, 0.08) 0%, transparent 50%);
-      background-attachment: fixed;
-      color: var(--text-primary);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      margin: 0;
-      min-height: 100vh;
-      padding-bottom: 160px;
-    }
+  .hfont { font-family: 'Outfit', sans-serif; }
 
-    .hfont { font-family: 'Outfit', sans-serif; }
+  .ios-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+  }
 
-    /* Glassmorphism Cards */
-    .glass-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      border-radius: 20px;
-    }
+  input, select, textarea {
+    background-color: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: var(--text-primary);
+    width: 100%;
+    font-size: 13px;
+    transition: border-color 0.2s;
+  }
 
-    .glass-card-cyan {
-      background: rgba(8, 20, 38, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border-cyan);
-      box-shadow: 0 10px 30px rgba(0, 240, 255, 0.08);
-      border-radius: 20px;
-    }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-pink);
+  }
 
-    /* Custom Inputs */
-    input, select, textarea {
-      background-color: var(--input-bg) !important;
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 10px 14px;
-      color: var(--text-primary) !important;
-      font-size: 13px;
-      transition: all 0.2s ease;
-    }
+  .btn-chip {
+    padding: 6px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
 
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent-pink);
-      box-shadow: 0 0 12px rgba(241, 0, 160, 0.3);
-    }
+  .btn-chip:active, .btn-chip.active {
+    background: rgba(241, 0, 160, 0.18);
+    border-color: var(--accent-pink);
+    color: var(--accent-pink);
+  }
 
-    /* Quick Fill Chips */
-    .btn-chip {
-      padding: 6px 14px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+  .bottom-player-dock {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 600px;
+    z-index: 90;
+    background: rgba(15, 8, 25, 0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    border-radius: 22px;
+    padding: 12px 16px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+  }
 
-    .btn-chip:hover, .btn-chip:active {
-      background: rgba(241, 0, 160, 0.2);
-      border-color: var(--accent-pink);
-      color: #fff;
-      transform: translateY(-1px);
-    }
+  .visualizer-canvas {
+    width: 100%;
+    height: 14px;
+    display: block;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
 
-    /* Bottom Player Dock */
-    .bottom-player-dock {
-      position: fixed;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 24px);
-      max-width: 650px;
-      z-index: 100;
-      background: rgba(12, 7, 24, 0.94);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(0, 240, 255, 0.4);
-      border-radius: 22px;
-      padding: 12px 18px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.15);
-    }
-
-    /* Canvas Visualizer */
-    .visualizer-canvas {
-      width: 100%;
-      height: 18px;
-      display: block;
-      border-radius: 6px;
-      margin-bottom: 8px;
-      background: rgba(0, 0, 0, 0.3);
-    }
-
-    /* Toast Notification */
-    .save-indicator {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      font-size: 11px;
-      background: rgba(37, 211, 102, 0.15);
-      border: 1px solid var(--accent-green);
-      color: var(--accent-green);
-      padding: 6px 14px;
-      border-radius: 99px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      opacity: 0;
-      transform: translateY(-10px);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 120;
-      pointer-events: none;
-    }
-
-    .save-indicator.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Custom Scrollbars */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Glow buttons */
-    .btn-glow-pink {
-      background: linear-gradient(135deg, #f100a0, #9d4edd);
-      box-shadow: 0 4px 18px rgba(241, 0, 160, 0.4);
-      transition: all 0.2s ease;
-    }
-    .btn-glow-pink:hover {
-      box-shadow: 0 6px 24px rgba(241, 0, 160, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .btn-glow-green {
-      background: linear-gradient(135deg, #25d366, #128c7e);
-      box-shadow: 0 4px 18px rgba(37, 211, 102, 0.35);
-      transition: all 0.2s ease;
-    }
-    .btn-glow-green:hover {
-      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5);
-      transform: translateY(-1px);
-    }
-
-    /* Range slider custom style */
-    input[type=range] {
-      -webkit-appearance: none;
-      background: rgba(255, 255, 255, 0.1);
-      height: 4px;
-      border-radius: 2px;
-      border: none;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: 12px;
-      width: 12px;
-      border-radius: 50%;
-      background: var(--accent-cyan);
-      cursor: pointer;
-      box-shadow: 0 0 8px var(--accent-cyan);
-    }
-  </style>
+  .save-indicator {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    font-size: 11px;
+    color: var(--accent-green);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+  }
+</style>
 </head>
 <body>
 
-  <!-- Toast Save Indicator -->
-  <div id="saveIndicator" class="save-indicator">
-    <span>✓ Progresso Salvo</span>
+<div id="saveIndicator" class="save-indicator">
+  <span>✓ Salvo automaticamente</span>
+</div>
+
+<div style="max-width:680px;margin:0 auto;padding:16px;width:100%;">
+
+  <!-- COMPACT TOP BAR -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <a href="../" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-primary);text-decoration:none;font-weight:700;">
+        ‹
+      </a>
+      <span style="font-size:12px;font-weight:700;color:var(--text-muted);">Vision Vox Tracker</span>
+    </div>
+
+    <a id="btnFastWhatsApp" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:#25d366;color:#fff;font-size:11px;font-weight:800;text-decoration:none;box-shadow:0 4px 15px rgba(37,211,102,0.3);">
+      💬 Enviar
+    </a>
   </div>
 
-  <div style="max-width: 680px; margin: 0 auto; padding: 16px; width: 100%;">
+  <!-- CONFIGURAÇÃO RÁPIDA DE WHATSAPP -->
+  <div class="ios-glass" style="padding:10px 14px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:11px;font-weight:700;color:var(--accent-green);white-space:nowrap;">📱 WhatsApp:</span>
+      <input type="text" id="cfg_phone" placeholder="DDD + Número (Ex: 81999998888)" oninput="autoSaveAll()" style="font-size:11px;padding:4px 8px;">
+    </div>
+  </div>
 
-    <!-- HEADER & LOGO -->
-    <header class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center font-extrabold text-white text-lg shadow-lg shadow-pink-500/30 hfont">
-          VX
-        </div>
-        <div>
-          <h1 class="hfont font-extrabold text-lg tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-cyan-400">
-            VisionVox
-          </h1>
-          <p class="text-[10px] text-purple-300 tracking-wider uppercase font-semibold">Body & Mind Evolution</p>
-        </div>
-      </div>
+  <!-- SEÇÃO 1: REGISTRO DE TREINO EM 1 CLIQUE -->
+  <section class="ios-glass" style="padding:14px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-size:13px;font-weight:700;color:var(--accent-pink);">💪 Treino Hoje</span>
+      <span style="font-size:10px;color:var(--text-muted);">Presets Rápido por Grupo</span>
+    </div>
 
-      <!-- BOTÃO TOP WHATSAPP -->
-      <a id="btnTopWhatsApp" href="#" target="_blank" class="btn-glow-green flex items-center gap-2 px-3 py-2 rounded-full text-white text-xs font-bold no-underline">
-        <span>💬</span>
-        <span>WhatsApp</span>
-      </a>
-    </header>
+    <!-- PRESETS RÁPIDOS POR GRUPO MUSCULAR -->
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;" class="no-scrollbar">
+      <button class="btn-chip" onclick="quickFill('Supino Reto (Barra)', 4, 10, 60)">🏋️ Supino Reto</button>
+      <button class="btn-chip" onclick="quickFill('Supino Inclinado (Halter)', 4, 10, 24)">🏋️ Sup. Inclinado</button>
+      <button class="btn-chip" onclick="quickFill('Crossover / Crossover Polia', 3, 12, 20)">💪 Crossover</button>
+      <button class="btn-chip" onclick="quickFill('Tríceps Corda', 4, 12, 25)">💪 Tríceps Corda</button>
+      <button class="btn-chip" onclick="quickFill('Puxada Alta Frontal', 4, 12, 50)">💪 Puxada Alta</button>
+      <button class="btn-chip" onclick="quickFill('Remada Curvada', 4, 10, 40)">🏋️ Remada Curvada</button>
+      <button class="btn-chip" onclick="quickFill('Rosca Direta (Barra)', 4, 10, 20)">💪 Rosca Direta</button>
+      <button class="btn-chip" onclick="quickFill('Agachamento Livre', 4, 10, 70)">🦵 Agachamento</button>
+      <button class="btn-chip" onclick="quickFill('Leg Press 45°', 4, 12, 160)">🦵 Leg Press</button>
+      <button class="btn-chip" onclick="quickFill('Stiff / Levantamento Terra', 4, 8, 80)">🏋️ Stiff / Terra</button>
+      <button class="btn-chip" onclick="quickFill('Desenvolvimento Ombro', 4, 10, 18)">🏋️ Desenvolv. Ombro</button>
+      <button class="btn-chip" onclick="quickFill('Elevação Lateral', 4, 12, 10)">🏋️ Elev. Lateral</button>
+    </div>
 
-    <!-- CONFIGURAÇÃO DO WHATSAPP -->
-    <div class="glass-card p-3 mb-4 flex items-center gap-3">
-      <span class="text-xs font-bold text-emerald-400 whitespace-nowrap flex items-center gap-1">
-        📱 Seu WhatsApp:
+    <!-- SELETOR COMPLETO DE EXERCÍCIOS -->
+    <div style="margin-bottom:8px;">
+      <select id="sel_exercicio_conhecido" onchange="applySelectedExercise()" style="font-size:11px;margin-bottom:6px;">
+        <option value="">-- Escolher da lista completa de exercícios --</option>
+        <optgroup label="Peitoral">
+          <option value="Supino Reto (Barra)">Supino Reto (Barra)</option>
+          <option value="Supino Reto (Halteres)">Supino Reto (Halteres)</option>
+          <option value="Supino Inclinado (Barra)">Supino Inclinado (Barra)</option>
+          <option value="Supino Inclinado (Halteres)">Supino Inclinado (Halteres)</option>
+          <option value="Crossover Polia">Crossover Polia</option>
+          <option value="Peck Deck / Voador">Peck Deck / Voador</option>
+        </optgroup>
+        <optgroup label="Costas & Dorsal">
+          <option value="Puxada Alta Frontal">Puxada Alta Frontal</option>
+          <option value="Remada Curvada (Barra)">Remada Curvada (Barra)</option>
+          <option value="Remada Baixa (Triângulo)">Remada Baixa (Triângulo)</option>
+          <option value="Remada Unilateral (Serrote)">Remada Unilateral (Serrote)</option>
+          <option value="Barra Fixa">Barra Fixa</option>
+        </optgroup>
+        <optgroup label="Pernas & Glúteos">
+          <option value="Agachamento Livre">Agachamento Livre</option>
+          <option value="Leg Press 45°">Leg Press 45°</option>
+          <option value="Cadeira Extensora">Cadeira Extensora</option>
+          <option value="Mesa Flexora">Mesa Flexora</option>
+          <option value="Stiff">Stiff</option>
+          <option value="Elevação Pélvica">Elevação Pélvica</option>
+        </optgroup>
+        <optgroup label="Ombros & Braços">
+          <option value="Desenvolvimento Militar">Desenvolvimento Militar</option>
+          <option value="Elevação Lateral">Elevação Lateral</option>
+          <option value="Rosca Direta (Barra W)">Rosca Direta (Barra W)</option>
+          <option value="Rosca Martelo">Rosca Martelo</option>
+          <option value="Tríceps Corda">Tríceps Corda</option>
+          <option value="Tríceps Testa">Tríceps Testa</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <!-- CAMPOS DE ENTRADA -->
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+      <input type="text" id="in_exercicio" placeholder="Exercício ou Estilo">
+      <input type="number" id="in_p1" placeholder="Séries" value="4">
+      <input type="number" id="in_p2" placeholder="Reps" value="10">
+      <input type="number" id="in_p3" placeholder="Kg" value="40">
+    </div>
+
+    <button onclick="addTreinoQuick()" style="width:100%;padding:8px;border-radius:10px;background:linear-gradient(135deg, var(--accent-pink), var(--accent-purple));color:#fff;font-weight:700;font-size:12px;border:none;cursor:pointer;">
+      ➕ Adicionar ao Relatório
+    </button>
+
+    <div id="listaTreinosMinimal" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+      <!-- Renderizado via script -->
+    </div>
+  </section>
+
+  <!-- PAINEL DE CONTROLE DE AUDIOLIVROS -->
+  <section class="ios-glass" style="padding:14px;margin-bottom:12px;border-color:rgba(0,240,255,0.4);background:rgba(12, 22, 45, 0.75);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-size:12px;font-weight:800;color:var(--accent-cyan);text-transform:uppercase;letter-spacing:0.05em;">
+        🎛️ Painel de Contexto & Reprodução Vox
       </span>
-      <input type="text" id="cfg_phone" placeholder="DDD + Número (Ex: 11999998888)" oninput="autoSaveAll()" class="w-full text-xs py-1.5 px-3">
+      <span style="font-size:10px;padding:2px 8px;border-radius:99px;background:rgba(37,211,102,0.15);border:1px solid #25d366;color:#25d366;font-weight:700;">
+        ✓ Stream Áudio Ativo
+      </span>
     </div>
 
-    <!-- SEÇÃO 1: CORPO - LOG DE TREINOS -->
-    <section class="glass-card p-4 mb-4">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="hfont text-sm font-bold text-pink-400 flex items-center gap-2">
-          <span>💪</span> REGISTRO DE TREINO (CORPO)
-        </h2>
-        <span class="text-[10px] text-purple-300 font-semibold bg-pink-500/10 border border-pink-500/20 px-2 py-0.5 rounded-full">Presets 1-Clique</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+      <div style="background:rgba(0,0,0,0.3);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+        <span style="font-size:10px;color:var(--text-muted);display:block;">Livro Selecionado:</span>
+        <strong id="ctxBookName" style="font-size:11px;color:#fff;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">A Arte da Guerra</strong>
       </div>
-
-      <!-- PRESETS RÁPIDOS POR GRUPO MUSCULAR -->
-      <div class="flex gap-2 overflow-x-auto pb-2 mb-3 no-scrollbar">
-        <button class="btn-chip" onclick="quickFill('Supino Reto (Barra)', 4, 10, 60)">🏋️ Supino Reto</button>
-        <button class="btn-chip" onclick="quickFill('Supino Inclinado (Halter)', 4, 10, 24)">🏋️ Sup. Inclinado</button>
-        <button class="btn-chip" onclick="quickFill('Crossover Polia', 3, 12, 20)">💪 Crossover</button>
-        <button class="btn-chip" onclick="quickFill('Tríceps Corda', 4, 12, 25)">💪 Tríceps Corda</button>
-        <button class="btn-chip" onclick="quickFill('Puxada Alta Frontal', 4, 12, 50)">💪 Puxada Alta</button>
-        <button class="btn-chip" onclick="quickFill('Remada Curvada', 4, 10, 40)">🏋️ Remada Curvada</button>
-        <button class="btn-chip" onclick="quickFill('Rosca Direta (Barra W)', 4, 10, 20)">💪 Rosca Direta</button>
-        <button class="btn-chip" onclick="quickFill('Agachamento Livre', 4, 10, 80)">🦵 Agachamento</button>
-        <button class="btn-chip" onclick="quickFill('Leg Press 45°', 4, 12, 180)">🦵 Leg Press</button>
-        <button class="btn-chip" onclick="quickFill('Stiff Terra', 4, 8, 70)">🏋️ Stiff</button>
-        <button class="btn-chip" onclick="quickFill('Desenvolvimento Ombro', 4, 10, 18)">🏋️ Desenvolv. Ombro</button>
-        <button class="btn-chip" onclick="quickFill('Elevação Lateral', 4, 12, 10)">🏋️ Elev. Lateral</button>
-        <button class="btn-chip" onclick="quickFillNatacao('Natação - Crawl Livre', 1000, 30)">🏊 Crawl 1000m</button>
-      </div>
-
-      <!-- SELETOR COMPLETO DE EXERCÍCIOS -->
-      <div class="mb-3">
-        <select id="sel_exercicio_conhecido" onchange="applySelectedExercise()" class="w-full text-xs">
-          <option value="">-- Ou selecione da lista por grupo muscular --</option>
-          <optgroup label="Peitoral">
-            <option value="Supino Reto (Barra)">Supino Reto (Barra)</option>
-            <option value="Supino Reto (Halteres)">Supino Reto (Halteres)</option>
-            <option value="Supino Inclinado (Barra)">Supino Inclinado (Barra)</option>
-            <option value="Supino Inclinado (Halteres)">Supino Inclinado (Halteres)</option>
-            <option value="Crossover Polia">Crossover Polia</option>
-            <option value="Peck Deck / Voador">Peck Deck / Voador</option>
-          </optgroup>
-          <optgroup label="Costas & Dorsal">
-            <option value="Puxada Alta Frontal">Puxada Alta Frontal</option>
-            <option value="Remada Curvada (Barra)">Remada Curvada (Barra)</option>
-            <option value="Remada Baixa (Triângulo)">Remada Baixa (Triângulo)</option>
-            <option value="Remada Unilateral (Serrote)">Remada Unilateral (Serrote)</option>
-            <option value="Barra Fixa">Barra Fixa</option>
-          </optgroup>
-          <optgroup label="Pernas & Glúteos">
-            <option value="Agachamento Livre">Agachamento Livre</option>
-            <option value="Leg Press 45°">Leg Press 45°</option>
-            <option value="Cadeira Extensora">Cadeira Extensora</option>
-            <option value="Mesa Flexora">Mesa Flexora</option>
-            <option value="Stiff">Stiff</option>
-            <option value="Elevação Pélvica">Elevação Pélvica</option>
-          </optgroup>
-          <optgroup label="Ombros & Braços">
-            <option value="Desenvolvimento Militar">Desenvolvimento Militar</option>
-            <option value="Elevação Lateral">Elevação Lateral</option>
-            <option value="Rosca Direta (Barra W)">Rosca Direta (Barra W)</option>
-            <option value="Rosca Martelo">Rosca Martelo</option>
-            <option value="Tríceps Corda">Tríceps Corda</option>
-            <option value="Tríceps Testa">Tríceps Testa</option>
-          </optgroup>
-          <optgroup label="Cardio & Outros">
-            <option value="Corrida Esteira">Corrida Esteira</option>
-            <option value="Natação Crawl">Natação Crawl</option>
-            <option value="Bicicleta Ergométrica">Bicicleta Ergométrica</option>
-          </optgroup>
-        </select>
-      </div>
-
-      <!-- CAMPOS DE ENTRADA -->
-      <div class="grid grid-cols-12 gap-2 mb-3">
-        <div class="col-span-5">
-          <input type="text" id="in_exercicio" placeholder="Nome do Exercício" class="w-full text-xs">
-        </div>
-        <div class="col-span-2">
-          <input type="number" id="in_p1" placeholder="Séries" value="4" class="w-full text-xs text-center">
-        </div>
-        <div class="col-span-2">
-          <input type="number" id="in_p2" placeholder="Reps" value="10" class="w-full text-xs text-center">
-        </div>
-        <div class="col-span-3">
-          <input type="number" id="in_p3" placeholder="Kg / min" value="40" class="w-full text-xs text-center">
-        </div>
-      </div>
-
-      <button onclick="addTreinoQuick()" class="btn-glow-pink w-full py-2.5 rounded-xl text-white font-bold text-xs border-none cursor-pointer">
-        ➕ Adicionar ao Relatório de Treino
-      </button>
-
-      <!-- LISTA DE TREINOS LOGADOS -->
-      <div id="listaTreinosMinimal" class="mt-4 flex flex-col gap-2">
-        <!-- Renderizado dinamicamente -->
-      </div>
-    </section>
-
-    <!-- PAINEL DE CONTROL & CONTEXTO MENTE -->
-    <section class="glass-card-cyan p-4 mb-4">
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-xs font-extrabold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-          <span>🎛️</span> Controle Mente & Audiolivros VisionVox
-        </span>
-        <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400 text-emerald-400 font-bold">
-          ✓ Audio Engine Pronto
-        </span>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 mb-3">
-        <div class="bg-black/40 p-2.5 rounded-xl border border-white/10">
-          <span class="text-[10px] text-gray-400 block font-semibold">Livro Selecionado:</span>
-          <strong id="ctxBookName" class="text-xs text-white block truncate">A Arte da Guerra</strong>
-        </div>
-        <div class="bg-black/40 p-2.5 rounded-xl border border-white/10">
-          <span class="text-[10px] text-gray-400 block font-semibold">Capítulo Ativo:</span>
-          <strong id="ctxCapName" class="text-xs text-pink-400 block truncate">Capítulo 1: As Estimativas</strong>
-        </div>
-      </div>
-
-      <!-- SELETOR DIRETO DE CAPÍTULOS -->
-      <div class="mb-3">
-        <label class="text-[10px] text-gray-400 font-bold block mb-1">Trocar Capítulo Rapidamente:</label>
-        <select id="sel_chapter_hardcoded" onchange="selectChapterFromContext()" class="w-full text-xs py-1.5">
-          <!-- Preenchido via JS -->
-        </select>
-      </div>
-
-      <div class="text-[11px] leading-relaxed text-cyan-200/80 bg-cyan-950/40 p-2.5 rounded-xl border-l-4 border-cyan-400">
-        💡 <strong>Evolução Integrada:</strong> Ouça conteúdo de alto impacto enquanto treina o corpo. Mantenha a mente afiada a cada repetição.
-      </div>
-    </section>
-
-    <!-- SEÇÃO 2: MENTE - BIBLIOTECA DE AUDIOLIVROS -->
-    <section class="glass-card p-4 mb-4">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="hfont text-sm font-bold text-cyan-400 flex items-center gap-2">
-          <span>🎧</span> BIBLIOTECA VISIONVOX (MENTE)
-        </h2>
-        <span id="playingBadge" class="text-[10px] text-emerald-400 font-bold hidden flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Reproduzindo
-        </span>
-      </div>
-
-      <!-- CARDS DE LIVROS -->
-      <div class="flex flex-col gap-2.5 mb-4" id="booksLibraryContainer">
-        <!-- Injetado via Javascript -->
-      </div>
-
-      <!-- ANOTAÇÃO / INSIGHT DO DIA -->
-      <div class="flex flex-col gap-1.5">
-        <label class="text-xs font-bold text-pink-400 flex items-center gap-1">
-          <span>💡</span> Insight & Aprendizado da Mente Hoje:
-        </label>
-        <textarea id="in_insight" rows="2" placeholder="O que você aprendeu com o audiolivro enquanto treinava?" oninput="autoSaveAll()" class="w-full text-xs"></textarea>
-      </div>
-    </section>
-
-    <!-- SEÇÃO RELATÓRIO DO WHATSAPP DEDICADO -->
-    <section class="glass-card p-4 mb-6 border-emerald-500/30">
-      <div class="flex items-center justify-between mb-2">
-        <h2 class="hfont text-sm font-bold text-emerald-400 flex items-center gap-2">
-          <span>📲</span> ENVIAR RELATÓRIO COMPLETO
-        </h2>
-        <span class="text-[10px] text-emerald-300 font-bold">Autogerado em 1-Clique</span>
-      </div>
-      <p class="text-xs text-gray-400 mb-3">
-        Compila seus treinos executados, o audiolivro ouvido e o seu insight do dia em um relatório formatado para seu WhatsApp.
-      </p>
-
-      <a id="btnBottomWhatsApp" href="#" target="_blank" class="btn-glow-green w-full py-3 rounded-xl text-white font-extrabold text-xs no-underline flex items-center justify-center gap-2">
-        <span class="text-base">📲</span> ENVIAR RELATÓRIO COMPLETO NO MEU WHATSAPP
-      </a>
-    </section>
-
-  </div>
-
-  <!-- BOTTOM DOCK PLAYER FIXO -->
-  <div class="bottom-player-dock">
-    <!-- Visualizer Waveform Canvas -->
-    <canvas id="vizCanvas" class="visualizer-canvas"></canvas>
-    <audio id="mainAudioEngine" preload="auto" crossorigin="anonymous" class="hidden"></audio>
-
-    <div class="flex items-center justify-between mb-2">
-      <div class="overflow-hidden pr-2 flex-1">
-        <strong id="dockBookTitle" class="text-xs text-white block truncate">A Arte da Guerra — Sun Tzu</strong>
-        <div class="flex items-center gap-2">
-          <span id="dockCapTitle" class="text-[10px] text-pink-400 font-bold truncate">Capítulo 1: As Estimativas</span>
-          <span id="dockTimeDisplay" class="text-[10px] text-gray-400 font-mono">0:00 / 0:00</span>
-        </div>
-      </div>
-
-      <!-- PLAYER CONTROLS -->
-      <div class="flex items-center gap-1">
-        <button onclick="skipSeconds(-10)" title="-10s" class="text-gray-400 hover:text-white text-[11px] font-bold px-1.5 py-1 bg-white/5 rounded">↺10</button>
-        <button onclick="changeCap(-1)" title="Capítulo Anterior" class="text-white hover:text-cyan-400 text-xs px-1.5 py-1">⏮️</button>
-        <button id="btnDockPlay" onclick="togglePlay()" class="px-3.5 py-1.5 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-xs font-extrabold shadow-lg shadow-pink-500/30 cursor-pointer border-none">▶️ Play</button>
-        <button onclick="changeCap(1)" title="Próximo Capítulo" class="text-white hover:text-cyan-400 text-xs px-1.5 py-1">⏭️</button>
-        <button onclick="skipSeconds(10)" title="+10s" class="text-gray-400 hover:text-white text-[11px] font-bold px-1.5 py-1 bg-white/5 rounded">10↻</button>
+      <div style="background:rgba(0,0,0,0.3);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);">
+        <span style="font-size:10px;color:var(--text-muted);display:block;">Capítulo Ativo:</span>
+        <strong id="ctxCapName" style="font-size:11px;color:var(--accent-pink);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Capítulo 1</strong>
       </div>
     </div>
 
-    <!-- TIMELINE & SPEED -->
-    <div class="flex items-center gap-3">
-      <input type="range" id="dockSeeker" min="0" value="0" step="1" oninput="seekAudio()" class="flex-1 cursor-pointer">
-      <button id="btnSpeed" onclick="cycleSpeed()" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-cyan-300 text-[10px] font-bold border-none cursor-pointer">1.0x</button>
+    <!-- SELETOR DIRETO DE CAPÍTULOS -->
+    <div style="margin-bottom:10px;">
+      <label style="font-size:10px;color:var(--text-muted);display:block;margin-bottom:4px;font-weight:700;">Navegar por Capítulos:</label>
+      <select id="sel_chapter_hardcoded" onchange="selectChapterFromContext()" style="font-size:11px;padding:6px;">
+        <!-- Preenchido via script -->
+      </select>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3: BIBLIOTECA DE AUDIOLIVROS -->
+  <section class="ios-glass" style="padding:14px;margin-bottom:12px;">
+    <div style="margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:13px;font-weight:700;color:var(--accent-cyan);">🎧 Selecionar Audiolivro</span>
+      <span id="playingBadge" style="font-size:10px;color:var(--accent-green);font-weight:700;display:none;">● Tocando Agora</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+      
+      <!-- ITEM 1 -->
+      <div id="bookCard_0" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;transition:border-color 0.2s;">
+        <div>
+          <strong style="font-size:12px;display:block;">A Arte da Guerra</strong>
+          <span style="font-size:10px;color:var(--text-muted);">Sun Tzu · 3 Capítulos de Estratégia</span>
+        </div>
+        <button id="btnPlay_0" onclick="playBook(0)" style="padding:4px 8px;border-radius:6px;background:rgba(0,240,255,0.15);border:1px solid var(--accent-cyan);color:var(--accent-cyan);font-size:10px;font-weight:700;cursor:pointer;">
+          ▶️ Tocar
+        </button>
+      </div>
+
+      <!-- ITEM 2 -->
+      <div id="bookCard_1" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;transition:border-color 0.2s;">
+        <div>
+          <strong style="font-size:12px;display:block;">Pense e Enriqueça</strong>
+          <span style="font-size:10px;color:var(--text-muted);">Napoleon Hill · Visão e Persistência</span>
+        </div>
+        <button id="btnPlay_1" onclick="playBook(1)" style="padding:4px 8px;border-radius:6px;background:rgba(0,240,255,0.15);border:1px solid var(--accent-cyan);color:var(--accent-cyan);font-size:10px;font-weight:700;cursor:pointer;">
+          ▶️ Tocar
+        </button>
+      </div>
+
+      <!-- ITEM 3 -->
+      <div id="bookCard_2" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:10px;transition:border-color 0.2s;">
+        <div>
+          <strong style="font-size:12px;display:block;">O Poder do Hábito</strong>
+          <span style="font-size:10px;color:var(--text-muted);">Charles Duhigg · Loop do Hábito</span>
+        </div>
+        <button id="btnPlay_2" onclick="playBook(2)" style="padding:4px 8px;border-radius:6px;background:rgba(0,240,255,0.15);border:1px solid var(--accent-cyan);color:var(--accent-cyan);font-size:10px;font-weight:700;cursor:pointer;">
+          ▶️ Tocar
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ANOTAÇÕES AUTO-SAVED -->
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <label style="font-size:10px;color:var(--text-muted);font-weight:700;">💡 Insight do Áudio de Hoje:</label>
+      <textarea id="in_insight" rows="2" placeholder="Digite seu insight..." oninput="autoSaveAll()" style="font-size:11px;"></textarea>
+    </div>
+  </section>
+
+</div>
+
+<!-- BOTTOM DOCK AUDIO PLAYER FIXO -->
+<div class="bottom-player-dock">
+  <canvas id="vizCanvas" class="visualizer-canvas"></canvas>
+  <audio id="mainAudioEngine" preload="auto" crossorigin="anonymous" style="display:none;"></audio>
+  
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+    <div style="overflow:hidden;padding-right:8px;">
+      <strong id="dockBookTitle" style="font-size:11px;color:#fff;display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;">A Arte da Guerra</strong>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span id="dockCapTitle" style="font-size:9px;color:var(--accent-pink);font-weight:700;">Capítulo 1</span>
+        <span id="dockTimeDisplay" style="font-size:9px;color:var(--text-muted);font-family:monospace;">0:00 / 0:00</span>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:4px;">
+      <button onclick="skipSeconds(-10)" title="-10s" style="background:none;border:none;color:var(--text-muted);font-size:10px;cursor:pointer;padding:2px 4px;">↺10</button>
+      <button onclick="changeCap(-1)" style="background:none;border:none;color:#fff;font-size:12px;cursor:pointer;padding:2px 4px;">⏮️</button>
+      <button id="btnDockPlay" onclick="togglePlay()" style="padding:6px 12px;border-radius:99px;background:var(--accent-pink);color:#fff;font-size:11px;font-weight:800;border:none;cursor:pointer;">▶️ Play</button>
+      <button onclick="changeCap(1)" style="background:none;border:none;color:#fff;font-size:12px;cursor:pointer;padding:2px 4px;">⏭️</button>
+      <button onclick="skipSeconds(10)" title="+10s" style="background:none;border:none;color:var(--text-muted);font-size:10px;cursor:pointer;padding:2px 4px;">10↻</button>
     </div>
   </div>
 
-  <script>
-    // AUDIO DATASTORE WITH WORKING PUBLIC DOMAIN AUDIO STREAMS
-    const SILENT_FALLBACK = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+  <div style="display:flex;align-items:center;gap:10px;">
+    <input type="range" id="dockSeeker" min="0" value="0" step="1" oninput="seekAudio()" style="flex:1;accent-color:var(--accent-pink);height:4px;">
+    <button id="btnSpeed" onclick="cycleSpeed()" style="padding:2px 6px;border-radius:6px;background:rgba(255,255,255,0.1);color:var(--accent-cyan);font-size:10px;font-weight:700;border:none;">1.0x</button>
+  </div>
+</div>
 
-    const BOOKS = [
-      {
-        id: "art_of_war",
-        titulo: "A Arte da Guerra",
-        autor: "Sun Tzu",
-        categoria: "Estratégia & Foco",
-        caps: [
-          { t: "Capítulo 1: As Estimativas", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_01_suntzu_128kb.mp3" },
-          { t: "Capítulo 2: A Condução da Guerra", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_02_suntzu_128kb.mp3" },
-          { t: "Capítulo 3: Planejamento de Ataque", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_03_suntzu_128kb.mp3" }
-        ]
-      },
-      {
-        id: "think_grow_rich",
-        titulo: "Pense e Enriqueça",
-        autor: "Napoleon Hill",
-        categoria: "Mentalidade de Sucesso",
-        caps: [
-          { t: "Capítulo 1: O Desejo e a Resiliência", src: "https://ia800302.us.archive.org/3/items/think_and_grow_rich_0810_librivox/thinkandgrowrich_01_hill_128kb.mp3" },
-          { t: "Capítulo 2: Fé e Visualização", src: "https://ia800302.us.archive.org/3/items/think_and_grow_rich_0810_librivox/thinkandgrowrich_02_hill_128kb.mp3" }
-        ]
-      },
-      {
-        id: "meditations",
-        titulo: "Meditações",
-        autor: "Marco Aurélio",
-        categoria: "Estoiscismo & Autodomínio",
-        caps: [
-          { t: "Livro 1: Agradecimentos e Princípios", src: "https://ia801408.us.archive.org/11/items/meditations_1509_librivox/meditations_01_marcusaurelius_128kb.mp3" },
-          { t: "Livro 2: A Mente Imperturbável", src: "https://ia801408.us.archive.org/11/items/meditations_1509_librivox/meditations_02_marcusaurelius_128kb.mp3" }
-        ]
-      },
-      {
-        id: "power_of_habit",
-        titulo: "O Poder do Hábito & Ciência da Riqueza",
-        autor: "Visão de Performance",
-        categoria: "Hábitos de Elite",
-        caps: [
-          { t: "Capítulo 1: O Loop dos Hábitos Vencedores", src: "https://ia600208.us.archive.org/8/items/science_of_getting_rich_librivox/gettingrich_01_wattles_128kb.mp3" }
-        ]
-      }
-    ];
+<script>
+const BOOKS = [
+  {
+    titulo: "A Arte da Guerra — Sun Tzu",
+    caps: [
+      { t: "Capítulo 1: As Estimativas", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_01_suntzu_128kb.mp3" },
+      { t: "Capítulo 2: A Condução da Guerra", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_02_suntzu_128kb.mp3" },
+      { t: "Capítulo 3: Planejamento de Ataque", src: "https://ia800305.us.archive.org/26/items/art_of_war_librivox/artofwar_03_suntzu_128kb.mp3" }
+    ]
+  },
+  {
+    titulo: "Pense e Enriqueça — Napoleon Hill",
+    caps: [
+      { t: "Capítulo 1: Introdução e Desejo", src: "https://ia800302.us.archive.org/3/items/think_and_grow_rich_0810_librivox/thinkandgrowrich_01_hill_128kb.mp3" },
+      { t: "Capítulo 2: Fé e Visualização", src: "https://ia800302.us.archive.org/3/items/think_and_grow_rich_0810_librivox/thinkandgrowrich_02_hill_128kb.mp3" }
+    ]
+  },
+  {
+    titulo: "O Poder do Hábito — Visão de Performance",
+    caps: [
+      { t: "Capítulo 1: O Loop do Hábito", src: "https://ia600208.us.archive.org/8/items/science_of_getting_rich_librivox/gettingrich_01_wattles_128kb.mp3" }
+    ]
+  }
+];
 
-    let curBookIdx = 0;
-    let curCapIdx = 0;
-    let speedIdx = 0;
-    const speeds = [1.0, 1.25, 1.5, 2.0];
+let curBookIdx = 0;
+let curCapIdx = 0;
+let speedIdx = 0;
+const speeds = [1.0, 1.25, 1.5, 2.0];
 
-    let audioCtx = null;
-    let analyser = null;
-    let audioSrcNode = null;
-    let animFrameId = null;
+let audioCtx = null;
+let analyser = null;
+let audioSrcNode = null;
+let animFrameId = null;
 
-    let state = {
-      phone: "",
-      insight: "",
-      treinos: []
-    };
+let state = {
+  phone: "",
+  insight: "",
+  treinos: []
+};
 
-    // INITIALIZATION
-    function init() {
-      const saved = localStorage.getItem('visionvox_body_mind_v3');
-      if (saved) {
-        try { state = JSON.parse(saved); } catch(e){}
-      }
+function init() {
+  const saved = localStorage.getItem('fitmind_v2_data');
+  if (saved) {
+    try { state = JSON.parse(saved); } catch(e){}
+  }
 
-      document.getElementById('cfg_phone').value = state.phone || "";
-      document.getElementById('in_insight').value = state.insight || "";
+  document.getElementById('cfg_phone').value = state.phone || "";
+  document.getElementById('in_insight').value = state.insight || "";
 
-      renderLibraryCards();
-      renderTreinos();
-      updateContextBox();
-      setupAudioEvents();
-      setupVisualizer();
-      updateWhatsAppLinks();
-    }
+  renderTreinos();
+  updateChapterSelect();
+  updateContextBox();
+  setupAudioEvents();
+  setupVisualizer();
+  updateWhatsAppLink();
+}
 
-    // RENDER AUDIOLIBROS
-    function renderLibraryCards() {
-      const container = document.getElementById('booksLibraryContainer');
-      if (!container) return;
+function autoSaveAll() {
+  state.phone = document.getElementById('cfg_phone').value;
+  state.insight = document.getElementById('in_insight').value;
+  localStorage.setItem('fitmind_v2_data', JSON.stringify(state));
+  updateWhatsAppLink();
 
-      container.innerHTML = BOOKS.map((book, bIdx) => {
-        const isCurrent = curBookIdx === bIdx;
-        return `
-          <div id="bookCard_${bIdx}" class="flex items-center justify-between p-3 rounded-xl transition-all duration-200 ${isCurrent ? 'bg-cyan-500/10 border border-cyan-400/50' : 'bg-white/[0.03] border border-white/10 hover:border-pink-500/30'}">
-            <div class="pr-2">
-              <span class="text-[9px] font-extrabold text-cyan-400 uppercase tracking-wider block">${book.categoria}</span>
-              <strong class="text-xs text-white block font-bold">${book.titulo}</strong>
-              <span class="text-[10px] text-gray-400 block">${book.autor} · ${book.caps.length} Capítulo(s)</span>
-            </div>
-            <button id="btnPlay_${bIdx}" onclick="playBook(${bIdx})" class="px-3 py-1.5 rounded-lg bg-cyan-400/15 hover:bg-cyan-400/30 border border-cyan-400 text-cyan-300 text-xs font-bold cursor-pointer transition-all whitespace-nowrap">
-              ${isCurrent ? '▶️ Ouvindo' : '▶️ Tocar'}
-            </button>
-          </div>
-        `;
-      }).join('');
-    }
+  const ind = document.getElementById('saveIndicator');
+  if (ind) {
+    ind.style.opacity = '1';
+    setTimeout(() => { ind.style.opacity = '0'; }, 1500);
+  }
+}
 
-    // PRESETS RÁPIDOS
-    function quickFill(nome, series, reps, carga) {
-      document.getElementById('in_exercicio').value = nome;
-      document.getElementById('in_p1').value = series;
-      document.getElementById('in_p2').value = reps;
-      document.getElementById('in_p3').value = carga;
-    }
+function quickFill(ex, p1, p2, p3) {
+  document.getElementById('in_exercicio').value = ex;
+  document.getElementById('in_p1').value = p1;
+  document.getElementById('in_p2').value = p2;
+  document.getElementById('in_p3').value = p3;
+}
 
-    function quickFillNatacao(nome, metros, minutos) {
-      document.getElementById('in_exercicio').value = nome;
-      document.getElementById('in_p1').value = 1;
-      document.getElementById('in_p2').value = metros;
-      document.getElementById('in_p3').value = minutos;
-    }
+function applySelectedExercise() {
+  const sel = document.getElementById('sel_exercicio_conhecido').value;
+  if (sel) {
+    document.getElementById('in_exercicio').value = sel;
+  }
+}
 
-    function applySelectedExercise() {
-      const sel = document.getElementById('sel_exercicio_conhecido');
-      if (sel.value) {
-        document.getElementById('in_exercicio').value = sel.value;
-      }
-    }
+function addTreinoQuick() {
+  const ex = document.getElementById('in_exercicio').value.trim();
+  const p1 = document.getElementById('in_p1').value || '4';
+  const p2 = document.getElementById('in_p2').value || '10';
+  const p3 = document.getElementById('in_p3').value || '0';
 
-    // ADICIONAR TREINO À LISTA
-    function addTreinoQuick() {
-      const ex = document.getElementById('in_exercicio').value.trim();
-      const p1 = parseInt(document.getElementById('in_p1').value) || 0;
-      const p2 = parseInt(document.getElementById('in_p2').value) || 0;
-      const p3 = parseInt(document.getElementById('in_p3').value) || 0;
+  if (!ex) {
+    alert("Digite ou selecione o exercício!");
+    return;
+  }
 
-      if (!ex) {
-        alert("Por favor, informe o nome do exercício.");
-        return;
-      }
+  state.treinos.push({ ex, p1, p2, p3: Number(p3) });
+  document.getElementById('in_exercicio').value = '';
+  localStorage.setItem('fitmind_v2_data', JSON.stringify(state));
+  renderTreinos();
+  updateWhatsAppLink();
+}
 
-      state.treinos.push({
-        id: Date.now(),
-        ex, p1, p2, p3
-      });
+function removeTreino(index) {
+  state.treinos.splice(index, 1);
+  localStorage.setItem('fitmind_v2_data', JSON.stringify(state));
+  renderTreinos();
+  updateWhatsAppLink();
+}
 
-      // Clear input
-      document.getElementById('in_exercicio').value = "";
-      document.getElementById('sel_exercicio_conhecido').value = "";
+function renderTreinos() {
+  const container = document.getElementById('listaTreinosMinimal');
+  if (!container) return;
 
-      renderTreinos();
-      autoSaveAll();
-    }
+  if (state.treinos.length === 0) {
+    container.innerHTML = `<span style="font-size:11px;color:var(--text-muted);font-style:italic;">Nenhum exercício registrado hoje ainda.</span>`;
+    return;
+  }
 
-    function removeTreino(id) {
-      state.treinos = state.treinos.filter(t => t.id !== id);
-      renderTreinos();
-      autoSaveAll();
-    }
-
-    function clearAllTreinos() {
-      if (state.treinos.length === 0) return;
-      state.treinos = [];
-      renderTreinos();
-      autoSaveAll();
-    }
-
-    // RENDERIZAR LISTA DE TREINOS
-    function renderTreinos() {
-      const container = document.getElementById('listaTreinosMinimal');
-      if (!container) return;
-
-      if (state.treinos.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-4 border border-dashed border-white/10 rounded-xl">
-            <span class="text-xs text-gray-500 font-semibold block">Nenhum exercício registrado hoje</span>
-            <span class="text-[10px] text-gray-600 block">Clique nos presets ou adicione manualmente acima.</span>
-          </div>
-        `;
-        return;
-      }
-
-      let html = `
-        <div class="flex items-center justify-between px-1 mb-1">
-          <span class="text-[11px] font-bold text-gray-400">Exercícios Adicionados (${state.treinos.length})</span>
-          <button onclick="clearAllTreinos()" class="text-[10px] text-pink-400 hover:underline cursor-pointer bg-transparent border-none">Limpar Tudo</button>
+  let html = '';
+  state.treinos.forEach((t, idx) => {
+    html += `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:8px;">
+        <div style="font-size:11px;">
+          <strong style="color:var(--text-primary);">${t.ex}</strong> — <span style="color:var(--accent-pink);">${t.p1}s x ${t.p2}r</span> ${t.p3 > 0 ? '(' + t.p3 + 'kg)' : ''}
         </div>
-      `;
+        <button onclick="removeTreino(${idx})" style="background:none;border:none;color:var(--text-muted);font-size:12px;cursor:pointer;padding:2px 6px;">✕</button>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
 
-      html += state.treinos.map(t => `
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-black/40 border border-white/10 text-xs">
-          <div class="flex items-center gap-2">
-            <span class="text-pink-400 font-bold">🏋️</span>
-            <div>
-              <strong class="text-white block font-semibold">${t.ex}</strong>
-              <span class="text-[10px] text-gray-400">${t.p1} sér x ${t.p2} reps ${t.p3 > 0 ? '@ ' + t.p3 + ' kg/min' : ''}</span>
-            </div>
-          </div>
-          <button onclick="removeTreino(${t.id})" class="text-gray-500 hover:text-red-400 text-sm font-bold border-none bg-transparent cursor-pointer px-2">✕</button>
-        </div>
-      `).join('');
+function playBook(idx) {
+  curBookIdx = idx;
+  curCapIdx = 0;
+  updateChapterSelect();
+  loadAudio();
+}
 
-      container.innerHTML = html;
-    }
+function updateChapterSelect() {
+  const book = BOOKS[curBookIdx];
+  const sel = document.getElementById('sel_chapter_hardcoded');
+  if (!sel) return;
 
-    // AUDIOBOOK PLAYER LOGIC
-    function playBook(idx) {
-      curBookIdx = idx;
-      curCapIdx = 0;
-      renderLibraryCards();
-      loadAudio();
-    }
+  let html = '';
+  book.caps.forEach((cap, i) => {
+    html += `<option value="${i}" ${i === curCapIdx ? 'selected' : ''}>${cap.t}</option>`;
+  });
+  sel.innerHTML = html;
+}
 
-    function selectChapterFromContext() {
-      const sel = document.getElementById('sel_chapter_hardcoded');
-      curCapIdx = parseInt(sel.value) || 0;
-      loadAudio();
-    }
+function selectChapterFromContext() {
+  const sel = document.getElementById('sel_chapter_hardcoded');
+  if (sel) {
+    curCapIdx = Number(sel.value);
+    loadAudio();
+  }
+}
 
-    function loadAudio() {
-      const book = BOOKS[curBookIdx];
-      const cap = book.caps[curCapIdx];
+function loadAudio() {
+  const book = BOOKS[curBookIdx];
+  const cap = book.caps[curCapIdx];
 
-      document.getElementById('dockBookTitle').textContent = `${book.titulo} — ${book.autor}`;
-      document.getElementById('dockCapTitle').textContent = cap.t;
+  document.getElementById('ctxBookName').textContent = book.titulo;
+  document.getElementById('ctxCapName').textContent = cap.t;
+  document.getElementById('dockBookTitle').textContent = book.titulo;
+  document.getElementById('dockCapTitle').textContent = cap.t;
 
-      updateContextBox();
+  updateLibraryHighlight();
 
-      const audio = document.getElementById('mainAudioEngine');
-      audio.src = cap.src;
-      audio.playbackRate = speeds[speedIdx];
-      
-      if (!audioCtx) initAudioContext();
-      if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+  const audio = document.getElementById('mainAudioEngine');
+  audio.src = cap.src;
+  audio.playbackRate = speeds[speedIdx];
+  audio.load();
 
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
-          document.getElementById('playingBadge').classList.remove('hidden');
-          drawVisualizer();
-        }).catch((e) => {
-          console.warn("Audio stream blocked or unavailable. Falling back gracefully:", e);
-          audio.src = SILENT_FALLBACK;
-          audio.play().then(() => {
-            document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
-          }).catch(err => console.error(err));
-        });
-      }
-    }
+  if (!audioCtx) initAudioContext();
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
 
-    function togglePlay() {
-      const audio = document.getElementById('mainAudioEngine');
-      if (!audio.src) { playBook(0); return; }
-      
-      if (!audioCtx) initAudioContext();
-      if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+  audio.play().then(() => {
+    document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
+    drawVisualizer();
+  }).catch(e => {
+    console.warn("Autoplay impedido ou arquivo em buffer:", e);
+    document.getElementById('btnDockPlay').textContent = '▶️ Play';
+  });
+}
 
-      if (audio.paused) {
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
-            document.getElementById('playingBadge').classList.remove('hidden');
-            drawVisualizer();
-          }).catch(e => {
-            console.warn("Play retry on user gesture:", e);
-            audio.src = SILENT_FALLBACK;
-            audio.play();
-          });
-        }
+function togglePlay() {
+  const audio = document.getElementById('mainAudioEngine');
+  if (!audio.src || audio.src === window.location.href) {
+    playBook(0);
+    return;
+  }
+  
+  if (!audioCtx) initAudioContext();
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+
+  if (audio.paused) {
+    audio.play().then(() => {
+      document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
+      drawVisualizer();
+    }).catch(e => {
+      console.warn("Erro ao reproduzir:", e);
+    });
+  } else {
+    audio.pause();
+    document.getElementById('btnDockPlay').textContent = '▶️ Play';
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+  }
+}
+
+function changeCap(delta) {
+  const book = BOOKS[curBookIdx];
+  const next = curCapIdx + delta;
+  if (next >= 0 && next < book.caps.length) {
+    curCapIdx = next;
+    updateChapterSelect();
+    loadAudio();
+  }
+}
+
+function skipSeconds(sec) {
+  const audio = document.getElementById('mainAudioEngine');
+  if (audio && !isNaN(audio.duration)) {
+    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + sec));
+  }
+}
+
+function seekAudio() {
+  const audio = document.getElementById('mainAudioEngine');
+  const seeker = document.getElementById('dockSeeker');
+  if (audio && seeker && !isNaN(audio.duration)) {
+    audio.currentTime = seeker.value;
+  }
+}
+
+function cycleSpeed() {
+  speedIdx = (speedIdx + 1) % speeds.length;
+  const spd = speeds[speedIdx];
+  const audio = document.getElementById('mainAudioEngine');
+  if (audio) audio.playbackRate = spd;
+  document.getElementById('btnSpeed').textContent = `${spd.toFixed(1)}x`;
+}
+
+function formatTime(sec) {
+  if (isNaN(sec) || sec <= 0) return "0:00";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function updateLibraryHighlight() {
+  for (let i = 0; i < BOOKS.length; i++) {
+    const card = document.getElementById(`bookCard_${i}`);
+    if (card) {
+      if (i === curBookIdx) {
+        card.style.borderColor = 'var(--accent-cyan)';
+        card.style.background = 'rgba(0, 240, 255, 0.05)';
       } else {
-        audio.pause();
-        document.getElementById('btnDockPlay').textContent = '▶️ Play';
-        document.getElementById('playingBadge').classList.add('hidden');
-        if (animFrameId) cancelAnimationFrame(animFrameId);
+        card.style.borderColor = 'var(--glass-border)';
+        card.style.background = 'rgba(255, 255, 255, 0.03)';
       }
     }
+  }
+}
 
-    function changeCap(delta) {
-      const book = BOOKS[curBookIdx];
-      const next = curCapIdx + delta;
-      if (next >= 0 && next < book.caps.length) {
-        curCapIdx = next;
-        loadAudio();
-      }
+function updateContextBox() {
+  const book = BOOKS[curBookIdx];
+  const cap = book.caps[curCapIdx];
+  const bEl = document.getElementById('ctxBookName');
+  const cEl = document.getElementById('ctxCapName');
+  if (bEl) bEl.textContent = book.titulo;
+  if (cEl) cEl.textContent = cap.t;
+}
+
+function setupAudioEvents() {
+  const audio = document.getElementById('mainAudioEngine');
+  
+  audio.addEventListener('timeupdate', () => {
+    const seeker = document.getElementById('dockSeeker');
+    const display = document.getElementById('dockTimeDisplay');
+    if (seeker && !isNaN(audio.duration)) {
+      seeker.max = Math.floor(audio.duration);
+      seeker.value = Math.floor(audio.currentTime);
+      display.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
     }
+  });
 
-    function skipSeconds(sec) {
-      const audio = document.getElementById('mainAudioEngine');
-      if (audio && !isNaN(audio.duration)) {
-        audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + sec));
-      }
+  audio.addEventListener('ended', () => {
+    changeCap(1);
+  });
+
+  audio.addEventListener('play', () => {
+    document.getElementById('btnDockPlay').textContent = '⏸️ Pause';
+  });
+
+  audio.addEventListener('pause', () => {
+    document.getElementById('btnDockPlay').textContent = '▶️ Play';
+  });
+}
+
+function initAudioContext() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
+    const audio = document.getElementById('mainAudioEngine');
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 64;
+    audioSrcNode = audioCtx.createMediaElementSource(audio);
+    audioSrcNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  } catch(e) {
+    console.warn("Web Audio API context bypassed:", e);
+  }
+}
+
+function setupVisualizer() {
+  const canvas = document.getElementById('vizCanvas');
+  if (canvas) {
+    canvas.width = canvas.clientWidth || 300;
+    canvas.height = canvas.clientHeight || 14;
+  }
+}
+
+function drawVisualizer() {
+  const canvas = document.getElementById('vizCanvas');
+  if (!canvas || !analyser) return;
+
+  const ctx = canvas.getContext('2d');
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  const draw = () => {
+    animFrameId = requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(dataArray);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const barWidth = (canvas.width / bufferLength) * 1.8;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const barHeight = (dataArray[i] / 255) * canvas.height;
+      
+      const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
+      gradient.addColorStop(0, '#00f0ff');
+      gradient.addColorStop(1, '#f100a0');
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+      x += barWidth;
     }
+  };
 
-    function seekAudio() {
-      const audio = document.getElementById('mainAudioEngine');
-      const seeker = document.getElementById('dockSeeker');
-      if (audio && seeker) audio.currentTime = seeker.value;
-    }
+  draw();
+}
 
-    function cycleSpeed() {
-      speedIdx = (speedIdx + 1) % speeds.length;
-      const spd = speeds[speedIdx];
-      const audio = document.getElementById('mainAudioEngine');
-      if (audio) audio.playbackRate = spd;
-      document.getElementById('btnSpeed').textContent = `${spd.toFixed(1)}x`;
-    }
+function updateWhatsAppLink() {
+  const hoje = new Date().toLocaleDateString('pt-BR');
+  let msg = `*RESUMO VISION VOX* 🚀 (${hoje})\n\n`;
 
-    function formatTime(sec) {
-      if (isNaN(sec) || sec <= 0) return "0:00";
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${m}:${s < 10 ? '0' : ''}${s}`;
-    }
+  if (state.treinos.length > 0) {
+    msg += `🏋️ *Treinos Realizados:*\n`;
+    state.treinos.forEach(t => {
+      msg += `• ${t.ex}: ${t.p1}s x ${t.p2}r ${t.p3 > 0 ? '@ ' + t.p3 + 'kg' : ''}\n`;
+    });
+  }
 
-    function updateContextBox() {
-      const book = BOOKS[curBookIdx];
-      const cap = book.caps[curCapIdx];
+  if (state.insight) {
+    msg += `\n💡 *Insight de Alta Performance:*\n"${state.insight}"\n`;
+  }
 
-      document.getElementById('ctxBookName').textContent = `${book.titulo} (${book.autor})`;
-      document.getElementById('ctxCapName').textContent = cap.t;
+  const btn = document.getElementById('btnFastWhatsApp');
+  if (btn) {
+    const cleanPhone = (state.phone || '').replace(/\D/g, '');
+    btn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+  }
+}
 
-      const sel = document.getElementById('sel_chapter_hardcoded');
-      sel.innerHTML = book.caps.map((c, i) => `
-        <option value="${i}" ${i === curCapIdx ? 'selected' : ''}>${c.t}</option>
-      `).join('');
-    }
-
-    function setupAudioEvents() {
-      const audio = document.getElementById('mainAudioEngine');
-      audio.addEventListener('timeupdate', () => {
-        const seeker = document.getElementById('dockSeeker');
-        const display = document.getElementById('dockTimeDisplay');
-        if (seeker && !isNaN(audio.duration)) {
-          seeker.max = Math.floor(audio.duration);
-          seeker.value = Math.floor(audio.currentTime);
-          display.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-        }
-      });
-
-      audio.addEventListener('ended', () => {
-        changeCap(1);
-      });
-    }
-
-    // WEB AUDIO API VISUALIZER
-    function initAudioContext() {
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new AudioContext();
-        const audio = document.getElementById('mainAudioEngine');
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 64;
-        audioSrcNode = audioCtx.createMediaElementSource(audio);
-        audioSrcNode.connect(analyser);
-        analyser.connect(audioCtx.destination);
-      } catch(e) {}
-    }
-
-    function setupVisualizer() {
-      const canvas = document.getElementById('vizCanvas');
-      if (canvas) {
-        canvas.width = canvas.clientWidth || 300;
-        canvas.height = canvas.clientHeight || 18;
-      }
-    }
-
-    function drawVisualizer() {
-      const canvas = document.getElementById('vizCanvas');
-      if (!canvas || !analyser) return;
-
-      const ctx = canvas.getContext('2d');
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-
-      const draw = () => {
-        animFrameId = requestAnimationFrame(draw);
-        analyser.getByteFrequencyData(dataArray);
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const barWidth = (canvas.width / bufferLength) * 1.6;
-        let x = 0;
-
-        for (let i = 0; i < bufferLength; i++) {
-          const barHeight = (dataArray[i] / 255) * canvas.height;
-          
-          const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-          gradient.addColorStop(0, '#00f0ff');
-          gradient.addColorStop(1, '#f100a0');
-
-          ctx.fillStyle = gradient;
-          ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
-          x += barWidth;
-        }
-      };
-
-      draw();
-    }
-
-    // AUTO SAVE & WHATSAPP GENERATOR
-    function autoSaveAll() {
-      state.phone = document.getElementById('cfg_phone').value.trim();
-      state.insight = document.getElementById('in_insight').value.trim();
-
-      localStorage.setItem('visionvox_body_mind_v3', JSON.stringify(state));
-
-      showSaveIndicator();
-      updateWhatsAppLinks();
-    }
-
-    function showSaveIndicator() {
-      const el = document.getElementById('saveIndicator');
-      if (!el) return;
-      el.classList.add('show');
-      clearTimeout(window._saveTimer);
-      window._saveTimer = setTimeout(() => {
-        el.classList.remove('show');
-      }, 1500);
-    }
-
-    function updateWhatsAppLinks() {
-      const hoje = new Date().toLocaleDateString('pt-BR');
-      const hora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-      const book = BOOKS[curBookIdx];
-      const cap = book.caps[curCapIdx];
-
-      let msg = `*VISIONVOX — RELATÓRIO CORPO & MENTE* 🚀\n`;
-      msg += `📅 Data: ${hoje} às ${hora}\n\n`;
-
-      msg += `🏋️ *CORPO — TREINOS EXECUTADOS:*\n`;
-      if (state.treinos.length > 0) {
-        state.treinos.forEach(t => {
-          msg += `• *${t.ex}*: ${t.p1} sér x ${t.p2} reps ${t.p3 > 0 ? '@ ' + t.p3 + ' kg/min' : ''}\n`;
-        });
-      } else {
-        msg += `• Nenhum treino registrado hoje.\n`;
-      }
-
-      msg += `\n🎧 *MENTE — AUDIOLIVRO VISIONVOX:*\n`;
-      msg += `• *Livro:* ${book.titulo} (${book.autor})\n`;
-      msg += `• *Capítulo:* ${cap.t}\n`;
-
-      if (state.insight) {
-        msg += `\n💡 *INSIGHT DO DIA:*\n"${state.insight}"\n`;
-      }
-
-      msg += `\n_Evolução diária contínua via VisionVox App_ ⚡`;
-
-      const formattedPhone = state.phone.replace(/\D/g, '');
-      const link = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(msg)}`;
-
-      const btnTop = document.getElementById('btnTopWhatsApp');
-      const btnBottom = document.getElementById('btnBottomWhatsApp');
-      if (btnTop) btnTop.href = link;
-      if (btnBottom) btnBottom.href = link;
-    }
-
-    window.addEventListener('resize', setupVisualizer);
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
